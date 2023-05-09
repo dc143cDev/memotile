@@ -28,10 +28,12 @@ class HomeView extends GetView<HomeController> {
               child: Obx(
                 () => Container(
                   child: ListView.builder(
-                    itemCount: controller.list.length,
+                    itemCount: controller.MemoList.length,
                     itemBuilder: (BuildContext b, int index) {
                       return MemoTile(
-                        text: controller.list[index],
+                        text: controller.MemoList[index],
+                        date: controller.DateList[index],
+                        // date: controller.DateList[index],
                       );
                     },
                   ),
@@ -50,8 +52,9 @@ class HomeView extends GetView<HomeController> {
                     ),
                     IconButton(
                       onPressed: () {
-                        controller.list
-                            .add(controller.memoController.value.text);
+                        controller.MemoList.add(
+                            controller.memoController.value.text);
+                        controller.getCurrentDate();
                       },
                       icon: Icon(Icons.add),
                     ),

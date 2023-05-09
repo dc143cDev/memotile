@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 class MemoTile extends StatelessWidget {
-  const MemoTile({Key? key, this.text}) : super(key: key);
+  const MemoTile({Key? key, this.text, this.date}) : super(key: key);
 
   final String? text;
+  final String? date;
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +16,7 @@ class MemoTile extends StatelessWidget {
           Flexible(
             child: Padding(
               padding: const EdgeInsets.all(14.0),
-              child: Text('time'),
+              child: Text(date!),
             ),
           ),
           Flexible(
