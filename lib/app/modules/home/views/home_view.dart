@@ -15,7 +15,13 @@ class HomeView extends GetView<HomeController> {
       appBar: AppBar(
         leading: InkWell(
           onTap: () {
-            Get.to(TileView());
+            Get.toNamed(
+              '/tile',
+              arguments: {
+                'TileMonth': controller.CurrentMonth.value,
+                'TileDay': controller.CurrentDay.value,
+              },
+            );
           },
           child: Container(
             child: Row(
