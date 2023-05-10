@@ -13,6 +13,7 @@ class HomeView extends GetView<HomeController> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        leadingWidth: 100,
         leading: InkWell(
           onTap: () {
             Get.toNamed(
@@ -42,7 +43,7 @@ class HomeView extends GetView<HomeController> {
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.black,
-                          fontSize: 13),
+                          fontSize: 15),
                     ),
                   ),
                 ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:memotile/app/modules/home/controllers/home_controller.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 import '../controllers/tile_controller.dart';
 
@@ -10,6 +11,7 @@ class TileView extends GetView<TileController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         leading: InkWell(
           onTap: () {
@@ -48,10 +50,22 @@ class TileView extends GetView<TileController> {
         ),
         centerTitle: true,
       ),
-      body: Center(
-        child: Text(
-          'TileView is working',
-          style: TextStyle(fontSize: 20),
+      body: SafeArea(
+        child: Column(
+          children: [
+            TableCalendar(
+              headerStyle: HeaderStyle(
+                titleTextStyle: TextStyle(color: Colors.white),
+                titleCentered: true,
+                leftChevronVisible: false,
+                rightChevronVisible: false,
+                formatButtonVisible: false,
+              ),
+              focusedDay: DateTime.now(),
+              firstDay: DateTime(2023, 5, 1),
+              lastDay: DateTime(2023, 12, 31),
+            ),
+          ],
         ),
       ),
     );
