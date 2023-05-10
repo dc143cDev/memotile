@@ -3,12 +3,20 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class HomeController extends GetxController {
+  GlobalKey memoKey = GlobalKey();
+  // List<GlobalObjectKey> memoKey =
+  //     List.generate(5, (index) => GlobalObjectKey(index));
+  RxDouble? x = 0.0.obs;
+  RxDouble? y = 0.0.obs;
+
   RxList MemoList = [].obs;
   RxList DateList = [].obs;
 
   RxString CurrentDate = ''.obs;
   RxString CurrentDay = ''.obs;
   RxString CurrentMonth = ''.obs;
+
+  RxBool memoLongClicked = false.obs;
 
   TextEditingController memoController = TextEditingController();
 
@@ -25,6 +33,18 @@ class HomeController extends GetxController {
 
   getCurrentMonth() {
     CurrentMonth.value = DateFormat("MMM").format(DateTime.now());
+  }
+
+  void getOffset(GlobalKey key, String text) {
+    RenderBox? box = key.currentContext?.findRenderObject() as RenderBox?;
+    Offset? position = box?.localToGlobal(Offset.zero);
+    if (position != null) {
+      x?.value = position.dx;
+      y?.value = position.dy;
+      print(x.toString());
+      print(y.toString());
+      print(text);
+    }
   }
 
   @override
