@@ -30,7 +30,7 @@ class MemoTile extends GetView<HomeController> {
             child: InkWell(
               onLongPress: () {
                 controller.memoLongClicked.value = true;
-                controller.getOffset(controller.memoKey, text!);
+                controller.getOffset(key!, text!);
               },
               child: Obx(
                 () => Stack(
@@ -73,16 +73,19 @@ class MemoTile extends GetView<HomeController> {
         ],
       ),
     );
-    return Padding(
-      padding: EdgeInsets.only(right: 18, left: 0, top: 5, bottom: 5),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          SizedBox(
-            height: 30,
-          ),
-          memo,
-        ],
+    return Form(
+      key: key,
+      child: Padding(
+        padding: EdgeInsets.only(right: 18, left: 0, top: 5, bottom: 5),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            SizedBox(
+              height: 30,
+            ),
+            memo,
+          ],
+        ),
       ),
     );
   }

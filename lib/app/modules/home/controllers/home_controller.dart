@@ -35,16 +35,19 @@ class HomeController extends GetxController {
     CurrentMonth.value = DateFormat("MMM").format(DateTime.now());
   }
 
-  void getOffset(GlobalKey key, String text) {
-    RenderBox? box = key.currentContext?.findRenderObject() as RenderBox?;
-    Offset? position = box?.localToGlobal(Offset.zero);
-    if (position != null) {
-      x?.value = position.dx;
-      y?.value = position.dy;
-      print(x.toString());
-      print(y.toString());
-      print(text);
-    }
+  void getOffset(Key key, String text) {
+    // RenderBox? box = key.currentContext?.findRenderObject() as RenderBox?;
+    // Offset? position = box?.localToGlobal(Offset.zero);
+    // final sizeBox = box?.size;
+    // if (position != null) {
+    //   x?.value = position.dx;
+    //   y?.value = position.dy;
+    // print(x.toString());
+    // print(y.toString());
+    // print(sizeBox.toString());
+    print(key);
+    print(text);
+    // }
   }
 
   @override

@@ -67,19 +67,15 @@ class HomeView extends GetView<HomeController> {
             Expanded(
               flex: 9,
               child: Obx(
-                () => Form(
-                  key: controller.memoKey,
-                  child: Container(
-                    child: ListView.builder(
-                      itemCount: controller.MemoList.length,
-                      itemBuilder: (BuildContext b, int index) {
-                        return MemoTile(
-                          text: controller.MemoList[index],
-                          date: controller.DateList[index],
-                        );
-                      },
-                    ),
-                  ),
+                () => ListView.builder(
+                  itemCount: controller.MemoList.length,
+                  itemBuilder: (BuildContext b, int index) {
+                    return MemoTile(
+                      key: new Key(index.toString()),
+                      text: controller.MemoList[index],
+                      date: controller.DateList[index],
+                    );
+                  },
                 ),
               ),
             ),
