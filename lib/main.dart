@@ -12,7 +12,7 @@ void main() {
         focusColor: Colors.black,
       ),
       debugShowCheckedModeBanner: false,
-      title: "Application",
+      title: "Applicatin",
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
     ),
