@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:memotile/app/modules/tile/views/tile_view.dart';
 
 import '../../../global/memo_tile.dart';
 import '../controllers/home_controller.dart';
@@ -102,8 +101,10 @@ class HomeView extends GetView<HomeController> {
                           left: 0, top: 5, right: 14, bottom: 5),
                       child: IconButton(
                         onPressed: () {
+                          controller.insertDB();
                           controller.MemoList.add(
-                              controller.memoController.value.text);
+                            controller.memoController.value.text,
+                          );
                           controller.getCurrentDate();
                           controller.memoController.clear();
                         },

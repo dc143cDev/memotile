@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
+import '../../../global/memo.dart';
+
 class HomeController extends GetxController {
   GlobalKey memoKey = GlobalKey();
   // List<GlobalObjectKey> memoKey =
@@ -48,6 +50,15 @@ class HomeController extends GetxController {
     print(key);
     print(text);
     // }
+  }
+
+  Future<void> insertDB() async {
+    var provider = MemoProvider();
+    var memo = Memo(
+      content: memoController.text,
+      color: Color(0xffeeeeee),
+    );
+    provider.insert(memo);
   }
 
   @override
