@@ -3,6 +3,8 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:memotile/app/modules/home/controllers/home_controller.dart';
 
+import 'memo.dart';
+
 class MemoTile extends GetView<HomeController> {
   const MemoTile({Key? key, this.text, this.date}) : super(key: key);
 
@@ -21,7 +23,7 @@ class MemoTile extends GetView<HomeController> {
               padding: const EdgeInsets.only(
                   left: 14, top: 18, right: 7, bottom: 12),
               child: Text(
-                date!,
+                'date',
                 style: TextStyle(color: Colors.grey),
               ),
             ),
@@ -30,7 +32,6 @@ class MemoTile extends GetView<HomeController> {
             child: InkWell(
               onLongPress: () {
                 controller.memoLongClicked.value = true;
-                controller.getOffset(key!, text!);
               },
               child: Obx(
                 () => Stack(

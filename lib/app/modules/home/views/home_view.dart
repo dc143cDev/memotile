@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:memotile/app/global/memo.dart';
 
 import '../../../global/memo_tile.dart';
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
   const HomeView({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,19 +67,18 @@ class HomeView extends GetView<HomeController> {
           children: [
             Expanded(
               flex: 9,
-              child: Obx(
-                () => ListView.builder(
-                  itemCount: controller.MemoList.length,
-                  itemBuilder: (BuildContext b, int index) {
+              child:  ListView.builder(
+                  itemCount: controller.memo.length,
+                  itemBuilder: (context, index) {
                     return MemoTile(
-                      key: new Key(index.toString()),
-                      text: controller.MemoList[index],
-                      date: controller.DateList[index],
+                      // key: new Key(index.toString()),
+                      text: controller.memo[index]['content'],
+                      date: controller.memo[index]['createdAt'],
                     );
                   },
                 ),
               ),
-            ),
+
             Expanded(
               flex: 1,
               child: Container(
@@ -100,13 +101,9 @@ class HomeView extends GetView<HomeController> {
                       padding: const EdgeInsets.only(
                           left: 0, top: 5, right: 14, bottom: 5),
                       child: IconButton(
-                        onPressed: () {
-                          controller.insertDB();
-                          controller.MemoList.add(
-                            controller.memoController.value.text,
-                          );
-                          controller.getCurrentDate();
-                          controller.memoController.clear();
+                        onPressed: () async {
+                          await controller.addItem();
+                          // print(controller.memo[0]['content']);
                         },
                         icon: Icon(Icons.add),
                       ),

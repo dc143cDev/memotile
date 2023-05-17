@@ -6,8 +6,12 @@ import '../../../global/memo.dart';
 
 class HomeController extends GetxController {
   GlobalKey memoKey = GlobalKey();
+
   // List<GlobalObjectKey> memoKey =
   //     List.generate(5, (index) => GlobalObjectKey(index));
+  List<Map<String, dynamic>> memo = [];
+  RxBool isLoading = true.obs;
+
   RxDouble? x = 0.0.obs;
   RxDouble? y = 0.0.obs;
 
@@ -37,33 +41,35 @@ class HomeController extends GetxController {
     CurrentMonth.value = DateFormat("MMM").format(DateTime.now());
   }
 
-  void getOffset(Key key, String text) {
-    // RenderBox? box = key.currentContext?.findRenderObject() as RenderBox?;
-    // Offset? position = box?.localToGlobal(Offset.zero);
-    // final sizeBox = box?.size;
-    // if (position != null) {
-    //   x?.value = position.dx;
-    //   y?.value = position.dy;
-    // print(x.toString());
-    // print(y.toString());
-    // print(sizeBox.toString());
-    print(key);
-    print(text);
-    // }
+  refreshMemo() async {
+    final data = await MemoHelper.getItems();
+    memo = data;
+    isLoading.value = false;
   }
 
-  Future<void> insertDB() async {
-    var provider = MemoProvider();
-    var memo = Memo(
-      content: memoController.text,
-      color: Color(0xffeeeeee),
-    );
-    provider.insert(memo);
+  //C
+  Future<void> addItem() async {
+    await MemoHelper.createItem(memoController.text);
+    refreshMemo();
+  }
+
+  //U
+  Future<void> updateItem(int id) async {
+    await MemoHelper.updateItem(id, memoController.text);
+    refreshMemo();
+  }
+
+  //D
+  void deleteItem(int id) async {
+    await MemoHelper.deleteItem(id);
+    refreshMemo();
   }
 
   @override
   void onInit() async {
     super.onInit();
+    await MemoHelper.db();
+    // await refreshMemo();
     await getCurrentDay();
     await getCurrentMonth();
   }

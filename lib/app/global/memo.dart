@@ -1,83 +1,62 @@
-import 'dart:core';
-import 'dart:ui';
+import 'package:flutter/cupertino.dart';
+import 'package:sqflite/sqflite.dart' as sql;
 
-import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
-
-final String tableMemo = 'memo';
-final String columnId = '_id';
-final String columnContent = 'content';
-final String columnColor = 'color';
-
-class MemoProvider {
-  static Database? db;
-
-  Future<Database?> get database async {
-    if (db == null) {
-      db = await initDB();
-    }
-    return db;
+class MemoHelper {
+  static Future<void> createTables(sql.Database database) async {
+    await database.execute('''CREATE TABLE memo_test(
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    content TEXT
+    createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)
+    ''');
   }
 
-  initDB() async {
-    String path = join(await getDatabasesPath(), 'memo.db');
-    return await openDatabase(
-      path,
-      version: 1,
-      onCreate: (db, version) async {
-        await db.execute('''
-      create table $tableMemo ($columnId integer primary key autoincrement, $columnContent text not null, $columnColor integer not null)
-      ''');
-      },
+  static Future<sql.Database> db() async {
+    print('create tables');
+    return sql.openDatabase('memo_test.db', version: 1,
+        onCreate: (sql.Database database, int version) async {
+      await createTables(database);
+    });
+  }
+
+  static Future<int> createItem(String content) async {
+    final db = await MemoHelper.db();
+
+    final data = {'content': content};
+    final id = await db.insert(
+      'memo_test',
+      data,
+      conflictAlgorithm: sql.ConflictAlgorithm.replace,
     );
+    return id;
   }
 
-  Future<Memo> insert(Memo memo) async {
-    final db = await database;
-    print(memo.toMap());
-    memo.id = (await db?.insert(tableMemo, memo.toMap()))!;
-    return memo;
+  static Future<List<Map<String, dynamic>>> getItems() async {
+    final db = await MemoHelper.db();
+    return db.query('memo_test', orderBy: "id");
   }
-}
 
-class Memo {
-  int? id;
-  String? content;
-  // DateTime date_created;
-  // DateTime date_last_edited;
-  Color? color;
-  // int is_archived = 0;
+  static Future<int> updateItem(int id, String content) async {
+    final db = await MemoHelper.db();
 
-  Memo({
-    this.id,
-    this.content,
-    // this.date_created,
-    // this.date_last_edited,
-    this.color,
-  });
-
-  Map<String, dynamic> toMap() {
-    var map = <String, dynamic>{
-      //id 는 auto increment 로 입력.
-      columnContent: content,
-      // 'date_created': epochFromDate(date_created),
-      // 'date_last_edited': epochFromDate(date_last_edited),
-      columnColor: color?.value,
-      // 'is_archived': is_archived
+    final data = {
+      'content': content,
+      'createdAt': DateTime.now().toString(),
     };
-    if (id != null) {
-      map[columnId] = id;
+    final result = await db.update(
+      'memo_test',
+      data,
+      where: "id = ?",
+      whereArgs: [id],
+    );
+    return result;
+  }
+
+  static Future<void> deleteItem(int id) async{
+    final db = await MemoHelper.db();
+    try{
+      await db.delete("memo_test", where: "id = ?",whereArgs: [id],);
+    }catch(err){
+      debugPrint(err.toString());
     }
-    return map;
-  }
-
-  Memo.fromMap(Map<String, dynamic> map) {
-    id = map[columnId];
-    content = map[columnContent];
-    color = map[columnColor];
-  }
-
-  int epochFromDate(DateTime dt) {
-    return dt.microsecondsSinceEpoch ~/ 1000;
   }
 }
