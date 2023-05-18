@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:memotile/app/global/memo.dart';
 
 import '../../../global/memo_tile.dart';
 import '../controllers/home_controller.dart';
@@ -23,6 +22,7 @@ class HomeView extends GetView<HomeController> {
           ),
         ],
         leadingWidth: 100,
+        //appBar 왼쪽 상단의 리딩 버튼, 처음부터 되돌아가기 모양, 월 정보 표시.
         leading: InkWell(
           onTap: () {
             Get.toNamed(
@@ -80,7 +80,7 @@ class HomeView extends GetView<HomeController> {
                   itemCount: controller.memo.length,
                   itemBuilder: (context, index) {
                     return MemoTile(
-                      // key: new Key(index.toString()),
+                      //memo_tile ui 에 들어갈 각 객체를 index 와 column 값을 넣어 구성.
                       text: controller.memo[index]['content'],
                       date: controller.memo[index]['createdAt'],
                       colorValue: controller.memo[index]['colorValue'],
@@ -111,10 +111,15 @@ class HomeView extends GetView<HomeController> {
                       padding: const EdgeInsets.only(
                           left: 0, top: 5, right: 14, bottom: 5),
                       child: IconButton(
+                        //+ 버튼
+                        //눌렀을 때 addItem 메소드 실행
+                        //->TextField 의 Text, 현재 시간, colorValue 의 값을 db 에 insert
                         onPressed: () async {
                           await controller.getCurrentDate();
                           controller.addItem();
+                          //TextField 초기화.
                           controller.memoController.clear();
+                          //debug.
                           print(controller.colorValue.value.toString());
                         },
                         icon: Icon(Icons.add),

@@ -31,10 +31,9 @@ class MemoTile extends GetView<HomeController> {
           Flexible(
             child: InkWell(
               onLongPress: () {
-                controller.memoLongClicked.value = true;
+                // controller.memoLongClicked.value = true;
               },
-              child: Obx(
-                () => Stack(
+              child: Stack(
                   children: [
                     Container(
                       padding: EdgeInsets.all(14),
@@ -54,28 +53,27 @@ class MemoTile extends GetView<HomeController> {
                         text!,
                       ),
                     ),
-                    Container(
-                      padding: EdgeInsets.all(14),
-                      decoration: BoxDecoration(
-                        color: controller.memoLongClicked.value == false
-                            ? Colors.transparent
-                            : Colors.grey[100]?.withOpacity(0.4),
-                      ),
-                      child: Text(
-                        text!,
-                        style: TextStyle(color: Colors.transparent),
-                      ),
-                    ),
+                    // Container(
+                    //   padding: EdgeInsets.all(14),
+                    //   decoration: BoxDecoration(
+                    //     color: controller.memoLongClicked.value == false
+                    //         ? Colors.transparent
+                    //         : Colors.grey[100]?.withOpacity(0.4),
+                    //   ),
+                    //   child: Text(
+                    //     text!,
+                    //     style: TextStyle(color: Colors.transparent),
+                    //   ),
+                    // ),
                   ],
                 ),
               ),
             ),
-          ),
+
         ],
       ),
     );
     return Form(
-      key: key,
       child: Padding(
         padding: EdgeInsets.only(right: 18, left: 0, top: 5, bottom: 5),
         child: Row(
@@ -84,6 +82,7 @@ class MemoTile extends GetView<HomeController> {
             SizedBox(
               height: 30,
             ),
+            //최종적으로 감싸기.
             memo,
           ],
         ),
