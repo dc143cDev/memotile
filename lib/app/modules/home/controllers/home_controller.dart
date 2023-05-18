@@ -7,7 +7,7 @@ import '../../../global/memo.dart';
 class HomeController extends GetxController {
 
   //가장 중요한 변수. 여기에 모든 db 의 data 가 담김.
-  //
+  //실질적 데이터인 MemoHelper 에서 내려온 data 변수가 ui 에 표시되기 위해 여기에 담김.
   RxList memo = [].obs;
 
   //클릭 감지.
@@ -42,12 +42,15 @@ class HomeController extends GetxController {
   }
 
 
-  //color palette PART
+  //color PART
   //가변적으로 변하는 RxInt 변수와, flutter ui 의 Color 를 int 로 저장할 수 있는 변수들.
   RxInt colorValue = 0.obs;
+
+  //palette(int value)
   int whiteValue = Colors.white.value;
   int redValue = Colors.red.value;
 
+  //앱 시작시 초기 컬러 가져오기.
   getDefaultColor(){
     colorValue.value = whiteValue;
   }
@@ -73,6 +76,8 @@ class HomeController extends GetxController {
     refreshMemo();
   }
 
+  //R 은 MemoHelper 단에서.
+
   //U
   Future<void> updateItem(int id) async {
     await MemoHelper.updateItem(id, memoController.text, colorValue.value);
@@ -85,6 +90,9 @@ class HomeController extends GetxController {
     refreshMemo();
   }
 
+  //컨트롤러 생성 및 삽입시 초기에 실행.
+  //여기서 db 를 init 하고 고정적으로 불러와야 할 값들을 가져옴.
+  //초기에 불러와야 할 값들 : ui 에 표시될 날짜들, 메모 기본 색상 등.
   @override
   void onInit() async {
     super.onInit();
@@ -92,6 +100,7 @@ class HomeController extends GetxController {
     await getDefaultColor();
     await getCurrentDay();
     await getCurrentMonth();
+    //처음 한번 새로고침으로 메모 가져오기.
     refreshMemo();
   }
 
