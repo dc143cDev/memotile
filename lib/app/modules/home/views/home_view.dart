@@ -75,6 +75,7 @@ class HomeView extends GetView<HomeController> {
                         // key: new Key(index.toString()),
                         text: controller.memo[index]['content'],
                         date: controller.memo[index]['createdAt'],
+                        colorValue: controller.whiteValue,
                       );
                     },
                   ),

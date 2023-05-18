@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -21,6 +22,8 @@ class HomeController extends GetxController {
   RxString CurrentDate = ''.obs;
   RxString CurrentDay = ''.obs;
   RxString CurrentMonth = ''.obs;
+
+  int whiteValue = Colors.white.value;
 
   RxBool memoLongClicked = false.obs;
 
@@ -49,13 +52,13 @@ class HomeController extends GetxController {
 
   //C
   Future<void> addItem() async {
-    await MemoHelper.createItem(memoController.text, CurrentDate.value.toString());
+    await MemoHelper.createItem(memoController.text, CurrentDate.value.toString(), whiteValue);
     refreshMemo();
   }
 
   //U
   Future<void> updateItem(int id) async {
-    await MemoHelper.updateItem(id, memoController.text);
+    await MemoHelper.updateItem(id, memoController.text, whiteValue);
     refreshMemo();
   }
 

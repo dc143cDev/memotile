@@ -3,13 +3,13 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:memotile/app/modules/home/controllers/home_controller.dart';
 
-import 'memo.dart';
 
 class MemoTile extends GetView<HomeController> {
-  const MemoTile({Key? key, this.text, this.date}) : super(key: key);
+  const MemoTile({Key? key, this.text, this.date, this.colorValue}) : super(key: key);
 
   final String? text;
   final String? date;
+  final int? colorValue;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +48,7 @@ class MemoTile extends GetView<HomeController> {
                           )
                         ],
                         borderRadius: BorderRadius.circular(2),
-                        color: Colors.white,
+                        color: Color(colorValue!),
                       ),
                       child: Text(
                         text!,
