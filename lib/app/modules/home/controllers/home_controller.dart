@@ -9,7 +9,7 @@ class HomeController extends GetxController {
 
   // List<GlobalObjectKey> memoKey =
   //     List.generate(5, (index) => GlobalObjectKey(index));
-  List<Map<String, dynamic>> memo = [];
+  RxList memo = [].obs;
   RxBool isLoading = true.obs;
 
   RxDouble? x = 0.0.obs;
@@ -43,13 +43,13 @@ class HomeController extends GetxController {
 
   refreshMemo() async {
     final data = await MemoHelper.getItems();
-    memo = data;
+    memo.value = data;
     isLoading.value = false;
   }
 
   //C
   Future<void> addItem() async {
-    await MemoHelper.createItem(memoController.text);
+    await MemoHelper.createItem(memoController.text, CurrentDate.value.toString());
     refreshMemo();
   }
 
@@ -69,6 +69,7 @@ class HomeController extends GetxController {
   void onInit() async {
     super.onInit();
     await MemoHelper.db();
+    refreshMemo();
     // await refreshMemo();
     await getCurrentDay();
     await getCurrentMonth();

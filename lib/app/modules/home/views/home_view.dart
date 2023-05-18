@@ -67,16 +67,18 @@ class HomeView extends GetView<HomeController> {
           children: [
             Expanded(
               flex: 9,
-              child:  ListView.builder(
-                  itemCount: controller.memo.length,
-                  itemBuilder: (context, index) {
-                    return MemoTile(
-                      // key: new Key(index.toString()),
-                      text: controller.memo[index]['content'],
-                      date: controller.memo[index]['createdAt'],
-                    );
-                  },
-                ),
+              child:  Obx(
+                ()=> ListView.builder(
+                    itemCount: controller.memo.length,
+                    itemBuilder: (context, index) {
+                      return MemoTile(
+                        // key: new Key(index.toString()),
+                        text: controller.memo[index]['content'],
+                        date: controller.memo[index]['createdAt'],
+                      );
+                    },
+                  ),
+              ),
               ),
 
             Expanded(
@@ -102,7 +104,10 @@ class HomeView extends GetView<HomeController> {
                           left: 0, top: 5, right: 14, bottom: 5),
                       child: IconButton(
                         onPressed: () async {
-                          await controller.addItem();
+                          await controller.getCurrentDate();
+                          controller.addItem();
+                          controller.memoController.clear();
+
                           // print(controller.memo[0]['content']);
                         },
                         icon: Icon(Icons.add),
