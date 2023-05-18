@@ -45,7 +45,7 @@ class MemoHelper {
     final data = {
       'content': content,
       'createdAt': HomeController().CurrentDate.value.toString(),
-      'colorValue' : HomeController().whiteValue,
+      'colorValue' : HomeController().colorValue.value,
     };
     final result = await db.update(
       'memo_test4',

@@ -23,7 +23,9 @@ class HomeController extends GetxController {
   RxString CurrentDay = ''.obs;
   RxString CurrentMonth = ''.obs;
 
+  RxInt colorValue = 0.obs;
   int whiteValue = Colors.white.value;
+  int redValue = Colors.red.value;
 
   RxBool memoLongClicked = false.obs;
 
@@ -52,13 +54,13 @@ class HomeController extends GetxController {
 
   //C
   Future<void> addItem() async {
-    await MemoHelper.createItem(memoController.text, CurrentDate.value.toString(), whiteValue);
+    await MemoHelper.createItem(memoController.text, CurrentDate.value.toString(), colorValue.value);
     refreshMemo();
   }
 
   //U
   Future<void> updateItem(int id) async {
-    await MemoHelper.updateItem(id, memoController.text, whiteValue);
+    await MemoHelper.updateItem(id, memoController.text, colorValue.value);
     refreshMemo();
   }
 
@@ -68,14 +70,22 @@ class HomeController extends GetxController {
     refreshMemo();
   }
 
+  getDefaultColor(){
+    colorValue.value = whiteValue;
+  }
+
+  getRed(){
+    colorValue.value = redValue;
+  }
+
   @override
   void onInit() async {
     super.onInit();
     await MemoHelper.db();
-    refreshMemo();
-    // await refreshMemo();
+    await getDefaultColor();
     await getCurrentDay();
     await getCurrentMonth();
+    refreshMemo();
   }
 
   @override

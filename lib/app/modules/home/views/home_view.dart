@@ -14,6 +14,14 @@ class HomeView extends GetView<HomeController> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        actions: [
+          TextButton(
+            onPressed: () {
+              controller.getRed();
+            },
+            child: Text('get Red'),
+          ),
+        ],
         leadingWidth: 100,
         leading: InkWell(
           onTap: () {
@@ -67,21 +75,20 @@ class HomeView extends GetView<HomeController> {
           children: [
             Expanded(
               flex: 9,
-              child:  Obx(
-                ()=> ListView.builder(
-                    itemCount: controller.memo.length,
-                    itemBuilder: (context, index) {
-                      return MemoTile(
-                        // key: new Key(index.toString()),
-                        text: controller.memo[index]['content'],
-                        date: controller.memo[index]['createdAt'],
-                        colorValue: controller.whiteValue,
-                      );
-                    },
-                  ),
+              child: Obx(
+                () => ListView.builder(
+                  itemCount: controller.memo.length,
+                  itemBuilder: (context, index) {
+                    return MemoTile(
+                      // key: new Key(index.toString()),
+                      text: controller.memo[index]['content'],
+                      date: controller.memo[index]['createdAt'],
+                      colorValue: controller.memo[index]['colorValue'],
+                    );
+                  },
+                ),
               ),
-              ),
-
+            ),
             Expanded(
               flex: 1,
               child: Container(
@@ -108,8 +115,7 @@ class HomeView extends GetView<HomeController> {
                           await controller.getCurrentDate();
                           controller.addItem();
                           controller.memoController.clear();
-
-                          // print(controller.memo[0]['content']);
+                          print(controller.colorValue.value.toString());
                         },
                         icon: Icon(Icons.add),
                       ),
