@@ -37,6 +37,15 @@ class HomeController extends GetxController {
   //로딩.
   RxBool isLoading = true.obs;
 
+  //상세 페이지로 이동.
+  goToDetail(String content, String date, int color){
+    Get.toNamed('/detail', arguments: {
+      'content' : content,
+      'date' : date,
+      'color' : color
+    });
+  }
+
 
   //date PART
   //날짜 정보를 받아오기 위한 RxString.
@@ -128,9 +137,11 @@ class HomeController extends GetxController {
 
   }
 
+  //init 후 1프레임 뒤.
   @override
   void onReady() {
     super.onReady();
+    //시작시 화면 내리기.
     goToDown();
   }
 

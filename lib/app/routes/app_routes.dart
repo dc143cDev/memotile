@@ -11,4 +11,5 @@ abstract class _Paths {
   _Paths._();
   static const HOME = '/home';
   static const TILE = '/tile';
+  static const DETAIL = '/detail';
 }

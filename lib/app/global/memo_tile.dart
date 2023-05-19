@@ -31,7 +31,7 @@ class MemoTile extends GetView<HomeController> {
           Flexible(
             child: InkWell(
               onLongPress: () {
-                // controller.memoLongClicked.value = true;
+                controller.goToDetail(text!, date!, colorValue!);
               },
               child: Stack(
                   children: [

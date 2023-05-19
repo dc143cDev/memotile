@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:memotile/app/modules/home/views/memo_detail_view.dart';
 
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
@@ -22,6 +23,11 @@ class AppPages {
       name: _Paths.TILE,
       page: () => const TileView(),
       binding: TileBinding(),
+    ),
+    GetPage(
+      name: _Paths.DETAIL,
+      page: () => const MemoDetailView(),
+      binding: HomeBinding(),
     ),
   ];
 }
