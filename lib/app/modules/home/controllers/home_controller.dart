@@ -16,6 +16,21 @@ class HomeController extends GetxController {
   //insert here.
   TextEditingController memoController = TextEditingController();
 
+  //scroll control.
+  var scrollController = ScrollController().obs;
+
+  //스크롤 아래로 내리기.
+  goToDown()async{
+    await Future.delayed(Duration(milliseconds: 200));
+    scrollController.value.animateTo(
+      scrollController.value.position.maxScrollExtent,
+      curve: Curves.easeOut,
+      duration: const Duration(milliseconds: 200),
+    );
+
+    print('go to down');
+  }
+
   //로딩.
   RxBool isLoading = true.obs;
 
@@ -68,12 +83,15 @@ class HomeController extends GetxController {
     final data = await MemoHelper.getItems();
     memo.value = data;
     isLoading.value = false;
+    goToDown();
+    print('memo refreshed');
   }
 
   //C
   Future<void> addItem() async {
     await MemoHelper.createItem(memoController.text, CurrentDate.value.toString(), colorValue.value);
     refreshMemo();
+    // goToDown();
   }
 
   //R 은 MemoHelper 단에서.
@@ -82,6 +100,7 @@ class HomeController extends GetxController {
   Future<void> updateItem(int id) async {
     await MemoHelper.updateItem(id, memoController.text, colorValue.value);
     refreshMemo();
+
   }
 
   //D
@@ -96,17 +115,20 @@ class HomeController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
+
     await MemoHelper.db();
     await getDefaultColor();
     await getCurrentDay();
     await getCurrentMonth();
     //처음 한번 새로고침으로 메모 가져오기.
     refreshMemo();
+
   }
 
   @override
   void onReady() {
     super.onReady();
+    goToDown();
   }
 
   @override

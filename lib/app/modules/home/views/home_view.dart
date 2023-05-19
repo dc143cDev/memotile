@@ -77,6 +77,7 @@ class HomeView extends GetView<HomeController> {
               flex: 9,
               child: Obx(
                 () => ListView.builder(
+                  controller: controller.scrollController.value,
                   itemCount: controller.memo.length,
                   itemBuilder: (context, index) {
                     return MemoTile(
@@ -90,8 +91,9 @@ class HomeView extends GetView<HomeController> {
               ),
             ),
             Expanded(
-              flex: 1,
+             flex: 1,
               child: Container(
+                // color: Colors.transparent,
                 child: Row(
                   children: [
                     Expanded(
@@ -115,8 +117,10 @@ class HomeView extends GetView<HomeController> {
                         //눌렀을 때 addItem 메소드 실행
                         //->TextField 의 Text, 현재 시간, colorValue 의 값을 db 에 insert
                         onPressed: () async {
-                          await controller.getCurrentDate();
+                          controller.getCurrentDate();
                           controller.addItem();
+
+                          controller.goToDown();
                           //TextField 초기화.
                           controller.memoController.clear();
                           //debug.
