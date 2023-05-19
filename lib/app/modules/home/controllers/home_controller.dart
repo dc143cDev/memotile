@@ -20,11 +20,14 @@ class HomeController extends GetxController {
   var scrollController = ScrollController().obs;
 
   //스크롤 아래로 내리기.
+  //아이템 추가, 처음 ui 진입 시 호출됨.
   goToDown()async{
+    //비동기적으로 getItems 로 메모 데이터를 가져온 뒤에 화면을 내려야 하기에, 딜레이를 줬음.
     await Future.delayed(Duration(milliseconds: 200));
     scrollController.value.animateTo(
       scrollController.value.position.maxScrollExtent,
       curve: Curves.easeOut,
+      //딜레이는 화면이 내려가는 애니메이션의 Duration 과 같게 해서 위화감이 없도록 함.
       duration: const Duration(milliseconds: 200),
     );
 

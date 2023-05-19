@@ -119,7 +119,7 @@ class HomeView extends GetView<HomeController> {
                         onPressed: () async {
                           controller.getCurrentDate();
                           controller.addItem();
-
+                          //스크롤 아래로 내리기.
                           controller.goToDown();
                           //TextField 초기화.
                           controller.memoController.clear();
