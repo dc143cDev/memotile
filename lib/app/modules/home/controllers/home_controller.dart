@@ -5,7 +5,6 @@ import 'package:intl/intl.dart';
 import '../../../global/memo.dart';
 
 class HomeController extends GetxController {
-
   //가장 중요한 변수. 여기에 모든 db 의 data 가 담김.
   //실질적 데이터인 MemoHelper 에서 내려온 data 변수가 ui 에 표시되기 위해 여기에 담김.
   RxList memo = [].obs;
@@ -16,12 +15,24 @@ class HomeController extends GetxController {
   //insert here.
   TextEditingController memoController = TextEditingController();
 
+  //홈 화면의 메모 타일의 데이터가 상세 페이지로 옮겨지는 과정 - 3-1.
+  //memo_tile 의 text = > content = detailController(그릇).
+  RxString detailContent = "".obs;
+
+  //memo_detail 에 들어갈 TextField 의 controller.
+  TextEditingController memoDetailController = TextEditingController();
+
+  ////홈 화면의 메모 타일의 데이터가 상세 페이지로 옮겨지는 과정 - 4.
+  //그렇게 최종적으로 ui 에 표시되기 위해 받아온 detailContent 를 TEC 의 text 부분에 넘겨서 표시.
+  getDetail(){
+    memoDetailController.text = detailContent.value;
+  }
   //scroll control.
   var scrollController = ScrollController().obs;
 
   //스크롤 아래로 내리기.
   //아이템 추가, 처음 ui 진입 시 호출됨.
-  goToDown()async{
+  goToDown() async {
     //비동기적으로 getItems 로 메모 데이터를 가져온 뒤에 화면을 내려야 하기에, 딜레이를 줬음.
     await Future.delayed(Duration(milliseconds: 200));
     scrollController.value.animateTo(
@@ -38,14 +49,21 @@ class HomeController extends GetxController {
   RxBool isLoading = true.obs;
 
   //상세 페이지로 이동.
-  goToDetail(String content, String date, int color){
+  //홈 화면의 메모 타일의 데이터가 상세 페이지로 옮겨지는 과정 - 2.
+  //memo_tile ui 에서 이미 db 에서 받아져있던 변수들(text, date, color 등) 을 넘기면,
+  //이쪽에서 content, date, color arugments 로 받아옴.
+  goToDetail(String content, String date, int color) async{
+    //홈 화면의 메모 타일의 데이터가 상세 페이지로 옮겨지는 과정 - 3(2).
+    //memo_tile 에서 받아온 text = > content 로 argument 화 했다면,
+    //ui 에 표시하기 위해 미리 선언해둔 detailContent obs 변수로 받아줌.
+    detailContent.value = content;
+    await getDetail();
     Get.toNamed('/detail', arguments: {
-      'content' : content,
-      'date' : date,
-      'color' : color
+      'content': content,
+      'date': date,
+      'color': color,
     });
   }
-
 
   //date PART
   //날짜 정보를 받아오기 위한 RxString.
@@ -68,7 +86,6 @@ class HomeController extends GetxController {
     CurrentMonth.value = DateFormat("MMM").format(DateTime.now());
   }
 
-
   //color PART
   //가변적으로 변하는 RxInt 변수와, flutter ui 의 Color 를 int 로 저장할 수 있는 변수들.
   RxInt colorValue = 0.obs;
@@ -78,11 +95,11 @@ class HomeController extends GetxController {
   int redValue = Colors.red.value;
 
   //앱 시작시 초기 컬러 가져오기.
-  getDefaultColor(){
+  getDefaultColor() {
     colorValue.value = whiteValue;
   }
 
-  getRed(){
+  getRed() {
     colorValue.value = redValue;
   }
 
@@ -101,7 +118,8 @@ class HomeController extends GetxController {
 
   //C
   Future<void> addItem() async {
-    await MemoHelper.createItem(memoController.text, CurrentDate.value.toString(), colorValue.value);
+    await MemoHelper.createItem(
+        memoController.text, CurrentDate.value.toString(), colorValue.value);
     refreshMemo();
     // goToDown();
   }
@@ -112,7 +130,6 @@ class HomeController extends GetxController {
   Future<void> updateItem(int id) async {
     await MemoHelper.updateItem(id, memoController.text, colorValue.value);
     refreshMemo();
-
   }
 
   //D
@@ -134,7 +151,6 @@ class HomeController extends GetxController {
     await getCurrentMonth();
     //처음 한번 새로고침으로 메모 가져오기.
     refreshMemo();
-
   }
 
   //init 후 1프레임 뒤.
