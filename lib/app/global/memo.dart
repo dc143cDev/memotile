@@ -4,7 +4,6 @@ import 'package:memotile/app/modules/home/controllers/home_controller.dart';
 import 'package:sqflite/sqflite.dart' as sql;
 
 class MemoHelper {
-
   static Future<void> createTables(sql.Database database) async {
     await database.execute('''CREATE TABLE memo_test4(
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
@@ -15,6 +14,7 @@ class MemoHelper {
   }
 
   static Future<sql.Database> db() async {
+    //debug
     print('create tables');
     return sql.openDatabase('memo_test4.db', version: 1,
         onCreate: (sql.Database database, int version) async {
@@ -25,12 +25,14 @@ class MemoHelper {
   static Future<int> createItem(String content, String date, int color) async {
     final db = await MemoHelper.db();
 
-    final data = {'content': content, 'createdAt' : date, 'colorValue' : color};
+    final data = {'content': content, 'createdAt': date, 'colorValue': color};
     final id = await db.insert(
       'memo_test4',
       data,
       conflictAlgorithm: sql.ConflictAlgorithm.replace,
     );
+    print('id: ${id.toString()}');
+
     return id;
   }
 
@@ -39,13 +41,14 @@ class MemoHelper {
     return db.query('memo_test4', orderBy: "id");
   }
 
-  static Future<int> updateItem(int id, String content, int color) async {
+  static Future<int> updateItem(
+      int id, String content, String date, int color) async {
     final db = await MemoHelper.db();
 
     final data = {
       'content': content,
-      'createdAt': HomeController().CurrentDate.value.toString(),
-      'colorValue' : HomeController().colorValue.value,
+      'createdAt': date,
+      'colorValue': color,
     };
     final result = await db.update(
       'memo_test4',
@@ -56,11 +59,15 @@ class MemoHelper {
     return result;
   }
 
-  static Future<void> deleteItem(int id) async{
+  static Future<void> deleteItem(int id) async {
     final db = await MemoHelper.db();
-    try{
-      await db.delete("memo_test4", where: "id = ?",whereArgs: [id],);
-    }catch(err){
+    try {
+      await db.delete(
+        "memo_test4",
+        where: "id = ?",
+        whereArgs: [id],
+      );
+    } catch (err) {
       debugPrint(err.toString());
     }
   }

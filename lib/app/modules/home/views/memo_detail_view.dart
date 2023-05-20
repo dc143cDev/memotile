@@ -12,6 +12,23 @@ class MemoDetailView extends GetView<HomeController> {
       appBar: AppBar(
         title: const Text('MemoDetailView'),
         centerTitle: true,
+        actions: [
+          TextButton(
+            onPressed: () {
+              controller.getCurrentDate();
+              controller.updateItem(
+                Get.arguments['id'],
+                controller.memoDetailController.text,
+                controller.CurrentDate.value,
+                controller.colorValue.value,
+              );
+            },
+            child: Text(
+              'update',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ],
       ),
       body: Center(
         child: Column(

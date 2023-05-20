@@ -82,6 +82,7 @@ class HomeView extends GetView<HomeController> {
                   itemBuilder: (context, index) {
                     return MemoTile(
                       //memo_tile ui 에 들어갈 각 객체를 index 와 column 값을 넣어 구성.
+                      id: controller.memo[index]['id'],
                       text: controller.memo[index]['content'],
                       date: controller.memo[index]['createdAt'],
                       colorValue: controller.memo[index]['colorValue'],

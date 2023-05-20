@@ -52,17 +52,25 @@ class HomeController extends GetxController {
   //홈 화면의 메모 타일의 데이터가 상세 페이지로 옮겨지는 과정 - 2.
   //memo_tile ui 에서 이미 db 에서 받아져있던 변수들(text, date, color 등) 을 넘기면,
   //이쪽에서 content, date, color arugments 로 받아옴.
-  goToDetail(String content, String date, int color) async{
+  goToDetail(int? id, String content, String date, int color) async{
     //홈 화면의 메모 타일의 데이터가 상세 페이지로 옮겨지는 과정 - 3(2).
     //memo_tile 에서 받아온 text = > content 로 argument 화 했다면,
     //ui 에 표시하기 위해 미리 선언해둔 detailContent obs 변수로 받아줌.
-    detailContent.value = content;
-    await getDetail();
-    Get.toNamed('/detail', arguments: {
-      'content': content,
-      'date': date,
-      'color': color,
-    });
+    if(id != null){
+      // memo.firstWhere((element) => element['id'] == id);
+      memoDetailController.text = detailContent.value;
+      detailContent.value = content;
+      await getDetail();
+      print(id.toString());
+      Get.toNamed('/detail', arguments: {
+        'id' : id,
+        'content': content,
+        'date': date,
+        'color': color,
+      });
+    }else{
+      print('else');
+    }
   }
 
   //date PART
@@ -127,8 +135,8 @@ class HomeController extends GetxController {
   //R 은 MemoHelper 단에서.
 
   //U
-  Future<void> updateItem(int id) async {
-    await MemoHelper.updateItem(id, memoController.text, colorValue.value);
+  Future<void> updateItem(int id, String editedContent, String editedDate, int editedColor) async {
+    await MemoHelper.updateItem(id, editedContent, '${editedDate} (Edited)',editedColor);
     refreshMemo();
   }
 
