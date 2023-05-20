@@ -14,12 +14,12 @@ class HomeView extends GetView<HomeController> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         actions: [
-          TextButton(
-            onPressed: () {
-              controller.getRed();
-            },
-            child: Text('get Red'),
-          ),
+          // TextButton(
+          //   onPressed: () {
+          //     controller.getRed();
+          //   },
+          //   child: Text('get Red'),
+          // ),
         ],
         leadingWidth: 100,
         //appBar 왼쪽 상단의 리딩 버튼, 처음부터 되돌아가기 모양, 월 정보 표시.
@@ -92,7 +92,7 @@ class HomeView extends GetView<HomeController> {
               ),
             ),
             Expanded(
-             flex: 1,
+              flex: 1,
               child: Container(
                 // color: Colors.transparent,
                 child: Row(
@@ -104,9 +104,10 @@ class HomeView extends GetView<HomeController> {
                           controller: controller.memoController,
                           cursorColor: Colors.black,
                           decoration: InputDecoration(
-                              border: InputBorder.none,
-                              focusColor: Colors.black,
-                              hintText: ' Insert here'),
+                            border: InputBorder.none,
+                            focusColor: Colors.black,
+                            hintText: ' Insert here',
+                          ),
                         ),
                       ),
                     ),

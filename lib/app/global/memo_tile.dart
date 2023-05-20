@@ -34,7 +34,7 @@ class MemoTile extends GetView<HomeController> {
             child: InkWell(
               onLongPress: () {
                 //홈 화면의 메모 타일의 데이터가 상세 페이지로 옮겨지는 과정 - 1.
-                //이 파트에서 goToDetail 로 세가지 arguments 를 전달.
+                //이 파트에서 goToDetail 로 네가지 arguments 를 전달.
                 controller.goToDetail(id!, text!, date!, colorValue!);
               },
               child: Stack(
