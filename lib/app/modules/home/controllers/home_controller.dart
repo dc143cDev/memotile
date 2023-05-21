@@ -24,9 +24,10 @@ class HomeController extends GetxController {
 
   ////홈 화면의 메모 타일의 데이터가 상세 페이지로 옮겨지는 과정 - 4.
   //그렇게 최종적으로 ui 에 표시되기 위해 받아온 detailContent 를 TEC 의 text 부분에 넘겨서 표시.
-  getDetail(){
+  getDetail() {
     memoDetailController.text = detailContent.value;
   }
+
   //scroll control.
   var scrollController = ScrollController().obs;
 
@@ -34,12 +35,12 @@ class HomeController extends GetxController {
   //아이템 추가, 처음 ui 진입 시 호출됨.
   goToDown() async {
     //비동기적으로 getItems 로 메모 데이터를 가져온 뒤에 화면을 내려야 하기에, 딜레이를 줬음.
-    await Future.delayed(Duration(milliseconds: 200));
+    await Future.delayed(Duration(milliseconds: 300));
     scrollController.value.animateTo(
       scrollController.value.position.maxScrollExtent,
       curve: Curves.easeOut,
       //딜레이는 화면이 내려가는 애니메이션의 Duration 과 같게 해서 위화감이 없도록 함.
-      duration: const Duration(milliseconds: 200),
+      duration: const Duration(milliseconds: 300),
     );
 
     print('go to down');
@@ -52,23 +53,23 @@ class HomeController extends GetxController {
   //홈 화면의 메모 타일의 데이터가 상세 페이지로 옮겨지는 과정 - 2.
   //memo_tile ui 에서 이미 db 에서 받아져있던 변수들(text, date, color 등) 을 넘기면,
   //이쪽에서 content, date, color arugments 로 받아옴.
-  goToDetail(int? id, String content, String date, int color) async{
+  goToDetail(int? id, String content, String date, int color) async {
     //홈 화면의 메모 타일의 데이터가 상세 페이지로 옮겨지는 과정 - 3(2).
     //memo_tile 에서 받아온 text = > content 로 argument 화 했다면,
     //ui 에 표시하기 위해 미리 선언해둔 detailContent obs 변수로 받아줌.
-    if(id != null){
+    if (id != null) {
       // memo.firstWhere((element) => element['id'] == id);
       memoDetailController.text = detailContent.value;
       detailContent.value = content;
       await getDetail();
       print(id.toString());
       Get.toNamed('/detail', arguments: {
-        'id' : id,
+        'id': id,
         'content': content,
         'date': date,
         'color': color,
       });
-    }else{
+    } else {
       print('else');
     }
   }
@@ -120,7 +121,6 @@ class HomeController extends GetxController {
     final data = await MemoHelper.getItems();
     memo.value = data;
     isLoading.value = false;
-    goToDown();
     print('memo refreshed');
   }
 
@@ -135,8 +135,10 @@ class HomeController extends GetxController {
   //R 은 MemoHelper 단에서.
 
   //U
-  Future<void> updateItem(int id, String editedContent, String editedDate, int editedColor) async {
-    await MemoHelper.updateItem(id, editedContent, '${editedDate} (Edited)',editedColor);
+  Future<void> updateItem(
+      int id, String editedContent, String editedDate, int editedColor) async {
+    await MemoHelper.updateItem(
+        id, editedContent, '${editedDate} (Edited)', editedColor);
     refreshMemo();
   }
 
@@ -163,10 +165,15 @@ class HomeController extends GetxController {
 
   //init 후 1프레임 뒤.
   @override
-  void onReady() {
+  void onReady() async {
     super.onReady();
     //시작시 화면 내리기.
-    goToDown();
+    await goToDown();
+    //혹여나 버그로 화면이 다 내려가지 않는다면 1 millisecond 뒤에 한번 더 내림.
+    Future.delayed(Duration(milliseconds: 1), () {
+      goToDown();
+    });
+
   }
 
   @override

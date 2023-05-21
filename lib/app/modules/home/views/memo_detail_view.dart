@@ -59,15 +59,18 @@ class MemoDetailView extends GetView<HomeController> {
         child: Column(
           children: [
             Expanded(
-              child: TextField(
-                //홈 화면의 메모 타일의 데이터가 상세 페이지로 옮겨지는 과정 - 5.
-                //이곳에 memoDetailController 를 삽입하여 갖고있을 text 를 ui 에 최종 출력.
-                controller: controller.memoDetailController,
-                keyboardType: TextInputType.multiline,
-                maxLines: null,
-                expands: true,
-                decoration: InputDecoration(
-                  hintText: 'content',
+              child: Padding(
+                padding: const EdgeInsets.all(14.0),
+                child: TextField(
+                  //홈 화면의 메모 타일의 데이터가 상세 페이지로 옮겨지는 과정 - 5.
+                  //이곳에 memoDetailController 를 삽입하여 갖고있을 text 를 ui 에 최종 출력.
+                  controller: controller.memoDetailController,
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
+                  expands: true,
+                  decoration: InputDecoration(
+                    hintText: 'content',
+                  ),
                 ),
               ),
             ),
