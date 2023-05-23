@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:memotile/app/modules/home/controllers/home_controller.dart';
 import 'package:sqflite/sqflite.dart' as sql;
 
 class MemoHelper {
@@ -39,6 +38,11 @@ class MemoHelper {
   static Future<List<Map<String, dynamic>>> getItems() async {
     final db = await MemoHelper.db();
     return db.query('memo_test4', orderBy: "id");
+  }
+
+  static Future<List<Map<String, dynamic>>> getItem(int id) async {
+    final db = await MemoHelper.db();
+    return db.query('memo_test4', where: "id = ?", whereArgs: [id], limit: 1);
   }
 
   static Future<int> updateItem(

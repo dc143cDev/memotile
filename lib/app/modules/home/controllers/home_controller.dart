@@ -74,6 +74,10 @@ class HomeController extends GetxController {
     }
   }
 
+  // goToDetail2() async{
+  //   final data = await MemoHelper.getItem(id);
+  // }
+
   //date PART
   //날짜 정보를 받아오기 위한 RxString.
   RxString CurrentDate = ''.obs;
@@ -87,7 +91,7 @@ class HomeController extends GetxController {
 
   //앱바 상단에 위치할 날짜를 가져옵니다.
   getCurrentDay() {
-    CurrentDay.value = DateFormat("MM-dd").format(DateTime.now());
+    CurrentDay.value = DateFormat("dd").format(DateTime.now());
   }
 
   //appBar 의 Leading 에 들어갈 월.
@@ -99,9 +103,14 @@ class HomeController extends GetxController {
   //가변적으로 변하는 RxInt 변수와, flutter ui 의 Color 를 int 로 저장할 수 있는 변수들.
   RxInt colorValue = 0.obs;
 
+  //memoDetailView 에서 update 를 위해 선언될 변수.
+  RxInt detailColorValue = 0.obs;
+  RxBool isColorChanged = false.obs;
+
   //palette(int value)
   int whiteValue = Colors.white.value;
   int redValue = Colors.red.value;
+  int tealValue = Colors.teal.value;
 
   //앱 시작시 초기 컬러 가져오기.
   getDefaultColor() {
@@ -110,6 +119,10 @@ class HomeController extends GetxController {
 
   getRed() {
     colorValue.value = redValue;
+  }
+
+  getTeal() {
+    colorValue.value = tealValue;
   }
 
   //DB PART
@@ -169,8 +182,8 @@ class HomeController extends GetxController {
     super.onReady();
     //시작시 화면 내리기.
     await goToDown();
-    //혹여나 버그로 화면이 다 내려가지 않는다면 1 millisecond 뒤에 한번 더 내림.
-    Future.delayed(Duration(milliseconds: 1), () {
+    //혹여나 버그로 화면이 다 내려가지 않는다면 1 microsecond 뒤에 한번 더 내림.
+    Future.delayed(Duration(microseconds: 1), () {
       goToDown();
     });
 

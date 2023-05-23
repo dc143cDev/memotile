@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+
 import 'package:get/get_state_manager/src/simple/get_view.dart';
-import 'package:memotile/app/global/memo.dart';
+
 import 'package:memotile/app/modules/home/controllers/home_controller.dart';
 
 class MemoTile extends GetView<HomeController> {
@@ -20,14 +20,20 @@ class MemoTile extends GetView<HomeController> {
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          Flexible(
-            child: Padding(
-              padding: const EdgeInsets.only(
-                  left: 14, top: 18, right: 7, bottom: 12),
-              child: Text(
-                date!,
-                style: TextStyle(color: Colors.grey),
-              ),
+          Padding(
+            padding:
+                const EdgeInsets.only(left: 10, top: 10, right: 0, bottom: 12),
+            child: Text(
+              'tag',
+              style: TextStyle(color: Colors.grey),
+            ),
+          ),
+          Padding(
+            padding:
+                const EdgeInsets.only(left: 5, top: 20, right: 7, bottom: 12),
+            child: Text(
+              date!,
+              style: TextStyle(color: Colors.grey),
             ),
           ),
           Flexible(
@@ -57,6 +63,7 @@ class MemoTile extends GetView<HomeController> {
                       text!,
                     ),
                   ),
+                  //클릭시 불투명 덧씌우기. 지금은 사용 안함.
                   // Container(
                   //   padding: EdgeInsets.all(14),
                   //   decoration: BoxDecoration(

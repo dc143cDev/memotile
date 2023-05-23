@@ -14,14 +14,8 @@ class HomeView extends GetView<HomeController> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         actions: [
-          // TextButton(
-          //   onPressed: () {
-          //     controller.getRed();
-          //   },
-          //   child: Text('get Red'),
-          // ),
         ],
-        leadingWidth: 100,
+        leadingWidth: 80,
         //appBar 왼쪽 상단의 리딩 버튼, 처음부터 되돌아가기 모양, 월 정보 표시.
         leading: InkWell(
           onTap: () {
