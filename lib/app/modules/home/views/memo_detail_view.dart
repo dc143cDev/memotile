@@ -24,6 +24,7 @@ class MemoDetailView extends GetView<HomeController> {
               ? Color(Get.arguments['color'])
               : Color(controller.colorValue.value),
           title: Text(
+            //에러남.
             '',
             // Get.arguments['date'],
             style: TextStyle(color: Colors.black),

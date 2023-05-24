@@ -8,7 +8,8 @@ class MemoHelper {
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     content TEXT,
     createdAt TEXT,
-    colorValue INTEGER)
+    colorValue INTEGER,
+    bool isColorChanged)
     ''');
   }
 

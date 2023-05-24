@@ -36,9 +36,6 @@ class HomeView extends GetView<HomeController> {
                     color: Colors.black,
                   ),
                 ),
-                SizedBox(
-                  width: 0,
-                ),
                 Expanded(
                   child: Obx(
                     () => Text(
