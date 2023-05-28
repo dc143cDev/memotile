@@ -81,6 +81,7 @@ class HomeController extends GetxController {
   //date PART
   //날짜 정보를 받아오기 위한 RxString.
   RxString CurrentDate = ''.obs;
+  RxString CurrentDayOf = ''.obs;
   RxString CurrentDay = ''.obs;
   RxString CurrentMonth = ''.obs;
 
@@ -92,6 +93,10 @@ class HomeController extends GetxController {
   //앱바 상단에 위치할 날짜를 가져옵니다.
   getCurrentDay() {
     CurrentDay.value = DateFormat("dd").format(DateTime.now());
+  }
+
+  getCurrentDayOf() {
+    CurrentDayOf.value = DateFormat("EEE").format(DateTime.now());
   }
 
   //appBar 의 Leading 에 들어갈 월.
@@ -137,10 +142,27 @@ class HomeController extends GetxController {
     print('memo refreshed');
   }
 
+  //colorValue 에 따라 아이템 가져오기.
+  //색상 태그별 정리 기능에 사용됨.
+  refreshMemoByColor() async{
+    final data = await MemoHelper.getItemsByColor(colorValue.value);
+    memo.value = data;
+    isLoading.value = false;
+    print('memo refreshed by color red');
+  }
+
+  //날짜 정보에 따라 아이템 가져오기.
+  refreshMemoByDate() async{
+    final data = await MemoHelper.getItemsByDate(CurrentDay.value);
+    memo.value = data;
+    isLoading.value = false;
+    print('memo refreshed by date$CurrentDay');
+  }
+
   //C
   Future<void> addItem() async {
     await MemoHelper.createItem(
-        memoController.text, CurrentDate.value.toString(), colorValue.value);
+        memoController.text, CurrentDay.value.toString(), CurrentDate.value.toString(), colorValue.value);
     refreshMemo();
     // goToDown();
   }
@@ -171,6 +193,7 @@ class HomeController extends GetxController {
     await MemoHelper.db();
     await getDefaultColor();
     await getCurrentDay();
+    await getCurrentDayOf();
     await getCurrentMonth();
     //처음 한번 새로고침으로 메모 가져오기.
     refreshMemo();

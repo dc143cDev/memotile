@@ -14,6 +14,18 @@ class HomeView extends GetView<HomeController> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         actions: [
+          TextButton(
+            onPressed: () {
+              controller.refreshMemoByColor();
+            },
+            child: Text('red get'),
+          ),
+          TextButton(
+            onPressed: () {
+              controller.refreshMemoByDate();
+            },
+            child: Text('red date'),
+          ),
         ],
         leadingWidth: 80,
         //appBar 왼쪽 상단의 리딩 버튼, 처음부터 되돌아가기 모양, 월 정보 표시.
@@ -54,9 +66,22 @@ class HomeView extends GetView<HomeController> {
         backgroundColor: Colors.white,
         elevation: 0,
         title: Obx(
-          () => Text(
-            controller.CurrentDay.value,
-            style: TextStyle(color: Colors.black),
+          () => Column(
+            children: [
+              Text(
+                //일
+                controller.CurrentDay.value,
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold),
+              ),
+              Text(
+                //요일
+                controller.CurrentDayOf.value,
+                style: TextStyle(color: Colors.black, fontSize: 12),
+              ),
+            ],
           ),
         ),
         centerTitle: true,
@@ -75,7 +100,8 @@ class HomeView extends GetView<HomeController> {
                       //memo_tile ui 에 들어갈 각 객체를 index 와 column 값을 넣어 구성.
                       id: controller.memo[index]['id'],
                       text: controller.memo[index]['content'],
-                      date: controller.memo[index]['createdAt'],
+                      date: controller.memo[index]['dateData'],
+                      createdAt: controller.memo[index]['createdAt'],
                       colorValue: controller.memo[index]['colorValue'],
                     );
                   },
@@ -110,6 +136,8 @@ class HomeView extends GetView<HomeController> {
                         //눌렀을 때 addItem 메소드 실행
                         //->TextField 의 Text, 현재 시간, colorValue 의 값을 db 에 insert
                         onPressed: () async {
+                          //dateTime 데이터는 원래 '' 이므로 해당 값을 가져와주는 메소드를 먼저 실행.
+                          controller.getCurrentDay();
                           controller.getCurrentDate();
                           controller.addItem();
                           //스크롤 아래로 내리기.
