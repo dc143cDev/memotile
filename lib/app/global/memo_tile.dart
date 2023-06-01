@@ -17,7 +17,7 @@ class MemoTile extends GetView<HomeController> {
   final int? id;
   final String? text;
   final String? date;
-  final int? createdAt;
+  final String? createdAt;
   final int? colorValue;
 
   @override
@@ -71,11 +71,11 @@ class MemoTile extends GetView<HomeController> {
                               offset: Offset(0, 7),
                             )
                           ],
-                          borderRadius: BorderRadius.circular(2),
+                          borderRadius: BorderRadius.circular(8),
                           color: Color(colorValue!),
                         ),
                         child: Text(
-                          text!,
+                          text!, style: TextStyle(fontWeight: FontWeight.w600),
                         ),
                       ),
                       //클릭시 불투명 덧씌우기. 지금은 사용 안함.

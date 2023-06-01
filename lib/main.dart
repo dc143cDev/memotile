@@ -9,6 +9,7 @@ void main() {
   runApp(
     GetMaterialApp(
       theme: ThemeData(
+        useMaterial3: true,
         focusColor: Colors.black,
       ),
       debugShowCheckedModeBanner: false,

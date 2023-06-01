@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 import '../../../global/memo_tile.dart';
 import '../controllers/home_controller.dart';
@@ -14,23 +15,21 @@ class HomeView extends GetView<HomeController> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         actions: [
-          TextButton(
+          IconButton(
             onPressed: () {
-              controller.refreshMemoByColor();
+              // controller.refreshMemoByDate();
+              openBottomSheet();
             },
-            child: Text('red get'),
-          ),
-          TextButton(
-            onPressed: () {
-              controller.refreshMemoByDate();
-            },
-            child: Text('red date'),
+            icon: Icon(
+              Icons.menu_rounded,
+              color: Colors.black,
+            ),
           ),
         ],
-        leadingWidth: 80,
+        leadingWidth: 100,
         //appBar 왼쪽 상단의 리딩 버튼, 처음부터 되돌아가기 모양, 월 정보 표시.
-        leading: InkWell(
-          onTap: () {
+        leading: MaterialButton(
+          onPressed: () {
             Get.toNamed(
               '/tile',
               arguments: {
@@ -110,53 +109,132 @@ class HomeView extends GetView<HomeController> {
             ),
             Expanded(
               flex: 1,
-              child: Container(
-                // color: Colors.transparent,
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(14.0),
-                        child: TextFormField(
-                          controller: controller.memoController,
-                          cursorColor: Colors.black,
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            focusColor: Colors.black,
-                            hintText: ' Insert here',
-                          ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(14.0),
+                      child: TextFormField(
+                        controller: controller.memoController,
+                        cursorColor: Colors.black,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          focusColor: Colors.black,
+                          hintText: ' Insert here',
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          left: 0, top: 5, right: 14, bottom: 5),
-                      child: IconButton(
-                        //+ 버튼
-                        //눌렀을 때 addItem 메소드 실행
-                        //->TextField 의 Text, 현재 시간, colorValue 의 값을 db 에 insert
-                        onPressed: () async {
-                          //dateTime 데이터는 원래 '' 이므로 해당 값을 가져와주는 메소드를 먼저 실행.
-                          controller.getCurrentDay();
-                          controller.getCurrentDate();
-                          controller.addItem();
-                          //스크롤 아래로 내리기.
-                          controller.goToDown();
-                          //TextField 초기화.
-                          controller.memoController.clear();
-                          //debug.
-                          print(controller.colorValue.value.toString());
-                        },
-                        icon: Icon(Icons.add),
-                      ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 0, top: 5, right: 14, bottom: 5),
+                    child: IconButton(
+                      //+ 버튼
+                      //눌렀을 때 addItem 메소드 실행
+                      //->TextField 의 Text, 현재 시간, colorValue 의 값을 db 에 insert
+                      onPressed: () async {
+                        //dateTime 데이터는 원래 '' 이므로 해당 값을 가져와주는 메소드를 먼저 실행.
+                        controller.getCurrentDay();
+                        controller.getCurrentDayDetail();
+                        controller.getCurrentDate();
+                        controller.addItem();
+                        //스크롤 아래로 내리기.
+                        controller.goToDown();
+                        //TextField 초기화.
+                        controller.memoController.clear();
+                        //debug.
+                        print(controller.colorValue.value.toString());
+                        print(controller.CurrentDayDetail.value.toString());
+                      },
+                      icon: Icon(Icons.add),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  openBottomSheet() {
+    Get.bottomSheet(
+      Column(
+        children: [
+          SizedBox(height: 10,),
+          Center(
+            child: SizedBox(
+              width: 40,
+              height: 7,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey,
+                  borderRadius: BorderRadius.circular(15),
+                ),
+              ),
+            ),
+          ),
+          SizedBox(height: 7,),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SizedBox(
+              height: 68,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: [
+                  Column(
+                    children: [
+                      SizedBox(
+                        width: 38,
+                        child: MaterialButton(
+                          onPressed: () {
+                            controller.getRed();
+                            controller.refreshMemoByColor(
+                                controller.colorValue.value);
+                            controller.getDefaultColor();
+                          },
+                          color: Colors.red,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                        ),
+                      ),
+                      Text('red'),
+                    ],
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Column(
+                    children: [
+                      SizedBox(
+                        width: 38,
+                        child: MaterialButton(
+                          onPressed: () {
+                            controller.getTeal();
+                            controller.refreshMemoByColor(
+                                controller.colorValue.value);
+                            controller.getDefaultColor();
+                          },
+                          color: Colors.teal,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                        ),
+                      ),
+                      Text('teal'),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      backgroundColor: Colors.white,
+      elevation: 0,
     );
   }
 }

@@ -83,6 +83,7 @@ class HomeController extends GetxController {
   RxString CurrentDate = ''.obs;
   RxString CurrentDayOf = ''.obs;
   RxString CurrentDay = ''.obs;
+  RxString CurrentDayDetail = ''.obs;
   RxString CurrentMonth = ''.obs;
 
   //메모 왼쪽에 표시될 작성 시간을 가져옵니다.
@@ -93,6 +94,10 @@ class HomeController extends GetxController {
   //앱바 상단에 위치할 날짜를 가져옵니다.
   getCurrentDay() {
     CurrentDay.value = DateFormat("dd").format(DateTime.now());
+  }
+
+  getCurrentDayDetail() {
+    CurrentDayDetail.value = DateFormat("yyyyMMdd").format(DateTime.now());
   }
 
   getCurrentDayOf() {
@@ -112,23 +117,69 @@ class HomeController extends GetxController {
   RxInt detailColorValue = 0.obs;
   RxBool isColorChanged = false.obs;
 
+  colorChanged(){
+    isColorChanged.value = true;
+  }
+
   //palette(int value)
   int whiteValue = Colors.white.value;
   int redValue = Colors.red.value;
   int tealValue = Colors.teal.value;
+  int lightPinkValue = Color(0xfff28b81).value;
+  int yellowValue = Color(0xfffbf476).value;
+  int lightGreenValue = Color(0xffcdff90).value;
+  int turquoiseValue = Color(0xffa7feeb).value;
+  int lightCyanValue = Color(0xffcbf0f8).value;
+  int lightBlueValue = Color(0xffafcbfa).value;
+  int plumValue = Color(0xffd7aefc).value;
+
+  final colors = [
+    Color(0xffffffff), // classic white
+    Color(0xfff28b81), // light pink
+    Color(0xfff7bd02), // yellow
+    Color(0xfffbf476), // light yellow
+    Color(0xffcdff90), // light green
+    Color(0xffa7feeb), // turquoise
+    Color(0xffcbf0f8), // light cyan
+    Color(0xffafcbfa), // light blue
+    Color(0xffd7aefc), // plum
+    Color(0xfffbcfe9), // misty rose
+    Color(0xffe6c9a9), // light brown
+    Color(0xffe9eaee)  // light gray
+  ];
 
   //앱 시작시 초기 컬러 가져오기.
   getDefaultColor() {
     colorValue.value = whiteValue;
   }
-
   getRed() {
     colorValue.value = redValue;
   }
-
   getTeal() {
     colorValue.value = tealValue;
   }
+  getLightPink(){
+    colorValue.value = lightPinkValue;
+  }
+  getYellow(){
+    colorValue.value = yellowValue;
+  }
+  getLightGreen(){
+    colorValue.value = lightGreenValue;
+  }
+  getTurquoise(){
+    colorValue.value = turquoiseValue;
+  }
+  getLightCyan(){
+    colorValue.value = lightCyanValue;
+  }
+  getLightBlue(){
+    colorValue.value = lightBlueValue;
+  }
+  getPlum(){
+    colorValue.value = plumValue;
+  }
+
 
   //DB PART
   //새로고침.
@@ -144,25 +195,29 @@ class HomeController extends GetxController {
 
   //colorValue 에 따라 아이템 가져오기.
   //색상 태그별 정리 기능에 사용됨.
-  refreshMemoByColor() async{
-    final data = await MemoHelper.getItemsByColor(colorValue.value);
+  refreshMemoByColor(int color) async {
+    final data = await MemoHelper.getItemsByColor(color);
     memo.value = data;
     isLoading.value = false;
     print('memo refreshed by color red');
   }
 
   //날짜 정보에 따라 아이템 가져오기.
-  refreshMemoByDate() async{
-    final data = await MemoHelper.getItemsByDate(CurrentDay.value);
+  refreshMemoByDate() async {
+    await getCurrentDayDetail();
+    final data = await MemoHelper.getItemsByDate(CurrentDayDetail.value);
     memo.value = data;
     isLoading.value = false;
-    print('memo refreshed by date$CurrentDay');
+    print('memo refreshed by date $CurrentDayDetail');
   }
 
   //C
   Future<void> addItem() async {
     await MemoHelper.createItem(
-        memoController.text, CurrentDay.value.toString(), CurrentDate.value.toString(), colorValue.value);
+        memoController.text,
+        CurrentDayDetail.value.toString(),
+        CurrentDate.value.toString(),
+        colorValue.value);
     refreshMemo();
     // goToDown();
   }
@@ -182,6 +237,8 @@ class HomeController extends GetxController {
     await MemoHelper.deleteItem(id);
     refreshMemo();
   }
+
+  //UI part(bottom sheet)
 
   //컨트롤러 생성 및 삽입시 초기에 실행.
   //여기서 db 를 init 하고 고정적으로 불러와야 할 값들을 가져옴.
@@ -209,7 +266,6 @@ class HomeController extends GetxController {
     Future.delayed(Duration(microseconds: 1), () {
       goToDown();
     });
-
   }
 
   @override
