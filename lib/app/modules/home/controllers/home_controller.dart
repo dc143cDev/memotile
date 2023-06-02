@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 
 import '../../../global/memo.dart';
@@ -85,6 +86,25 @@ class HomeController extends GetxController {
   RxString CurrentDay = ''.obs;
   RxString CurrentDayDetail = ''.obs;
   RxString CurrentMonth = ''.obs;
+
+  //AppBar 날짜 하단의 요일중 토,일 색상 변경을 위한 Rx변수.
+  RxInt ssDayColorValue = 0.obs;
+
+  //토요일 혹은 일요일이면 빨강색, 아니면 검은색.
+  getDayColor(){
+    switch(CurrentDayOf.value){
+      case 'Sat':
+        ssDayColorValue.value = redValue;
+        break;
+
+      case 'Sun':
+        ssDayColorValue.value = redValue;
+        break;
+
+      default:
+        ssDayColorValue.value = Colors.black.value;
+    }
+  }
 
   //메모 왼쪽에 표시될 작성 시간을 가져옵니다.
   getCurrentDate() {
@@ -251,6 +271,7 @@ class HomeController extends GetxController {
     await getDefaultColor();
     await getCurrentDay();
     await getCurrentDayOf();
+    await getDayColor();
     await getCurrentMonth();
     //처음 한번 새로고침으로 메모 가져오기.
     refreshMemo();

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 
+import '../../../global/horizontal_line.dart';
 import '../../../global/memo_tile.dart';
 import '../controllers/home_controller.dart';
 
@@ -78,7 +78,11 @@ class HomeView extends GetView<HomeController> {
               Text(
                 //요일
                 controller.CurrentDayOf.value,
-                style: TextStyle(color: Colors.black, fontSize: 12),
+                style: TextStyle(
+                  color: Color(controller.ssDayColorValue.value),
+                  fontSize: 12,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ],
           ),
@@ -162,11 +166,13 @@ class HomeView extends GetView<HomeController> {
     Get.bottomSheet(
       Column(
         children: [
-          SizedBox(height: 10,),
+          SizedBox(
+            height: 13,
+          ),
           Center(
             child: SizedBox(
-              width: 40,
-              height: 7,
+              width: 50,
+              height: 5,
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.grey,
@@ -175,18 +181,60 @@ class HomeView extends GetView<HomeController> {
               ),
             ),
           ),
-          SizedBox(height: 7,),
+          SizedBox(
+            height: 16,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: 16,
+              ),
+              Text(
+                'Tags',
+                style: TextStyle(
+                  color: Colors.grey[700],
+                ),
+              ),
+            ],
+          ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(13.0),
             child: SizedBox(
-              height: 68,
+              height: 78,
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: [
                   Column(
                     children: [
                       SizedBox(
-                        width: 38,
+                        height: 48,
+                        width: 48,
+                        child: MaterialButton(
+                          onPressed: () {
+                            controller.refreshMemo();
+                            controller.getDefaultColor();
+                          },
+                          color: Colors.grey[100],
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text('red'),
+                    ],
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Column(
+                    children: [
+                      SizedBox(
+                        height: 48,
+                        width: 48,
                         child: MaterialButton(
                           onPressed: () {
                             controller.getRed();
@@ -200,16 +248,20 @@ class HomeView extends GetView<HomeController> {
                           ),
                         ),
                       ),
+                      SizedBox(
+                        height: 5,
+                      ),
                       Text('red'),
                     ],
                   ),
                   SizedBox(
-                    width: 5,
+                    width: 10,
                   ),
                   Column(
                     children: [
                       SizedBox(
-                        width: 38,
+                        height: 48,
+                        width: 48,
                         child: MaterialButton(
                           onPressed: () {
                             controller.getTeal();
@@ -223,10 +275,255 @@ class HomeView extends GetView<HomeController> {
                           ),
                         ),
                       ),
+                      SizedBox(
+                        height: 5,
+                      ),
                       Text('teal'),
                     ],
                   ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Column(
+                    children: [
+                      SizedBox(
+                        height: 48,
+                        width: 48,
+                        child: MaterialButton(
+                          onPressed: () {
+                            controller.getLightPink();
+                            controller.refreshMemoByColor(
+                              Color(0xfff28b81).value,
+                            );
+                            controller.getDefaultColor();
+                          },
+                          color: Color(0xfff28b81),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text('data'),
+                    ],
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Column(
+                    children: [
+                      SizedBox(
+                        height: 48,
+                        width: 48,
+                        child: MaterialButton(
+                          onPressed: () {
+                            controller.getYellow();
+                            controller.refreshMemoByColor(
+                              Color(0xfffbf476).value,
+                            );
+                            controller.getDefaultColor();
+                          },
+                          color: Color(0xfffbf476),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text('data'),
+                    ],
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Column(
+                    children: [
+                      SizedBox(
+                        height: 48,
+                        width: 48,
+                        child: MaterialButton(
+                          onPressed: () {
+                            controller.getLightGreen();
+                            controller.refreshMemoByColor(
+                              Color(0xffcdff90).value,
+                            );
+                            controller.getDefaultColor();
+                          },
+                          color: Color(0xffcdff90),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text('data'),
+                    ],
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Column(
+                    children: [
+                      SizedBox(
+                        height: 48,
+                        width: 48,
+                        child: MaterialButton(
+                          onPressed: () {
+                            controller.getTurquoise();
+                            controller.refreshMemoByColor(
+                              Color(0xffa7feeb).value,
+                            );
+                            controller.getDefaultColor();
+                          },
+                          color: Color(0xffa7feeb),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text('data'),
+                    ],
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Column(
+                    children: [
+                      SizedBox(
+                        height: 48,
+                        width: 48,
+                        child: MaterialButton(
+                          onPressed: () {
+                            controller.getLightCyan();
+                            controller.refreshMemoByColor(
+                              Color(0xffcbf0f8).value,
+                            );
+                            controller.getDefaultColor();
+                          },
+                          color: Color(0xffcbf0f8),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text('data'),
+                    ],
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Column(
+                    children: [
+                      SizedBox(
+                        height: 48,
+                        width: 48,
+                        child: MaterialButton(
+                          onPressed: () {
+                            controller.getLightBlue();
+                            controller.refreshMemoByColor(
+                              Color(0xffafcbfa).value,
+                            );
+                            controller.getDefaultColor();
+                          },
+                          color: Color(0xffafcbfa),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text('data'),
+                    ],
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Column(
+                    children: [
+                      SizedBox(
+                        height: 48,
+                        width: 48,
+                        child: MaterialButton(
+                          onPressed: () {
+                            controller.getPlum();
+                            controller.refreshMemoByColor(
+                              Color(0xffd7aefc).value,
+                            );
+                            controller.getDefaultColor();
+                          },
+                          color: Color(0xffd7aefc),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text('data'),
+                    ],
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
                 ],
+              ),
+            ),
+          ),
+          HorizontalLine(),
+          SizedBox(
+            height: 12,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: 16,
+              ),
+              Text(
+                'Searching',
+                style: TextStyle(
+                  color: Colors.grey[700],
+                ),
+              ),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.all(13.0),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintText: ' Insert here',
+                      hintStyle: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 15,
+                        color: Colors.grey[400],
+                      ),
+                      border: InputBorder.none,
+                    ),
+                  ),
+                ),
               ),
             ),
           ),

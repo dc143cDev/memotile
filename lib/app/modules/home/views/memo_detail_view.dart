@@ -20,12 +20,15 @@ class MemoDetailView extends GetView<HomeController> {
         backgroundColor: Colors.white,
         appBar: AppBar(
           actions: [
-            TextButton(
+            IconButton(
               onPressed: () {
                 controller.deleteItem(Get.arguments['id']);
                 Get.back();
               },
-              child: Text('delete'),
+              icon: Icon(
+                Icons.delete,
+                color: Colors.black,
+              ),
             ),
           ],
           elevation: 0,
@@ -125,7 +128,7 @@ class MemoDetailView extends GetView<HomeController> {
                         ],
                       ),
                       SizedBox(
-                        width: 15,
+                        width: 10,
                       ),
                       Column(
                         children: [
@@ -158,7 +161,7 @@ class MemoDetailView extends GetView<HomeController> {
                         ],
                       ),
                       SizedBox(
-                        width: 15,
+                        width: 10,
                       ),
                       Column(
                         children: [
@@ -191,7 +194,7 @@ class MemoDetailView extends GetView<HomeController> {
                         ],
                       ),
                       SizedBox(
-                        width: 15,
+                        width: 10,
                       ),
                       Column(
                         children: [
@@ -224,7 +227,7 @@ class MemoDetailView extends GetView<HomeController> {
                         ],
                       ),
                       SizedBox(
-                        width: 15,
+                        width: 10,
                       ),
                       Column(
                         children: [
@@ -257,7 +260,7 @@ class MemoDetailView extends GetView<HomeController> {
                         ],
                       ),
                       SizedBox(
-                        width: 15,
+                        width: 10,
                       ),
                       Column(
                         children: [
@@ -290,7 +293,7 @@ class MemoDetailView extends GetView<HomeController> {
                         ],
                       ),
                       SizedBox(
-                        width: 15,
+                        width: 10,
                       ),
                       Column(
                         children: [
@@ -323,7 +326,7 @@ class MemoDetailView extends GetView<HomeController> {
                         ],
                       ),
                       SizedBox(
-                        width: 15,
+                        width: 10,
                       ),
                       Column(
                         children: [
@@ -356,7 +359,7 @@ class MemoDetailView extends GetView<HomeController> {
                         ],
                       ),
                       SizedBox(
-                        width: 15,
+                        width: 10,
                       ),
                       Column(
                         children: [
@@ -416,6 +419,12 @@ class MemoDetailView extends GetView<HomeController> {
           ),
         ),
       ),
+    );
+  }
+
+  ColorPickerBar() {
+    return ListView(
+      children: [],
     );
   }
 }
