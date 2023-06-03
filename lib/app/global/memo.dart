@@ -57,12 +57,16 @@ class MemoHelper {
     final db = await MemoHelper.db();
     print(date);
     return db.query('memo_test8', orderBy: "createdAt", whereArgs: [date], where: "createdAt = $date");
-
   }
 
   static Future<List<Map<String, dynamic>>> getItemsByColor(int color) async{
     final db = await MemoHelper.db();
     return db.query('memo_test8', orderBy: "colorValue", whereArgs: [color], where: "colorValue = $color");
+  }
+
+  static Future<List<Map<String, dynamic>>> getItemsByContent(String content) async{
+    final db = await MemoHelper.db();
+    return db.rawQuery("SELECT * FROM memo_test8 WHERE content LIKE '%${content}%'");
   }
 
   static Future<int> updateItem(

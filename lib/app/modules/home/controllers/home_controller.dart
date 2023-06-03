@@ -231,6 +231,15 @@ class HomeController extends GetxController {
     print('memo refreshed by date $CurrentDayDetail');
   }
 
+  //검색 기능. 내용에 따라 아이템 가져오기.
+  refreshMemoByContent(String content) async{
+    final data = await MemoHelper.getItemsByContent(content);
+    memo.value = data;
+    isLoading.value = false;
+    print('memo refreshed by content $content');
+  }
+
+
   //C
   Future<void> addItem() async {
     await MemoHelper.createItem(
@@ -259,6 +268,23 @@ class HomeController extends GetxController {
   }
 
   //UI part(bottom sheet)
+
+  //search bar controller
+  TextEditingController searchBarController = TextEditingController();
+
+  //search bar 의 포커스 전환시 검색 초기화 기능을 구별하기 위한 bool 값.
+  RxBool isSearchButton = false.obs;
+
+  isSearchButtonClicked(){
+    isSearchButton.value = true;
+  }
+
+  focusOuted(){
+    if(isSearchButton.value == true){
+      refreshMemo();
+      searchBarController.text = '';
+    }
+  }
 
   //컨트롤러 생성 및 삽입시 초기에 실행.
   //여기서 db 를 init 하고 고정적으로 불러와야 할 값들을 가져옴.

@@ -138,6 +138,7 @@ class HomeView extends GetView<HomeController> {
                       //->TextField 의 Text, 현재 시간, colorValue 의 값을 db 에 insert
                       onPressed: () async {
                         //dateTime 데이터는 원래 '' 이므로 해당 값을 가져와주는 메소드를 먼저 실행.
+                        controller.getDefaultColor();
                         controller.getCurrentDay();
                         controller.getCurrentDayDetail();
                         controller.getCurrentDate();
@@ -150,7 +151,7 @@ class HomeView extends GetView<HomeController> {
                         print(controller.colorValue.value.toString());
                         print(controller.CurrentDayDetail.value.toString());
                       },
-                      icon: Icon(Icons.add),
+                      icon: Icon(Icons.send_rounded),
                     ),
                   ),
                 ],
@@ -509,20 +510,52 @@ class HomeView extends GetView<HomeController> {
                 color: Colors.grey[200],
                 borderRadius: BorderRadius.circular(15),
               ),
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: ' Insert here',
-                      hintStyle: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 15,
-                        color: Colors.grey[400],
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    Flexible(
+                      child: TextField(
+                        controller: controller.searchBarController,
+                        decoration: InputDecoration(
+                          prefixIcon: IconButton(
+                            onPressed: () async {
+                              // await controller.isSearchButtonClicked();
+                              controller.refreshMemoByContent(
+                                controller.searchBarController.text,
+                              );
+                            },
+                            icon: Icon(Icons.search_rounded),
+                          ),
+                          hintText: ' Insert here',
+                          hintStyle: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 15,
+                            color: Colors.grey[400],
+                          ),
+                          border: InputBorder.none,
+                        ),
+                        onChanged: (String text) async {
+                          controller.refreshMemoByContent(text);
+                        },
+                        onTapOutside: (P) {
+                          // controller.focusOuted();
+                          controller.refreshMemoByContent(
+                            controller.searchBarController.text,
+                          );
+                          controller.searchBarController.text = '';
+                        },
                       ),
-                      border: InputBorder.none,
                     ),
-                  ),
+                    // IconButton(
+                    //   onPressed: () {
+                    //     controller.refreshMemoByContent(
+                    //       controller.searchBarController.text,
+                    //     );
+                    //   },
+                    //   icon: Icon(Icons.search_rounded),
+                    // ),
+                  ],
                 ),
               ),
             ),
