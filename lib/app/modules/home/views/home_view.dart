@@ -17,7 +17,6 @@ class HomeView extends GetView<HomeController> {
         actions: [
           IconButton(
             onPressed: () {
-              // controller.refreshMemoByDate();
               openBottomSheet();
             },
             icon: Icon(
@@ -28,64 +27,97 @@ class HomeView extends GetView<HomeController> {
         ],
         leadingWidth: 100,
         //appBar 왼쪽 상단의 리딩 버튼, 처음부터 되돌아가기 모양, 월 정보 표시.
-        leading: MaterialButton(
-          onPressed: () {
-            Get.toNamed(
-              '/tile',
-              arguments: {
-                'TileMonth': controller.CurrentMonth.value,
-                'TileDay': controller.CurrentDay.value,
-              },
-            );
-          },
-          child: Container(
-            child: Row(
-              children: [
-                Expanded(
+        leading: Obx(
+          () => controller.searchModeOn == true
+              ? MaterialButton(
+                  onPressed: () {
+                    controller.searchModeOn.value = false;
+                    controller.refreshMemo();
+                  },
                   child: Icon(
-                    Icons.arrow_back_ios_new,
-                    color: Colors.black,
+                    Icons.close,
                   ),
-                ),
-                Expanded(
-                  child: Obx(
-                    () => Text(
-                      controller.CurrentMonth.value,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                          fontSize: 15),
+                )
+              : MaterialButton(
+                  onPressed: () {
+                    Get.toNamed(
+                      '/tile',
+                      arguments: {
+                        'TileMonth': controller.CurrentMonth.value,
+                        'TileDay': controller.CurrentDay.value,
+                      },
+                    );
+                  },
+                  child: Container(
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Icon(
+                            Icons.arrow_back_ios_new,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Expanded(
+                          child: Obx(
+                            () => Text(
+                              controller.CurrentMonth.value,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                  fontSize: 15),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-              ],
-            ),
-          ),
         ),
         backgroundColor: Colors.white,
         elevation: 0,
         title: Obx(
-          () => Column(
-            children: [
-              Text(
-                //일
-                controller.CurrentDay.value,
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold),
-              ),
-              Text(
-                //요일
-                controller.CurrentDayOf.value,
-                style: TextStyle(
-                  color: Color(controller.ssDayColorValue.value),
-                  fontSize: 12,
-                  fontWeight: FontWeight.w700,
+          () => controller.searchModeOn == true
+              ? Column(
+                children: [
+                  Text(
+                      controller.searchBarController.text,
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 19,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  Text(
+                    //요일
+                    'Searching',
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ],
+              )
+              : Column(
+                  children: [
+                    Text(
+                      //일
+                      controller.CurrentDay.value,
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      //요일
+                      controller.CurrentDayOf.value,
+                      style: TextStyle(
+                        color: Color(controller.ssDayColorValue.value),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          ),
         ),
         centerTitle: true,
       ),
@@ -518,12 +550,13 @@ class HomeView extends GetView<HomeController> {
                       child: TextField(
                         controller: controller.searchBarController,
                         decoration: InputDecoration(
-                          prefixIcon: IconButton(
+                          suffixIcon: IconButton(
                             onPressed: () async {
-                              // await controller.isSearchButtonClicked();
-                              controller.refreshMemoByContent(
+                              await controller.searchButtonClicked();
+                              await controller.refreshMemoByContent(
                                 controller.searchBarController.text,
                               );
+                              Get.back();
                             },
                             icon: Icon(Icons.search_rounded),
                           ),
