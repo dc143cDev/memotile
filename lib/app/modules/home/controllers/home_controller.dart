@@ -272,13 +272,26 @@ class HomeController extends GetxController {
   //search bar controller
   TextEditingController searchBarController = TextEditingController();
 
+  //AppBar mode
+
   //search mode
   //검색모드 전환시 AppBar 텍스트 수정을 위한 bool.
   RxBool searchModeOn = false.obs;
 
   searchButtonClicked(){
-    searchModeOn.value = true;
+    if(searchBarController.text != ''){
+      searchModeOn.value = true;
+    }
   }
+
+  //태그 모드 전환시 AppBar ui 수정을 위한 bool.
+  RxBool tagModeOn = false.obs;
+
+  tagButtonClicked(){
+    tagModeOn.value = true;
+  }
+
+
 
   //search bar 의 포커스 전환시 검색 초기화 기능을 구별하기 위한 bool 값.
   // RxBool isSearchButton = false.obs;

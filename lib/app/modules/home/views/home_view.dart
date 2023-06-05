@@ -28,14 +28,33 @@ class HomeView extends GetView<HomeController> {
         leadingWidth: 100,
         //appBar 왼쪽 상단의 리딩 버튼, 처음부터 되돌아가기 모양, 월 정보 표시.
         leading: Obx(
-          () => controller.searchModeOn == true
+          () => controller.searchModeOn == true || controller.tagModeOn == true
               ? MaterialButton(
                   onPressed: () {
                     controller.searchModeOn.value = false;
+                    controller.tagModeOn.value = false;
                     controller.refreshMemo();
                   },
-                  child: Icon(
-                    Icons.close,
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.close,
+                      ),
+                      Expanded(
+                        child: Text(
+                          controller.searchBarController.text,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey,
+                              fontSize: 15),
+                        ),
+                      ),
+                      // Expanded(
+                      //   child: Icon(
+                      //     Icons.search_rounded,
+                      //   ),
+                      // ),
+                    ],
                   ),
                 )
               : MaterialButton(
@@ -76,27 +95,28 @@ class HomeView extends GetView<HomeController> {
         backgroundColor: Colors.white,
         elevation: 0,
         title: Obx(
-          () => controller.searchModeOn == true
+          () => controller.tagModeOn == true
               ? Column(
-                children: [
-                  Text(
-                      controller.searchBarController.text,
+                  children: [
+                    Text(
+                      //일
+                      controller.CurrentDay.value,
                       style: TextStyle(
                           color: Colors.black,
-                          fontSize: 19,
+                          fontSize: 16,
                           fontWeight: FontWeight.bold),
                     ),
-                  Text(
-                    //요일
-                    'Searching',
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w700,
+                    Text(
+                      //요일
+                      'tagData',
+                      style: TextStyle(
+                        color: Color(controller.colorValue.value),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
-                  ),
-                ],
-              )
+                  ],
+                )
               : Column(
                   children: [
                     Text(
@@ -271,9 +291,11 @@ class HomeView extends GetView<HomeController> {
                         child: MaterialButton(
                           onPressed: () {
                             controller.getRed();
+                            controller.tagButtonClicked();
                             controller.refreshMemoByColor(
                                 controller.colorValue.value);
-                            controller.getDefaultColor();
+                            Get.back();
+                            // controller.getDefaultColor();
                           },
                           color: Colors.red,
                           shape: RoundedRectangleBorder(
@@ -573,26 +595,20 @@ class HomeView extends GetView<HomeController> {
                         },
                         onTapOutside: (P) {
                           // controller.focusOuted();
-                          controller.refreshMemoByContent(
-                            controller.searchBarController.text,
-                          );
+                          controller.refreshMemo();
                           controller.searchBarController.text = '';
                         },
                       ),
                     ),
-                    // IconButton(
-                    //   onPressed: () {
-                    //     controller.refreshMemoByContent(
-                    //       controller.searchBarController.text,
-                    //     );
-                    //   },
-                    //   icon: Icon(Icons.search_rounded),
-                    // ),
                   ],
                 ),
               ),
             ),
           ),
+          SizedBox(
+            height: 20,
+          ),
+          HorizontalLine(),
         ],
       ),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
