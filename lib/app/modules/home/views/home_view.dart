@@ -108,7 +108,7 @@ class HomeView extends GetView<HomeController> {
                     ),
                     Text(
                       //요일
-                      'tagData',
+                      controller.tag.read(controller.nowTag.value),
                       style: TextStyle(
                         color: Color(controller.colorValue.value),
                         fontSize: 12,
@@ -237,22 +237,35 @@ class HomeView extends GetView<HomeController> {
           SizedBox(
             height: 16,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              SizedBox(
-                width: 16,
-              ),
-              Text(
-                'Tags',
-                style: TextStyle(
-                  color: Colors.grey[700],
+          Padding(
+            padding: EdgeInsets.fromLTRB(16, 0, 12, 0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Tags',
+                  style: TextStyle(
+                    color: Colors.grey[700],
+                  ),
                 ),
-              ),
-            ],
+                TextButton(
+                  onPressed: (){
+                    Get.toNamed('/tags');
+
+                  },
+                  child: Text(
+                    'Customizing',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blueAccent,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
           Padding(
-            padding: const EdgeInsets.all(13.0),
+            padding: const EdgeInsets.fromLTRB(13, 3, 13, 13),
             child: SizedBox(
               height: 78,
               child: ListView(
@@ -264,33 +277,9 @@ class HomeView extends GetView<HomeController> {
                         height: 48,
                         width: 48,
                         child: MaterialButton(
-                          onPressed: () {
-                            controller.refreshMemo();
-                            controller.getDefaultColor();
-                          },
-                          color: Colors.grey[100],
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Text('red'),
-                    ],
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Column(
-                    children: [
-                      SizedBox(
-                        height: 48,
-                        width: 48,
-                        child: MaterialButton(
-                          onPressed: () {
-                            controller.getRed();
+                          onPressed: () async {
+                            await controller.getRed();
+                            controller.nowTag.value = 'red';
                             controller.tagButtonClicked();
                             controller.refreshMemoByColor(
                                 controller.colorValue.value);
@@ -306,7 +295,7 @@ class HomeView extends GetView<HomeController> {
                       SizedBox(
                         height: 5,
                       ),
-                      Text('red'),
+                      Text(controller.tag.read('red')),
                     ],
                   ),
                   SizedBox(

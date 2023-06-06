@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:memotile/app/modules/home/views/memo_detail_view.dart';
+import 'package:memotile/app/modules/home/views/tags_customize_view.dart';
 
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
@@ -27,6 +28,11 @@ class AppPages {
     GetPage(
       name: _Paths.DETAIL,
       page: () => const MemoDetailView(),
+      binding: HomeBinding(),
+    ),
+    GetPage(
+      name: _Paths.TAGS,
+      page: () => const TagsCustomizeView(),
       binding: HomeBinding(),
     ),
   ];

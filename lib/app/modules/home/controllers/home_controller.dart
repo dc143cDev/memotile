@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
+import 'package:get_storage/get_storage.dart';
 
 import '../../../global/memo.dart';
 
@@ -200,6 +200,9 @@ class HomeController extends GetxController {
     colorValue.value = plumValue;
   }
 
+  //tags customize 시 사용될 TextField controllers
+  TextEditingController redTagController = TextEditingController();
+
 
   //DB PART
   //새로고침.
@@ -291,21 +294,10 @@ class HomeController extends GetxController {
     tagModeOn.value = true;
   }
 
+  RxString nowTag = ''.obs;
 
-
-  //search bar 의 포커스 전환시 검색 초기화 기능을 구별하기 위한 bool 값.
-  // RxBool isSearchButton = false.obs;
-  //
-  // isSearchButtonClicked(){
-  //   isSearchButton.value = true;
-  // }
-  //
-  // focusOuted(){
-  //   if(isSearchButton.value == true){
-  //     refreshMemo();
-  //     searchBarController.text = '';
-  //   }
-  // }
+  //storage part(get storage)
+  final tag = GetStorage();
 
   //컨트롤러 생성 및 삽입시 초기에 실행.
   //여기서 db 를 init 하고 고정적으로 불러와야 할 값들을 가져옴.
