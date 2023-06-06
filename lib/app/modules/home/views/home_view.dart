@@ -49,11 +49,6 @@ class HomeView extends GetView<HomeController> {
                               fontSize: 15),
                         ),
                       ),
-                      // Expanded(
-                      //   child: Icon(
-                      //     Icons.search_rounded,
-                      //   ),
-                      // ),
                     ],
                   ),
                 )
@@ -215,7 +210,10 @@ class HomeView extends GetView<HomeController> {
     );
   }
 
-  openBottomSheet() {
+  openBottomSheet() async {
+    if (controller.tagModeOn.value == true) {
+      controller.refreshMemoByColor(controller.colorValue.value);
+    }
     Get.bottomSheet(
       Column(
         children: [
@@ -249,9 +247,8 @@ class HomeView extends GetView<HomeController> {
                   ),
                 ),
                 TextButton(
-                  onPressed: (){
+                  onPressed: () {
                     Get.toNamed('/tags');
-
                   },
                   child: Text(
                     'Customizing',
@@ -580,11 +577,15 @@ class HomeView extends GetView<HomeController> {
                           border: InputBorder.none,
                         ),
                         onChanged: (String text) async {
+                          //콘텐츠 검색기능 사용시 태그 검색모드 해제
+                          controller.tagModeOn.value = false;
                           controller.refreshMemoByContent(text);
                         },
                         onTapOutside: (P) {
-                          // controller.focusOuted();
-                          controller.refreshMemo();
+                          // 태그 검색모드 활성화된 상태라면 바깥 쪽을 터치해도 태그 검색모드가 해제되지 않도록 함.
+                          if (controller.tagModeOn.value == false) {
+                            controller.refreshMemo();
+                          }
                           controller.searchBarController.text = '';
                         },
                       ),

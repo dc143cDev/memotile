@@ -222,7 +222,7 @@ class HomeController extends GetxController {
     final data = await MemoHelper.getItemsByColor(color);
     memo.value = data;
     isLoading.value = false;
-    print('memo refreshed by color red');
+    print('memo refreshed by color $color');
   }
 
   //날짜 정보에 따라 아이템 가져오기.

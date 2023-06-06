@@ -11,8 +11,9 @@ class TagsCustomizeView extends GetView<HomeController> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
+          //Get.back 으로 나가면 바텀시트에는 태그 이름이 바로 반영되지 않기에 홈으로 이동.
           onPressed: () {
-            Get.back();
+            Get.toNamed('/home');
           },
           icon: Icon(Icons.arrow_back_ios_new),
         ),
