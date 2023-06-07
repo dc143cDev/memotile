@@ -136,75 +136,96 @@ class HomeView extends GetView<HomeController> {
         ),
         centerTitle: true,
       ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              flex: 9,
-              child: Obx(
-                () => ListView.builder(
-                  controller: controller.scrollController.value,
-                  itemCount: controller.memo.length,
-                  itemBuilder: (context, index) {
-                    return MemoTile(
-                      //memo_tile ui 에 들어갈 각 객체를 index 와 column 값을 넣어 구성.
-                      id: controller.memo[index]['id'],
-                      text: controller.memo[index]['content'],
-                      date: controller.memo[index]['dateData'],
-                      createdAt: controller.memo[index]['createdAt'],
-                      colorValue: controller.memo[index]['colorValue'],
-                    );
-                  },
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(14.0),
-                      child: TextFormField(
-                        controller: controller.memoController,
-                        cursorColor: Colors.black,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          focusColor: Colors.black,
-                          hintText: ' Insert here',
+      body: Obx(
+        () => SafeArea(
+          child: controller.memo.toString() == '[]'
+              ? Column(
+                  children: [
+                    Expanded(
+                      flex: 3,
+                      child: Center(
+                        child: Text(
+                          'empty',
+                          style: TextStyle(color: Colors.grey, fontSize: 40),
                         ),
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        left: 0, top: 5, right: 14, bottom: 5),
-                    child: IconButton(
-                      //+ 버튼
-                      //눌렀을 때 addItem 메소드 실행
-                      //->TextField 의 Text, 현재 시간, colorValue 의 값을 db 에 insert
-                      onPressed: () async {
-                        //dateTime 데이터는 원래 '' 이므로 해당 값을 가져와주는 메소드를 먼저 실행.
-                        controller.getDefaultColor();
-                        controller.getCurrentDay();
-                        controller.getCurrentDayDetail();
-                        controller.getCurrentDate();
-                        controller.addItem();
-                        //스크롤 아래로 내리기.
-                        controller.goToDown();
-                        //TextField 초기화.
-                        controller.memoController.clear();
-                        //debug.
-                        print(controller.colorValue.value.toString());
-                        print(controller.CurrentDayDetail.value.toString());
-                      },
-                      icon: Icon(Icons.send_rounded),
+                    Expanded(
+                      flex: 7,
+                      child: SizedBox(),
                     ),
-                  ),
-                ],
-              ),
-            ),
-          ],
+                  ],
+                )
+              : Column(
+                  children: [
+                    Expanded(
+                      flex: 9,
+                      child: Obx(
+                        () => ListView.builder(
+                          controller: controller.scrollController.value,
+                          itemCount: controller.memo.length,
+                          itemBuilder: (context, index) {
+                            return MemoTile(
+                              //memo_tile ui 에 들어갈 각 객체를 index 와 column 값을 넣어 구성.
+                              id: controller.memo[index]['id'],
+                              text: controller.memo[index]['content'],
+                              date: controller.memo[index]['dateData'],
+                              createdAt: controller.memo[index]['createdAt'],
+                              colorValue: controller.memo[index]['colorValue'],
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.all(14.0),
+                              child: TextFormField(
+                                controller: controller.memoController,
+                                cursorColor: Colors.black,
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  focusColor: Colors.black,
+                                  hintText: ' Insert here',
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                left: 0, top: 5, right: 14, bottom: 5),
+                            child: IconButton(
+                              //+ 버튼
+                              //눌렀을 때 addItem 메소드 실행
+                              //->TextField 의 Text, 현재 시간, colorValue 의 값을 db 에 insert
+                              onPressed: () async {
+                                //dateTime 데이터는 원래 '' 이므로 해당 값을 가져와주는 메소드를 먼저 실행.
+                                controller.getDefaultColor();
+                                controller.getCurrentDay();
+                                controller.getCurrentDayDetail();
+                                controller.getCurrentDate();
+                                controller.addItem();
+                                //스크롤 아래로 내리기.
+                                controller.goToDown();
+                                //TextField 초기화.
+                                controller.memoController.clear();
+                                //debug.
+                                print(controller.colorValue.value.toString());
+                                print(controller.CurrentDayDetail.value
+                                    .toString());
+                              },
+                              icon: Icon(Icons.send_rounded),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
         ),
       ),
     );
@@ -281,7 +302,7 @@ class HomeView extends GetView<HomeController> {
                             controller.refreshMemoByColor(
                                 controller.colorValue.value);
                             Get.back();
-                            // controller.getDefaultColor();
+
                           },
                           color: Colors.red,
                           shape: RoundedRectangleBorder(
@@ -304,11 +325,13 @@ class HomeView extends GetView<HomeController> {
                         height: 48,
                         width: 48,
                         child: MaterialButton(
-                          onPressed: () {
-                            controller.getTeal();
+                          onPressed: () async {
+                            await controller.getTeal();
+                            controller.nowTag.value = 'teal';
+                            controller.tagButtonClicked();
                             controller.refreshMemoByColor(
                                 controller.colorValue.value);
-                            controller.getDefaultColor();
+                            Get.back();
                           },
                           color: Colors.teal,
                           shape: RoundedRectangleBorder(
@@ -319,7 +342,7 @@ class HomeView extends GetView<HomeController> {
                       SizedBox(
                         height: 5,
                       ),
-                      Text('teal'),
+                      Text(controller.tag.read('teal')),
                     ],
                   ),
                   SizedBox(
@@ -333,10 +356,11 @@ class HomeView extends GetView<HomeController> {
                         child: MaterialButton(
                           onPressed: () {
                             controller.getLightPink();
+                            controller.nowTag.value = 'lightPink';
+                            controller.tagButtonClicked();
                             controller.refreshMemoByColor(
                               Color(0xfff28b81).value,
                             );
-                            controller.getDefaultColor();
                           },
                           color: Color(0xfff28b81),
                           shape: RoundedRectangleBorder(
@@ -347,7 +371,7 @@ class HomeView extends GetView<HomeController> {
                       SizedBox(
                         height: 5,
                       ),
-                      Text('data'),
+                      Text(controller.tag.read('lightPink')),
                     ],
                   ),
                   SizedBox(
@@ -361,10 +385,12 @@ class HomeView extends GetView<HomeController> {
                         child: MaterialButton(
                           onPressed: () {
                             controller.getYellow();
+                            controller.nowTag.value = 'yellow';
+                            controller.tagButtonClicked();
                             controller.refreshMemoByColor(
                               Color(0xfffbf476).value,
                             );
-                            controller.getDefaultColor();
+                            Get.back();
                           },
                           color: Color(0xfffbf476),
                           shape: RoundedRectangleBorder(
@@ -375,7 +401,7 @@ class HomeView extends GetView<HomeController> {
                       SizedBox(
                         height: 5,
                       ),
-                      Text('data'),
+                      Text(controller.tag.read('yellow')),
                     ],
                   ),
                   SizedBox(
@@ -389,10 +415,12 @@ class HomeView extends GetView<HomeController> {
                         child: MaterialButton(
                           onPressed: () {
                             controller.getLightGreen();
+                            controller.nowTag.value = 'lightGreen';
+                            controller.tagButtonClicked();
                             controller.refreshMemoByColor(
                               Color(0xffcdff90).value,
                             );
-                            controller.getDefaultColor();
+                            Get.back();
                           },
                           color: Color(0xffcdff90),
                           shape: RoundedRectangleBorder(
@@ -403,7 +431,7 @@ class HomeView extends GetView<HomeController> {
                       SizedBox(
                         height: 5,
                       ),
-                      Text('data'),
+                      Text(controller.tag.read('lightGreen')),
                     ],
                   ),
                   SizedBox(
@@ -417,10 +445,12 @@ class HomeView extends GetView<HomeController> {
                         child: MaterialButton(
                           onPressed: () {
                             controller.getTurquoise();
+                            controller.nowTag.value = 'turquoise';
+                            controller.tagButtonClicked();
                             controller.refreshMemoByColor(
                               Color(0xffa7feeb).value,
                             );
-                            controller.getDefaultColor();
+                            Get.back();
                           },
                           color: Color(0xffa7feeb),
                           shape: RoundedRectangleBorder(
@@ -431,7 +461,7 @@ class HomeView extends GetView<HomeController> {
                       SizedBox(
                         height: 5,
                       ),
-                      Text('data'),
+                      Text(controller.tag.read('turquoise')),
                     ],
                   ),
                   SizedBox(
@@ -445,10 +475,12 @@ class HomeView extends GetView<HomeController> {
                         child: MaterialButton(
                           onPressed: () {
                             controller.getLightCyan();
+                            controller.nowTag.value = 'lightCyan';
+                            controller.tagButtonClicked();
                             controller.refreshMemoByColor(
                               Color(0xffcbf0f8).value,
                             );
-                            controller.getDefaultColor();
+                            Get.back();
                           },
                           color: Color(0xffcbf0f8),
                           shape: RoundedRectangleBorder(
@@ -459,7 +491,7 @@ class HomeView extends GetView<HomeController> {
                       SizedBox(
                         height: 5,
                       ),
-                      Text('data'),
+                      Text(controller.tag.read('lightCyan')),
                     ],
                   ),
                   SizedBox(
@@ -473,10 +505,12 @@ class HomeView extends GetView<HomeController> {
                         child: MaterialButton(
                           onPressed: () {
                             controller.getLightBlue();
+                            controller.nowTag.value = 'lightBlue';
+                            controller.tagButtonClicked();
                             controller.refreshMemoByColor(
                               Color(0xffafcbfa).value,
                             );
-                            controller.getDefaultColor();
+                            Get.back();
                           },
                           color: Color(0xffafcbfa),
                           shape: RoundedRectangleBorder(
@@ -487,7 +521,7 @@ class HomeView extends GetView<HomeController> {
                       SizedBox(
                         height: 5,
                       ),
-                      Text('data'),
+                      Text(controller.tag.read('lightBlue')),
                     ],
                   ),
                   SizedBox(
@@ -501,10 +535,12 @@ class HomeView extends GetView<HomeController> {
                         child: MaterialButton(
                           onPressed: () {
                             controller.getPlum();
+                            controller.nowTag.value = 'plum';
+                            controller.tagButtonClicked();
                             controller.refreshMemoByColor(
                               Color(0xffd7aefc).value,
                             );
-                            controller.getDefaultColor();
+                            Get.back();
                           },
                           color: Color(0xffd7aefc),
                           shape: RoundedRectangleBorder(
@@ -515,7 +551,7 @@ class HomeView extends GetView<HomeController> {
                       SizedBox(
                         height: 5,
                       ),
-                      Text('data'),
+                      Text(controller.tag.read('plum')),
                     ],
                   ),
                   SizedBox(

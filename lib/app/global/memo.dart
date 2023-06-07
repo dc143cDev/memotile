@@ -55,7 +55,6 @@ class MemoHelper {
 
   static Future<List<Map<String, dynamic>>> getItemsByDate(String date) async{
     final db = await MemoHelper.db();
-    print(date);
     return db.query('memo_test8', orderBy: "createdAt", whereArgs: [date], where: "createdAt = $date");
   }
 

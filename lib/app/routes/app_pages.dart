@@ -18,6 +18,7 @@ class AppPages {
     GetPage(
       name: _Paths.HOME,
       page: () => const HomeView(),
+      transition: Transition.noTransition,
       binding: HomeBinding(),
     ),
     GetPage(
@@ -33,6 +34,7 @@ class AppPages {
     GetPage(
       name: _Paths.TAGS,
       page: () => const TagsCustomizeView(),
+      transition: Transition.downToUp,
       binding: HomeBinding(),
     ),
   ];

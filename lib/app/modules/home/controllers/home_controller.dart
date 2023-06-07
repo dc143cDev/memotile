@@ -202,6 +202,14 @@ class HomeController extends GetxController {
 
   //tags customize 시 사용될 TextField controllers
   TextEditingController redTagController = TextEditingController();
+  TextEditingController tealTagController = TextEditingController();
+  TextEditingController lightPinkTagController = TextEditingController();
+  TextEditingController yellowTagController = TextEditingController();
+  TextEditingController lightGreenTagController = TextEditingController();
+  TextEditingController turquoiseTagController = TextEditingController();
+  TextEditingController lightCyanTagController = TextEditingController();
+  TextEditingController lightBlueTagController = TextEditingController();
+  TextEditingController plumTagController = TextEditingController();
 
 
   //DB PART
@@ -222,6 +230,7 @@ class HomeController extends GetxController {
     final data = await MemoHelper.getItemsByColor(color);
     memo.value = data;
     isLoading.value = false;
+    print(memo.toString());
     print('memo refreshed by color $color');
   }
 
@@ -299,6 +308,19 @@ class HomeController extends GetxController {
   //storage part(get storage)
   final tag = GetStorage();
 
+  //최초 실행시 태그 밸류 null 방지를 위한(동시에 색상 이름 표시) 메소드.
+  tagInit(){
+    tag.writeIfNull('red', 'red');
+    tag.writeIfNull('teal', 'teal');
+    tag.writeIfNull('lightPink', 'lightPink');
+    tag.writeIfNull('yellow', 'yellow');
+    tag.writeIfNull('lightGreen', 'lightGreen');
+    tag.writeIfNull('turquoise', 'turquoise');
+    tag.writeIfNull('lightCyan', 'lightCyan');
+    tag.writeIfNull('lightBlue', 'lightBlue');
+    tag.writeIfNull('plum', 'plum');
+  }
+
   //컨트롤러 생성 및 삽입시 초기에 실행.
   //여기서 db 를 init 하고 고정적으로 불러와야 할 값들을 가져옴.
   //초기에 불러와야 할 값들 : ui 에 표시될 날짜들, 메모 기본 색상 등.
@@ -312,6 +334,7 @@ class HomeController extends GetxController {
     await getCurrentDayOf();
     await getDayColor();
     await getCurrentMonth();
+    await tagInit();
     //처음 한번 새로고침으로 메모 가져오기.
     refreshMemo();
   }

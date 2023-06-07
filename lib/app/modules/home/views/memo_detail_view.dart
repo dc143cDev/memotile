@@ -116,10 +116,10 @@ class MemoDetailView extends GetView<HomeController> {
                             height: 5,
                           ),
                           SizedBox(
-                            width: 52,
+                            width: 60,
                             child: Center(
                               child: Text(
-                                'data',
+                                controller.tag.read('red'),
                                 style: TextStyle(
                                     fontWeight: FontWeight.w600, fontSize: 11),
                               ),
@@ -152,7 +152,7 @@ class MemoDetailView extends GetView<HomeController> {
                             width: 52,
                             child: Center(
                               child: Text(
-                                'data',
+                                controller.tag.read('teal'),
                                 style: TextStyle(
                                     fontWeight: FontWeight.w600, fontSize: 11),
                               ),
@@ -182,175 +182,10 @@ class MemoDetailView extends GetView<HomeController> {
                             height: 5,
                           ),
                           SizedBox(
-                            width: 52,
+                            width: 60,
                             child: Center(
                               child: Text(
-                                'data',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w600, fontSize: 11),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Column(
-                        children: [
-                          SizedBox(
-                            width: 38,
-                            child: MaterialButton(
-                              onPressed: () {
-                                controller.getLightGreen();
-                                controller.isColorChanged.value = true;
-                              },
-                              color: Color(0xffcdff90),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(50),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          SizedBox(
-                            width: 52,
-                            child: Center(
-                              child: Text(
-                                'data',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w600, fontSize: 11),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Column(
-                        children: [
-                          SizedBox(
-                            width: 38,
-                            child: MaterialButton(
-                              onPressed: () {
-                                controller.getTurquoise();
-                                controller.isColorChanged.value = true;
-                              },
-                              color: Color(0xffa7feeb),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(50),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          SizedBox(
-                            width: 52,
-                            child: Center(
-                              child: Text(
-                                'data',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w600, fontSize: 11),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Column(
-                        children: [
-                          SizedBox(
-                            width: 38,
-                            child: MaterialButton(
-                              onPressed: () {
-                                controller.getLightCyan();
-                                controller.isColorChanged.value = true;
-                              },
-                              color: Color(0xffcbf0f8),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(50),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          SizedBox(
-                            width: 52,
-                            child: Center(
-                              child: Text(
-                                'data',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w600, fontSize: 11),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Column(
-                        children: [
-                          SizedBox(
-                            width: 38,
-                            child: MaterialButton(
-                              onPressed: () {
-                                controller.getLightBlue();
-                                controller.isColorChanged.value = true;
-                              },
-                              color: Color(0xffafcbfa),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(50),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          SizedBox(
-                            width: 52,
-                            child: Center(
-                              child: Text(
-                                'data',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w600, fontSize: 11),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Column(
-                        children: [
-                          SizedBox(
-                            width: 38,
-                            child: MaterialButton(
-                              onPressed: () {
-                                controller.getPlum();
-                                controller.isColorChanged.value = true;
-                              },
-                              color: Color(0xffd7aefc),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(50),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          SizedBox(
-                            width: 52,
-                            child: Center(
-                              child: Text(
-                                'data',
+                                controller.tag.read('lightPink'),
                                 style: TextStyle(
                                     fontWeight: FontWeight.w600, fontSize: 11),
                               ),
@@ -380,10 +215,175 @@ class MemoDetailView extends GetView<HomeController> {
                             height: 5,
                           ),
                           SizedBox(
-                            width: 52,
+                            width: 60,
                             child: Center(
                               child: Text(
-                                'data',
+                                controller.tag.read('yellow'),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w600, fontSize: 11),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Column(
+                        children: [
+                          SizedBox(
+                            width: 38,
+                            child: MaterialButton(
+                              onPressed: () {
+                                controller.getLightGreen();
+                                controller.isColorChanged.value = true;
+                              },
+                              color: Color(0xffcdff90),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          SizedBox(
+                            width: 60,
+                            child: Center(
+                              child: Text(
+                                controller.tag.read('lightGreen'),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w600, fontSize: 11),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Column(
+                        children: [
+                          SizedBox(
+                            width: 38,
+                            child: MaterialButton(
+                              onPressed: () {
+                                controller.getTurquoise();
+                                controller.isColorChanged.value = true;
+                              },
+                              color: Color(0xffa7feeb),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          SizedBox(
+                            width: 60,
+                            child: Center(
+                              child: Text(
+                                controller.tag.read('turquoise'),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w600, fontSize: 11),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Column(
+                        children: [
+                          SizedBox(
+                            width: 38,
+                            child: MaterialButton(
+                              onPressed: () {
+                                controller.getLightCyan();
+                                controller.isColorChanged.value = true;
+                              },
+                              color: Color(0xffcbf0f8),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          SizedBox(
+                            width: 60,
+                            child: Center(
+                              child: Text(
+                                controller.tag.read('lightCyan'),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w600, fontSize: 11),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Column(
+                        children: [
+                          SizedBox(
+                            width: 38,
+                            child: MaterialButton(
+                              onPressed: () {
+                                controller.getLightBlue();
+                                controller.isColorChanged.value = true;
+                              },
+                              color: Color(0xffafcbfa),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          SizedBox(
+                            width: 60,
+                            child: Center(
+                              child: Text(
+                                controller.tag.read('lightBlue'),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w600, fontSize: 11),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Column(
+                        children: [
+                          SizedBox(
+                            width: 38,
+                            child: MaterialButton(
+                              onPressed: () {
+                                controller.getPlum();
+                                controller.isColorChanged.value = true;
+                              },
+                              color: Color(0xffd7aefc),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          SizedBox(
+                            width: 60,
+                            child: Center(
+                              child: Text(
+                                controller.tag.read('plum'),
                                 style: TextStyle(
                                     fontWeight: FontWeight.w600, fontSize: 11),
                               ),
