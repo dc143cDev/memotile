@@ -52,6 +52,7 @@ class MemoDetailView extends GetView<HomeController> {
                 controller.CurrentDate.value,
                 controller.colorValue.value,
               );
+              controller.tagModeOn.value = false;
               controller.getDefaultColor();
               Get.back();
             },
@@ -319,7 +320,7 @@ class MemoDetailView extends GetView<HomeController> {
                               child: Text(
                                 controller.tag.read('lightCyan'),
                                 style: TextStyle(
-                                    fontWeight: FontWeight.w600, fontSize: 11),
+                                     fontWeight: FontWeight.w600, fontSize: 11),
                               ),
                             ),
                           ),

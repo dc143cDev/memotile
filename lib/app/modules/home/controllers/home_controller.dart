@@ -293,6 +293,7 @@ class HomeController extends GetxController {
   searchButtonClicked(){
     if(searchBarController.text != ''){
       searchModeOn.value = true;
+      tagModeOn.value = false;
     }
   }
 
@@ -301,6 +302,7 @@ class HomeController extends GetxController {
 
   tagButtonClicked(){
     tagModeOn.value = true;
+    searchModeOn.value = false;
   }
 
   RxString nowTag = ''.obs;

@@ -40,14 +40,23 @@ class HomeView extends GetView<HomeController> {
                       Icon(
                         Icons.close,
                       ),
+                      SizedBox(
+                        width: 10,
+                      ),
                       Expanded(
-                        child: Text(
-                          controller.searchBarController.text,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey,
-                              fontSize: 15),
-                        ),
+                        child: controller.searchModeOn.value == true
+                            ? Icon(
+                                Icons.search_rounded,
+                                color: Colors.grey,
+                              )
+                            : Container(
+                                height: 20,
+                                width: 60,
+                                decoration: BoxDecoration(
+                                  color: Color(controller.colorValue.value),
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                              ),
                       ),
                     ],
                   ),
@@ -90,7 +99,7 @@ class HomeView extends GetView<HomeController> {
         backgroundColor: Colors.white,
         elevation: 0,
         title: Obx(
-          () => controller.tagModeOn == true
+          () => controller.tagModeOn == true || controller.searchModeOn == true
               ? Column(
                   children: [
                     Text(
@@ -101,15 +110,25 @@ class HomeView extends GetView<HomeController> {
                           fontSize: 16,
                           fontWeight: FontWeight.bold),
                     ),
-                    Text(
-                      //요일
-                      controller.tag.read(controller.nowTag.value),
-                      style: TextStyle(
-                        color: Color(controller.colorValue.value),
-                        fontSize: 12,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
+                    controller.searchModeOn.value == true
+                        ? Text(
+                            //서치모드
+                            controller.searchBarController.text,
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          )
+                        : Text(
+                            //태그모드
+                            controller.tag.read(controller.nowTag.value),
+                            style: TextStyle(
+                              color: Color(controller.colorValue.value),
+                              fontSize: 12,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
                   ],
                 )
               : Column(
@@ -302,7 +321,6 @@ class HomeView extends GetView<HomeController> {
                             controller.refreshMemoByColor(
                                 controller.colorValue.value);
                             Get.back();
-
                           },
                           color: Colors.red,
                           shape: RoundedRectangleBorder(
@@ -361,6 +379,7 @@ class HomeView extends GetView<HomeController> {
                             controller.refreshMemoByColor(
                               Color(0xfff28b81).value,
                             );
+                            Get.back();
                           },
                           color: Color(0xfff28b81),
                           shape: RoundedRectangleBorder(
@@ -600,6 +619,7 @@ class HomeView extends GetView<HomeController> {
                               await controller.refreshMemoByContent(
                                 controller.searchBarController.text,
                               );
+                              controller.searchBarController.clear();
                               Get.back();
                             },
                             icon: Icon(Icons.search_rounded),
@@ -615,6 +635,7 @@ class HomeView extends GetView<HomeController> {
                         onChanged: (String text) async {
                           //콘텐츠 검색기능 사용시 태그 검색모드 해제
                           controller.tagModeOn.value = false;
+                          controller.searchModeOn.value = false;
                           controller.refreshMemoByContent(text);
                         },
                         onTapOutside: (P) {
@@ -633,6 +654,33 @@ class HomeView extends GetView<HomeController> {
           ),
           SizedBox(
             height: 20,
+          ),
+          HorizontalLine(),
+          InkWell(
+            child: Container(
+              width: double.infinity,
+              height: 70,
+              child: Padding(
+                padding: const EdgeInsets.all(18.0),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.settings,
+                      color: Colors.grey[700],
+                    ),
+                    SizedBox(
+                      width: 15,
+                    ),
+                    Text(
+                      'Setting',
+                      style: TextStyle(
+                        color: Colors.grey[700],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ),
           HorizontalLine(),
         ],
