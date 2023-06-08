@@ -305,6 +305,11 @@ class HomeController extends GetxController {
     searchModeOn.value = false;
   }
 
+  defaultModeOn(){
+    tagModeOn.value = false;
+    searchModeOn.value = false;
+  }
+
   RxString nowTag = ''.obs;
 
   //storage part(get storage)

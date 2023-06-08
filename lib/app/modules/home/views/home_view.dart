@@ -28,6 +28,8 @@ class HomeView extends GetView<HomeController> {
         leadingWidth: 100,
         //appBar 왼쪽 상단의 리딩 버튼, 처음부터 되돌아가기 모양, 월 정보 표시.
         leading: Obx(
+          //모드에 따라 바뀌는 ui.
+          //서치 모드일 경우 아이콘이, 태그 모드일 경우 색상 팔레트가 출력.
           () => controller.searchModeOn == true || controller.tagModeOn == true
               ? MaterialButton(
                   onPressed: () {
@@ -43,12 +45,14 @@ class HomeView extends GetView<HomeController> {
                       SizedBox(
                         width: 10,
                       ),
+                      //서치모드.
                       Expanded(
                         child: controller.searchModeOn.value == true
                             ? Icon(
                                 Icons.search_rounded,
                                 color: Colors.grey,
                               )
+                        //태그모드.
                             : Container(
                                 height: 20,
                                 width: 60,
@@ -61,6 +65,7 @@ class HomeView extends GetView<HomeController> {
                     ],
                   ),
                 )
+          //디폴트 모드.
               : MaterialButton(
                   onPressed: () {
                     Get.toNamed(
@@ -98,6 +103,7 @@ class HomeView extends GetView<HomeController> {
         ),
         backgroundColor: Colors.white,
         elevation: 0,
+        //타이틀도 leading 과 같이 모드 가변형 ui.
         title: Obx(
           () => controller.tagModeOn == true || controller.searchModeOn == true
               ? Column(
@@ -131,6 +137,7 @@ class HomeView extends GetView<HomeController> {
                           ),
                   ],
                 )
+          //디폴트 모드
               : Column(
                   children: [
                     Text(
@@ -232,6 +239,8 @@ class HomeView extends GetView<HomeController> {
                                 controller.goToDown();
                                 //TextField 초기화.
                                 controller.memoController.clear();
+                                //defaultModeOn
+                                controller.defaultModeOn();
                                 //debug.
                                 print(controller.colorValue.value.toString());
                                 print(controller.CurrentDayDetail.value
@@ -250,7 +259,11 @@ class HomeView extends GetView<HomeController> {
     );
   }
 
+  //바텀시트.
+  //위에서 아래 순서대로 태그 선택 기능 및 태그 커스터마이징 뷰 넘어가는 버튼/ 서칭/ 설정/ 아직 미정.
   openBottomSheet() async {
+    //검색버튼을 누르는 순간에 클리어를 두면 앱바 ui에 반영되지 않기에 바텀시트를 불러올때 클리어를 둠.
+    controller.searchBarController.clear();
     if (controller.tagModeOn.value == true) {
       controller.refreshMemoByColor(controller.colorValue.value);
     }
@@ -619,7 +632,8 @@ class HomeView extends GetView<HomeController> {
                               await controller.refreshMemoByContent(
                                 controller.searchBarController.text,
                               );
-                              controller.searchBarController.clear();
+                              //여기에 클리어를 두면 앱바 ui 수정에 반영되지 않음.
+                              // controller.searchBarController.clear();
                               Get.back();
                             },
                             icon: Icon(Icons.search_rounded),
@@ -643,7 +657,7 @@ class HomeView extends GetView<HomeController> {
                           if (controller.tagModeOn.value == false) {
                             controller.refreshMemo();
                           }
-                          controller.searchBarController.text = '';
+                          controller.searchBarController.clear();
                         },
                       ),
                     ),
