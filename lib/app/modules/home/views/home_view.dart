@@ -177,8 +177,58 @@ class HomeView extends GetView<HomeController> {
                       ),
                     ),
                     Expanded(
-                      flex: 7,
+                      flex: 6,
                       child: SizedBox(),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.all(14.0),
+                              child: TextFormField(
+                                controller: controller.memoController,
+                                cursorColor: Colors.black,
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  focusColor: Colors.black,
+                                  hintText: ' Insert here',
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                left: 0, top: 5, right: 14, bottom: 5),
+                            child: IconButton(
+                              //+ 버튼
+                              //눌렀을 때 addItem 메소드 실행
+                              //->TextField 의 Text, 현재 시간, colorValue 의 값을 db 에 insert
+                              onPressed: () async {
+                                //dateTime 데이터는 원래 '' 이므로 해당 값을 가져와주는 메소드를 먼저 실행.
+                                await controller.getDefaultColor();
+                                await controller.getCurrentDay();
+                                await controller.getCurrentDayDetail();
+                                await controller.getCurrentDate();
+                                await controller.firstCheckByDate();
+                                controller.addItem();
+                                //스크롤 아래로 내리기.
+                                controller.goToDown();
+                                //TextField 초기화.
+                                controller.memoController.clear();
+                                //defaultModeOn
+                                controller.defaultModeOn();
+                                //debug.
+                                print(controller.colorValue.value.toString());
+                                print(controller.CurrentDayDetail.value
+                                    .toString());
+                              },
+                              icon: Icon(Icons.send_rounded),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 )
@@ -195,8 +245,9 @@ class HomeView extends GetView<HomeController> {
                               //memo_tile ui 에 들어갈 각 객체를 index 와 column 값을 넣어 구성.
                               id: controller.memo[index]['id'],
                               text: controller.memo[index]['content'],
-                              date: controller.memo[index]['dateData'],
                               createdAt: controller.memo[index]['createdAt'],
+                              date: controller.memo[index]['dateData'],
+                              isFirst: controller.memo[index]['isFirst'],
                               colorValue: controller.memo[index]['colorValue'],
                             );
                           },
@@ -230,10 +281,11 @@ class HomeView extends GetView<HomeController> {
                               //->TextField 의 Text, 현재 시간, colorValue 의 값을 db 에 insert
                               onPressed: () async {
                                 //dateTime 데이터는 원래 '' 이므로 해당 값을 가져와주는 메소드를 먼저 실행.
-                                controller.getDefaultColor();
-                                controller.getCurrentDay();
-                                controller.getCurrentDayDetail();
-                                controller.getCurrentDate();
+                                await controller.getDefaultColor();
+                                await controller.getCurrentDay();
+                                await controller.getCurrentDayDetail();
+                                await controller.getCurrentDate();
+                                await controller.firstCheckByDate();
                                 controller.addItem();
                                 //스크롤 아래로 내리기.
                                 controller.goToDown();

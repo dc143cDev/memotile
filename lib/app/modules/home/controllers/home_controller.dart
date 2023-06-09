@@ -251,15 +251,46 @@ class HomeController extends GetxController {
     print('memo refreshed by content $content');
   }
 
+  //해당 날짜가 비어있는지 아닌지 확인하기.
+  RxList firstCheckValue = [].obs;
+
+  firstCheckByDate() async {
+    await getCurrentDayDetail();
+    final data = await MemoHelper.getItemsByDate(CurrentDayDetail.value);
+    firstCheckValue.value = data;
+    print('memo refreshed by date ${firstCheckValue}');
+  }
+
 
   //C
   Future<void> addItem() async {
-    await MemoHelper.createItem(
-        memoController.text,
-        CurrentDayDetail.value.toString(),
-        CurrentDate.value.toString(),
-        colorValue.value);
-    refreshMemo();
+    //위의 firstCheck 를 활용하여 해당 날짜의 첫번째 메모라면 true, 아니라면 false.
+    if(firstCheckValue.isEmpty){
+      await MemoHelper.createItem(
+          memoController.text,
+          //yyyy:MM:dd / createdAt
+          CurrentDayDetail.value.toString(),
+          //firstCheck 1 = true
+          1,
+          //hh:mm a
+          CurrentDate.value.toString(),
+          colorValue.value);
+      refreshMemo();
+      print('first check true');
+    }else{
+      await MemoHelper.createItem(
+          memoController.text,
+          //yyyy:MM:dd / createdAt
+          CurrentDayDetail.value.toString(),
+          //firstCheck 0 = false
+          0,
+          //hh:mm a
+          CurrentDate.value.toString(),
+          colorValue.value);
+      refreshMemo();
+      print('first check false');
+    }
+
     // goToDown();
   }
 

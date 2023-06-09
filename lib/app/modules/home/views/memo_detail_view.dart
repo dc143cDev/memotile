@@ -5,11 +5,17 @@ import 'package:memotile/app/modules/home/controllers/home_controller.dart';
 
 class MemoDetailView extends GetView<HomeController> {
   const MemoDetailView(
-      {Key? key, this.id, this.text, this.date, this.colorValue})
+      {Key? key,
+      this.id,
+      this.text,
+      this.createdAt,
+      this.date,
+      this.colorValue})
       : super(key: key);
 
   final int? id;
   final String? text;
+  final String? createdAt;
   final String? date;
   final int? colorValue;
 
@@ -320,7 +326,7 @@ class MemoDetailView extends GetView<HomeController> {
                               child: Text(
                                 controller.tag.read('lightCyan'),
                                 style: TextStyle(
-                                     fontWeight: FontWeight.w600, fontSize: 11),
+                                    fontWeight: FontWeight.w600, fontSize: 11),
                               ),
                             ),
                           ),

@@ -9,38 +9,53 @@ class MemoTile extends GetView<HomeController> {
       {Key? key,
       this.id,
       this.text,
-      this.date,
       this.createdAt,
+      this.date,
+      this.isFirst,
       this.colorValue})
       : super(key: key);
 
   final int? id;
   final String? text;
-  final String? date;
   final String? createdAt;
+  final String? date;
+  final int? isFirst;
   final int? colorValue;
 
   @override
   Widget build(BuildContext context) {
-    final dateTile = Flexible(
-      child: Container(),
-    );
     final memo = Flexible(
       child: Column(
         children: [
+          //해당 날짜의 첫번째 메모라면 위에 날짜 표시줄 생성.
+          isFirst == 1
+              ? Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(width: 15,),
+                      Container(
+                        width: 200,
+                        height: 30,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[100],
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(createdAt!),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+              )
+              : Container(),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              //tag.
-              // Padding(
-              //   padding:
-              //       const EdgeInsets.only(left: 10, top: 10, right: 0, bottom: 12),
-              //   child: Text(
-              //     'tag',
-              //     style: TextStyle(color: Colors.grey),
-              //   ),
-              // ),
               Padding(
                 padding: const EdgeInsets.only(
                     left: 5, top: 20, right: 7, bottom: 12),
@@ -75,22 +90,10 @@ class MemoTile extends GetView<HomeController> {
                           color: Color(colorValue!),
                         ),
                         child: Text(
-                          text!, style: TextStyle(fontWeight: FontWeight.w600),
+                          text!,
+                          style: TextStyle(fontWeight: FontWeight.w600),
                         ),
                       ),
-                      //클릭시 불투명 덧씌우기. 지금은 사용 안함.
-                      // Container(
-                      //   padding: EdgeInsets.all(14),
-                      //   decoration: BoxDecoration(
-                      //     color: controller.memoLongClicked.value == false
-                      //         ? Colors.transparent
-                      //         : Colors.grey[100]?.withOpacity(0.4),
-                      //   ),
-                      //   child: Text(
-                      //     text!,
-                      //     style: TextStyle(color: Colors.transparent),
-                      //   ),
-                      // ),
                     ],
                   ),
                 ),
