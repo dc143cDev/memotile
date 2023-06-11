@@ -17,6 +17,16 @@ class HomeView extends GetView<HomeController> {
         actions: [
           IconButton(
             onPressed: () {
+              controller.refreshMemoByDate();
+              // Get.changeTheme(ThemeData.dark());
+            },
+            icon: Icon(
+              Icons.menu_rounded,
+              color: Colors.red,
+            ),
+          ),
+          IconButton(
+            onPressed: () {
               openBottomSheet();
             },
             icon: Icon(
@@ -68,6 +78,7 @@ class HomeView extends GetView<HomeController> {
           //디폴트 모드.
               : MaterialButton(
                   onPressed: () {
+                    controller.refreshMemo();
                     Get.toNamed(
                       '/tile',
                       arguments: {

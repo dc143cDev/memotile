@@ -1,9 +1,11 @@
 import 'package:get/get.dart';
-import 'package:memotile/app/modules/home/views/memo_detail_view.dart';
-import 'package:memotile/app/modules/home/views/tags_customize_view.dart';
 
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
+import '../modules/home/views/memo_detail_view.dart';
+import '../modules/home/views/tags_customize_view.dart';
+import '../modules/memo_calendar/bindings/memo_calendar_binding.dart';
+import '../modules/memo_calendar/views/memo_calendar_view.dart';
 import '../modules/tile/bindings/tile_binding.dart';
 import '../modules/tile/views/tile_view.dart';
 
@@ -36,6 +38,11 @@ class AppPages {
       page: () => const TagsCustomizeView(),
       transition: Transition.downToUp,
       binding: HomeBinding(),
+    ),
+    GetPage(
+      name: _Paths.MEMO_CALENDAR,
+      page: () => const MemoCalendarView(),
+      binding: MemoCalendarBinding(),
     ),
   ];
 }

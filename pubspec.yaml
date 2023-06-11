@@ -16,6 +16,7 @@ dependencies:
   sqflite: ^2.2.8+2
   path: ^1.8.3
   rect_getter: ^1.1.0
+  syncfusion_flutter_calendar: ^21.2.9
 
 dev_dependencies: 
   flutter_lints: ^2.0.0

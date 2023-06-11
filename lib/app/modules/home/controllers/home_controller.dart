@@ -243,6 +243,19 @@ class HomeController extends GetxController {
     print('memo refreshed by date $CurrentDayDetail');
   }
 
+  //정해진 포맷의 날짜를 받아올 RxString
+  RxString selectedDay = ''.obs;
+
+  //tile view 에서 날짜를 클릭해서 검색할때.
+  refreshMemoByDateTile(RxString selectedDay) async {
+    final data = await MemoHelper.getItemsByDate(selectedDay.value);
+    memo.value = data;
+    isLoading.value = false;
+    print('memo refreshed by date $selectedDay');
+  }
+
+
+
   //검색 기능. 내용에 따라 아이템 가져오기.
   refreshMemoByContent(String content) async{
     final data = await MemoHelper.getItemsByContent(content);
@@ -316,7 +329,6 @@ class HomeController extends GetxController {
   TextEditingController searchBarController = TextEditingController();
 
   //AppBar mode
-
   //search mode
   //검색모드 전환시 AppBar 텍스트 수정을 위한 bool.
   RxBool searchModeOn = false.obs;
