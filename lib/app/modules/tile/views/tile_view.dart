@@ -69,6 +69,7 @@ class TileView extends GetView<HomeController> {
                 print('$focusedDay is focused');
                 print(controller.selectedDay);
                 controller.refreshMemoByDateTile(controller.selectedDay);
+                controller.dateButtonClicked();
                 Get.back();
               },
             ),

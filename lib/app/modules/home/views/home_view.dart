@@ -62,7 +62,7 @@ class HomeView extends GetView<HomeController> {
                                 Icons.search_rounded,
                                 color: Colors.grey,
                               )
-                        //태그모드.
+                            //태그모드.
                             : Container(
                                 height: 20,
                                 width: 60,
@@ -75,36 +75,44 @@ class HomeView extends GetView<HomeController> {
                     ],
                   ),
                 )
-          //디폴트 모드.
+              //디폴트 모드.
               : MaterialButton(
                   onPressed: () {
                     controller.refreshMemo();
-                    Get.toNamed(
-                      '/tile',
-                      arguments: {
-                        'TileMonth': controller.CurrentMonth.value,
-                        'TileDay': controller.CurrentDay.value,
-                      },
-                    );
+                    controller.dateModeOn.value == true
+                        ? controller.defaultModeOn()
+                        : Get.toNamed(
+                            '/tile',
+                            arguments: {
+                              'TileMonth': controller.CurrentMonth.value,
+                              'TileDay': controller.CurrentDay.value,
+                            },
+                          );
                   },
                   child: Container(
                     child: Row(
                       children: [
                         Expanded(
-                          child: Icon(
-                            Icons.arrow_back_ios_new,
-                            color: Colors.black,
-                          ),
+                          child: controller.dateModeOn.value == true
+                              ? Icon(
+                                  Icons.close,
+                                )
+                              : Icon(
+                                  Icons.arrow_back_ios_new,
+                                  color: Colors.black,
+                                ),
                         ),
                         Expanded(
                           child: Obx(
-                            () => Text(
-                              controller.CurrentMonth.value,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
-                                  fontSize: 15),
-                            ),
+                            () => controller.dateModeOn.value == true
+                                ? Icon(Icons.calendar_month)
+                                : Text(
+                                    controller.CurrentMonth.value,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                        fontSize: 15),
+                                  ),
                           ),
                         ),
                       ],
@@ -148,7 +156,7 @@ class HomeView extends GetView<HomeController> {
                           ),
                   ],
                 )
-          //디폴트 모드
+              //디폴트 모드
               : Column(
                   children: [
                     Text(
@@ -159,15 +167,25 @@ class HomeView extends GetView<HomeController> {
                           fontSize: 16,
                           fontWeight: FontWeight.bold),
                     ),
-                    Text(
-                      //요일
-                      controller.CurrentDayOf.value,
-                      style: TextStyle(
-                        color: Color(controller.ssDayColorValue.value),
-                        fontSize: 12,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
+                    controller.dateModeOn.value == true
+                        ? Text(
+                            //요일
+                            controller.selectedDay.value,
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          )
+                        : Text(
+                            //요일
+                            controller.CurrentDayOf.value,
+                            style: TextStyle(
+                              color: Color(controller.ssDayColorValue.value),
+                              fontSize: 12,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
                   ],
                 ),
         ),

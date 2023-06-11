@@ -330,27 +330,39 @@ class HomeController extends GetxController {
 
   //AppBar mode
   //search mode
-  //검색모드 전환시 AppBar 텍스트 수정을 위한 bool.
+  //검색모드 전환시 bool.
   RxBool searchModeOn = false.obs;
+
+  //태그 모드 전환시 bool.
+  RxBool tagModeOn = false.obs;
+
+  //날짜 모드 전환시 bool.
+  RxBool dateModeOn = false.obs;
 
   searchButtonClicked(){
     if(searchBarController.text != ''){
       searchModeOn.value = true;
       tagModeOn.value = false;
+      dateModeOn.value = false;
     }
   }
-
-  //태그 모드 전환시 AppBar ui 수정을 위한 bool.
-  RxBool tagModeOn = false.obs;
 
   tagButtonClicked(){
     tagModeOn.value = true;
     searchModeOn.value = false;
+    dateModeOn.value = false;
+  }
+
+  dateButtonClicked(){
+    tagModeOn.value = false;
+    searchModeOn.value = false;
+    dateModeOn.value = true;
   }
 
   defaultModeOn(){
     tagModeOn.value = false;
     searchModeOn.value = false;
+    dateModeOn.value = false;
   }
 
   RxString nowTag = ''.obs;
