@@ -15,16 +15,16 @@ class HomeView extends GetView<HomeController> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         actions: [
-          IconButton(
-            onPressed: () {
-              controller.refreshMemoByDate();
-              // Get.changeTheme(ThemeData.dark());
-            },
-            icon: Icon(
-              Icons.menu_rounded,
-              color: Colors.red,
-            ),
-          ),
+          // IconButton(
+          //   onPressed: () {
+          //     controller.refreshMemoByDate();
+          //     // Get.changeTheme(ThemeData.dark());
+          //   },
+          //   icon: Icon(
+          //     Icons.menu_rounded,
+          //     color: Colors.red,
+          //   ),
+          // ),
           IconButton(
             onPressed: () {
               openBottomSheet();
@@ -52,15 +52,12 @@ class HomeView extends GetView<HomeController> {
                       Icon(
                         Icons.close,
                       ),
-                      SizedBox(
-                        width: 10,
-                      ),
                       //서치모드.
                       Expanded(
                         child: controller.searchModeOn.value == true
                             ? Icon(
                                 Icons.search_rounded,
-                                color: Colors.grey,
+                                color: Colors.black,
                               )
                             //태그모드.
                             : Container(
@@ -75,16 +72,21 @@ class HomeView extends GetView<HomeController> {
                     ],
                   ),
                 )
-              //디폴트 모드.
+              //디폴트 모드 or 날짜모드.
               : MaterialButton(
-                  onPressed: () {
-                    controller.refreshMemo();
+                  onPressed: () async {
+                    //모드 초기화를 위해 메모 리프레쉬.
+                    await controller.refreshMemo();
+                    //Tile View 로 넘어가기 전에 memoForEvent 에 월별로 가져온 데이터 넣기.
+                    await controller.refreshMemoByDateMM();
+                    //그 데이터를 이벤트 로더가 식별할 리스트에 다시 넣기.
+                    await controller.eventsValueInit();
                     controller.dateModeOn.value == true
                         ? controller.defaultModeOn()
                         : Get.toNamed(
                             '/tile',
                             arguments: {
-                              'TileMonth': controller.CurrentMonth.value,
+                              'TileMonth': controller.CurrentMonthMMM.value,
                               'TileDay': controller.CurrentDay.value,
                             },
                           );
@@ -107,7 +109,7 @@ class HomeView extends GetView<HomeController> {
                             () => controller.dateModeOn.value == true
                                 ? Icon(Icons.calendar_month)
                                 : Text(
-                                    controller.CurrentMonth.value,
+                                    controller.CurrentMonthMMM.value,
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         color: Colors.black,
@@ -156,7 +158,7 @@ class HomeView extends GetView<HomeController> {
                           ),
                   ],
                 )
-              //디폴트 모드
+              //디폴트 모드 or 날짜모드.
               : Column(
                   children: [
                     Text(
@@ -312,6 +314,8 @@ class HomeView extends GetView<HomeController> {
                                 //dateTime 데이터는 원래 '' 이므로 해당 값을 가져와주는 메소드를 먼저 실행.
                                 await controller.getDefaultColor();
                                 await controller.getCurrentDay();
+                                await controller.getCurrentMonthMM();
+                                await controller.getCurrentYear();
                                 await controller.getCurrentDayDetail();
                                 await controller.getCurrentDate();
                                 await controller.firstCheckByDate();

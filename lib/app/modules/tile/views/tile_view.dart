@@ -5,8 +5,6 @@ import 'package:intl/intl.dart';
 import 'package:memotile/app/modules/home/controllers/home_controller.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import '../controllers/tile_controller.dart';
-
 //TileController 로 했을때 날짜 검색기능이 작동하지 않는 이슈가 있음.
 class TileView extends GetView<HomeController> {
   const TileView({Key? key}) : super(key: key);
@@ -57,7 +55,7 @@ class TileView extends GetView<HomeController> {
                 rightChevronVisible: false,
                 formatButtonVisible: false,
               ),
-              // eventLoader: controller.getEvents,
+              eventLoader: controller.getEvents,
               focusedDay: DateTime.now(),
               firstDay: DateTime(2010, 5, 1),
               lastDay: DateTime(2033, 12, 31),

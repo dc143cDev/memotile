@@ -4,11 +4,14 @@ import 'package:sqflite/sqflite.dart' as sql;
 
 class MemoHelper {
   static Future<void> createTables(sql.Database database) async {
-    await database.execute('''CREATE TABLE memo_test19(
+    await database.execute('''CREATE TABLE memo_test20(
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     content TEXT,
     dateData TEXT,
     createdAt TEXT,
+    yyyy INTEGER,
+    mm INTEGER,
+    dd INTEGER,
     isFirst INTEGER,
     colorValue INTEGER,
     bool isColorChanged)
@@ -18,25 +21,28 @@ class MemoHelper {
   static Future<sql.Database> db() async {
     //debug
     print('create tables');
-    return sql.openDatabase('memo_test19.db', version: 1,
+    return sql.openDatabase('memo_test20.db', version: 1,
         onCreate: (sql.Database database, int version) async {
       await createTables(database);
     });
   }
 
   static Future<int> createItem(
-      String content, String createdAt, int isFirst, String date, int color) async {
+      String content, String createdAt, String yyyy, String mm, String dd, int isFirst, String date, int color) async {
     final db = await MemoHelper.db();
 
     final data = {
       'content': content,
       'createdAt': createdAt,
+      'yyyy': yyyy,
+      'mm': mm,
+      'dd': dd,
       'isFirst': isFirst,
       'dateData': date,
       'colorValue': color
     };
     final id = await db.insert(
-      'memo_test19',
+      'memo_test20',
       data,
       conflictAlgorithm: sql.ConflictAlgorithm.replace,
     );
@@ -47,23 +53,30 @@ class MemoHelper {
 
   static Future<List<Map<String, dynamic>>> getItems() async {
     final db = await MemoHelper.db();
-    return db.query('memo_test19', orderBy: "id");
+    return db.query('memo_test20', orderBy: "id");
   }
 
   static Future<List<Map<String, dynamic>>> getItem(int id) async {
     final db = await MemoHelper.db();
-    return db.query('memo_test19', where: "id = ?", whereArgs: [id], limit: 1);
+    return db.query('memo_test20', where: "id = ?", whereArgs: [id], limit: 1);
   }
 
   static Future<List<Map<String, dynamic>>> getItemsByDate(String date) async {
     final db = await MemoHelper.db();
-    return db.query('memo_test19',
+    return db.query('memo_test20',
         orderBy: "createdAt", whereArgs: [date], where: "createdAt = $date");
+  }
+
+  static Future<List<Map<String, dynamic>>> getItemsByDateMM(int mm) async {
+    final db = await MemoHelper.db();
+    return db.query('memo_test20',
+    orderBy: "mm");
+        // orderBy: "mm", whereArgs: [mm], where: "mm = $mm");
   }
 
   static Future<List<Map<String, dynamic>>> getItemsByColor(int color) async {
     final db = await MemoHelper.db();
-    return db.query('memo_test19',
+    return db.query('memo_test20',
         orderBy: "colorValue",
         whereArgs: [color],
         where: "colorValue = $color");
@@ -73,7 +86,7 @@ class MemoHelper {
       String content) async {
     final db = await MemoHelper.db();
     return db
-        .rawQuery("SELECT * FROM memo_test19 WHERE content LIKE '%${content}%'");
+        .rawQuery("SELECT * FROM memo_test20 WHERE content LIKE '%${content}%'");
   }
 
   static Future<int> updateItem(
@@ -86,7 +99,7 @@ class MemoHelper {
       'colorValue': color,
     };
     final result = await db.update(
-      'memo_test19',
+      'memo_test20',
       data,
       where: "id = ?",
       whereArgs: [id],
@@ -98,7 +111,7 @@ class MemoHelper {
     final db = await MemoHelper.db();
     try {
       await db.delete(
-        "memo_test19",
+        "memo_test20",
         where: "id = ?",
         whereArgs: [id],
       );

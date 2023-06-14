@@ -85,14 +85,20 @@ class HomeController extends GetxController {
   RxString CurrentDayOf = ''.obs;
   RxString CurrentDay = ''.obs;
   RxString CurrentDayDetail = ''.obs;
-  RxString CurrentMonth = ''.obs;
+  RxString CurrentMonthMMM = ''.obs;
+  RxString CurrentMonthMM = ''.obs;
+  RxString CurrentYear = ''.obs;
+
+  RxInt CurrentYyyy = 0.obs;
+  RxInt CurrentMM = 0.obs;
+  RxInt CurrentDD = 0.obs;
 
   //AppBar 날짜 하단의 요일중 토,일 색상 변경을 위한 Rx변수.
   RxInt ssDayColorValue = 0.obs;
 
   //토요일 혹은 일요일이면 빨강색, 아니면 검은색.
-  getDayColor(){
-    switch(CurrentDayOf.value){
+  getDayColor() {
+    switch (CurrentDayOf.value) {
       case 'Sat':
         ssDayColorValue.value = redValue;
         break;
@@ -114,6 +120,7 @@ class HomeController extends GetxController {
   //앱바 상단에 위치할 날짜를 가져옵니다.
   getCurrentDay() {
     CurrentDay.value = DateFormat("dd").format(DateTime.now());
+    CurrentDD.value = int.parse(CurrentDay.value);
   }
 
   getCurrentDayDetail() {
@@ -125,8 +132,18 @@ class HomeController extends GetxController {
   }
 
   //appBar 의 Leading 에 들어갈 월.
-  getCurrentMonth() {
-    CurrentMonth.value = DateFormat("MMM").format(DateTime.now());
+  getCurrentMonthMMM() {
+    CurrentMonthMMM.value = DateFormat("MMM").format(DateTime.now());
+  }
+
+  getCurrentMonthMM() {
+    CurrentMonthMM.value = DateFormat("MM").format(DateTime.now());
+    CurrentMM.value = int.parse(CurrentMonthMM.value);
+  }
+
+  getCurrentYear(){
+    CurrentYear.value = DateFormat("yyyy").format(DateTime.now());
+    CurrentYyyy.value = int.parse(CurrentYear.value);
   }
 
   //color PART
@@ -137,7 +154,7 @@ class HomeController extends GetxController {
   RxInt detailColorValue = 0.obs;
   RxBool isColorChanged = false.obs;
 
-  colorChanged(){
+  colorChanged() {
     isColorChanged.value = true;
   }
 
@@ -165,38 +182,47 @@ class HomeController extends GetxController {
     Color(0xffd7aefc), // plum
     Color(0xfffbcfe9), // misty rose
     Color(0xffe6c9a9), // light brown
-    Color(0xffe9eaee)  // light gray
+    Color(0xffe9eaee) // light gray
   ];
 
   //앱 시작시 초기 컬러 가져오기.
   getDefaultColor() {
     colorValue.value = whiteValue;
   }
+
   getRed() {
     colorValue.value = redValue;
   }
+
   getTeal() {
     colorValue.value = tealValue;
   }
-  getLightPink(){
+
+  getLightPink() {
     colorValue.value = lightPinkValue;
   }
-  getYellow(){
+
+  getYellow() {
     colorValue.value = yellowValue;
   }
-  getLightGreen(){
+
+  getLightGreen() {
     colorValue.value = lightGreenValue;
   }
-  getTurquoise(){
+
+  getTurquoise() {
     colorValue.value = turquoiseValue;
   }
-  getLightCyan(){
+
+  getLightCyan() {
     colorValue.value = lightCyanValue;
   }
-  getLightBlue(){
+
+  getLightBlue() {
     colorValue.value = lightBlueValue;
   }
-  getPlum(){
+
+  getPlum() {
     colorValue.value = plumValue;
   }
 
@@ -210,7 +236,6 @@ class HomeController extends GetxController {
   TextEditingController lightCyanTagController = TextEditingController();
   TextEditingController lightBlueTagController = TextEditingController();
   TextEditingController plumTagController = TextEditingController();
-
 
   //DB PART
   //새로고침.
@@ -237,10 +262,25 @@ class HomeController extends GetxController {
   //날짜 정보에 따라 아이템 가져오기.
   refreshMemoByDate() async {
     await getCurrentDayDetail();
-    final data = await MemoHelper.getItemsByDate(CurrentDayDetail.value);
+    await getCurrentYear();
+    await getCurrentMonthMM();
+    await getCurrentDay();
+    //yyyy + mm + dd 로 포맷 맞추기.
+    final date = CurrentYear.toString() + CurrentMonthMM.toString() + CurrentDay.toString();
+    final data = await MemoHelper.getItemsByDate(date);
     memo.value = data;
     isLoading.value = false;
-    print('memo refreshed by date $CurrentDayDetail');
+    print('memo refreshed by date $date');
+  }
+
+  //월별로 데이터 가져오기.
+  refreshMemoByDateMM() async {
+    await getCurrentMonthMM();
+    print(CurrentMM.value);
+    final data = await MemoHelper.getItemsByDateMM(CurrentMM.value);
+    memoForEvent.value = data;
+    isLoading.value = false;
+    print('memo refreshed by dateMM $data');
   }
 
   //정해진 포맷의 날짜를 받아올 RxString
@@ -248,17 +288,18 @@ class HomeController extends GetxController {
 
   //tile view 에서 날짜를 클릭해서 검색할때.
   refreshMemoByDateTile(RxString selectedDay) async {
+    //yyyy + mm + dd 로 포맷 맞추기.
+    // final date = CurrentYear.toString() + CurrentMonthMM.toString() + CurrentDay.toString();
     final data = await MemoHelper.getItemsByDate(selectedDay.value);
     memo.value = data;
     isLoading.value = false;
     print('memo refreshed by date $selectedDay');
   }
 
-
-
   //검색 기능. 내용에 따라 아이템 가져오기.
-  refreshMemoByContent(String content) async{
+  refreshMemoByContent(String content) async {
     final data = await MemoHelper.getItemsByContent(content);
+    print(data);
     memo.value = data;
     isLoading.value = false;
     print('memo refreshed by content $content');
@@ -274,15 +315,17 @@ class HomeController extends GetxController {
     print('memo refreshed by date ${firstCheckValue}');
   }
 
-
   //C
   Future<void> addItem() async {
     //위의 firstCheck 를 활용하여 해당 날짜의 첫번째 메모라면 true, 아니라면 false.
-    if(firstCheckValue.isEmpty){
+    if (firstCheckValue.isEmpty) {
       await MemoHelper.createItem(
           memoController.text,
           //yyyy:MM:dd / createdAt
           CurrentDayDetail.value.toString(),
+          CurrentYear.value.toString(),
+          CurrentMonthMM.value.toString(),
+          CurrentDay.value.toString(),
           //firstCheck 1 = true
           1,
           //hh:mm a
@@ -290,11 +333,14 @@ class HomeController extends GetxController {
           colorValue.value);
       refreshMemo();
       print('first check true');
-    }else{
+    } else {
       await MemoHelper.createItem(
           memoController.text,
           //yyyy:MM:dd / createdAt
           CurrentDayDetail.value.toString(),
+          CurrentYear.value.toString(),
+          CurrentMonthMM.value.toString(),
+          CurrentDay.value.toString(),
           //firstCheck 0 = false
           0,
           //hh:mm a
@@ -339,27 +385,27 @@ class HomeController extends GetxController {
   //날짜 모드 전환시 bool.
   RxBool dateModeOn = false.obs;
 
-  searchButtonClicked(){
-    if(searchBarController.text != ''){
+  searchButtonClicked() {
+    if (searchBarController.text != '') {
       searchModeOn.value = true;
       tagModeOn.value = false;
       dateModeOn.value = false;
     }
   }
 
-  tagButtonClicked(){
+  tagButtonClicked() {
     tagModeOn.value = true;
     searchModeOn.value = false;
     dateModeOn.value = false;
   }
 
-  dateButtonClicked(){
+  dateButtonClicked() {
     tagModeOn.value = false;
     searchModeOn.value = false;
     dateModeOn.value = true;
   }
 
-  defaultModeOn(){
+  defaultModeOn() {
     tagModeOn.value = false;
     searchModeOn.value = false;
     dateModeOn.value = false;
@@ -371,7 +417,7 @@ class HomeController extends GetxController {
   final tag = GetStorage();
 
   //최초 실행시 태그 밸류 null 방지를 위한(동시에 색상 이름 표시) 메소드.
-  tagInit(){
+  tagInit() {
     tag.writeIfNull('red', 'red');
     tag.writeIfNull('teal', 'teal');
     tag.writeIfNull('lightPink', 'lightPink');
@@ -383,6 +429,36 @@ class HomeController extends GetxController {
     tag.writeIfNull('plum', 'plum');
   }
 
+  //tileView part
+  //월별로 가져온 메모 데이터. 이벤트 표시를 위해 사용됨.
+  RxList memoForEvent = [].obs;
+
+
+  //이벤트 로더로 불러올 이벤트 목록.
+  //dB에서 가져온걸 여기로 넣어야함.
+  Map<String, List> eventList = {};
+
+  //이벤트 밸류 가져오기.
+  eventsValueInit(){
+    eventList = {
+      "${memoForEvent[1]['createdAt']}": [{"event": "1"}],
+    };
+  }
+
+  // late List<Map<DateTime, List<Event>>> events;
+  late Map<DateTime, List<Event>> events;
+
+  //해당 포맷(yyyy-mm-dd)의 데이터가 존재하지 않으면 [] 을 리턴시켜 null error 방지.
+  List getEvents(DateTime dateTime) {
+    if (eventList[DateFormat('yyyyMMdd').format(dateTime)] != null) {
+      print('Event list not null');
+      return eventList[DateFormat('yyyyMMdd').format(dateTime)]!;
+    } else {
+      print('Event list null');
+      return [];
+    }
+  }
+
   //컨트롤러 생성 및 삽입시 초기에 실행.
   //여기서 db 를 init 하고 고정적으로 불러와야 할 값들을 가져옴.
   //초기에 불러와야 할 값들 : ui 에 표시될 날짜들, 메모 기본 색상 등.
@@ -392,11 +468,14 @@ class HomeController extends GetxController {
 
     await MemoHelper.db();
     await getDefaultColor();
+    await getCurrentYear();
+    await getCurrentMonthMM();
     await getCurrentDay();
     await getCurrentDayOf();
     await getDayColor();
-    await getCurrentMonth();
+    await getCurrentMonthMMM();
     await tagInit();
+    // await eventsValueInit();
     //처음 한번 새로고침으로 메모 가져오기.
     refreshMemo();
   }
@@ -417,4 +496,10 @@ class HomeController extends GetxController {
   void onClose() {
     super.onClose();
   }
+}
+
+class Event {
+  String title;
+
+  Event(this.title);
 }
