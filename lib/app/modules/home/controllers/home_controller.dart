@@ -1,7 +1,10 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 import '../../../global/memo.dart';
 
@@ -141,7 +144,7 @@ class HomeController extends GetxController {
     CurrentMM.value = int.parse(CurrentMonthMM.value);
   }
 
-  getCurrentYear(){
+  getCurrentYear() {
     CurrentYear.value = DateFormat("yyyy").format(DateTime.now());
     CurrentYyyy.value = int.parse(CurrentYear.value);
   }
@@ -266,7 +269,9 @@ class HomeController extends GetxController {
     await getCurrentMonthMM();
     await getCurrentDay();
     //yyyy + mm + dd 로 포맷 맞추기.
-    final date = CurrentYear.toString() + CurrentMonthMM.toString() + CurrentDay.toString();
+    final date = CurrentYear.toString() +
+        CurrentMonthMM.toString() +
+        CurrentDay.toString();
     final data = await MemoHelper.getItemsByDate(date);
     memo.value = data;
     isLoading.value = false;
@@ -431,32 +436,32 @@ class HomeController extends GetxController {
 
   //tileView part
   //월별로 가져온 메모 데이터. 이벤트 표시를 위해 사용됨.
-  RxList memoForEvent = [].obs;
-
-
-  //이벤트 로더로 불러올 이벤트 목록.
-  //dB에서 가져온걸 여기로 넣어야함.
-  Map<String, List> eventList = {};
-
-  //이벤트 밸류 가져오기.
-  eventsValueInit(){
-    eventList = {
-      "${memoForEvent[1]['createdAt']}": [{"event": "1"}],
-    };
-  }
 
   // late List<Map<DateTime, List<Event>>> events;
-  late Map<DateTime, List<Event>> events;
+  Map<DateTime, List<dynamic>> eventsHash = {
+    DateTime.utc(2023, 6, 13): [
+      4294198070
+    ],
+    DateTime.utc(2023, 6, 14): [20230617, Event(title: '1')],
+    DateTime.utc(2023, 6, 15): [20230617],
+    DateTime.utc(2023, 6, 16): [4278228616],
+  };
+
+  //eventLoader 가 가져갈 해시맵.
+  //DateTime, List<> 에 들어갈 첫번째 객체가 타일뷰에 표시될 색상값이 됨.
+  Map<DateTime, List<dynamic>> events = LinkedHashMap(
+    equals: isSameDay,
+  )..addAll({
+      DateTime.utc(2023, 6, 13): [4294198070],
+      DateTime.utc(2023, 6, 14): [4278228616],
+      DateTime.utc(2023, 6, 15): [4278228616],
+      DateTime.utc(2023, 6, 17): [4294085505],
+    });
+
 
   //해당 포맷(yyyy-mm-dd)의 데이터가 존재하지 않으면 [] 을 리턴시켜 null error 방지.
-  List getEvents(DateTime dateTime) {
-    if (eventList[DateFormat('yyyyMMdd').format(dateTime)] != null) {
-      print('Event list not null');
-      return eventList[DateFormat('yyyyMMdd').format(dateTime)]!;
-    } else {
-      print('Event list null');
-      return [];
-    }
+  List<dynamic> getEvents(DateTime day) {
+    return events[day] ?? [];
   }
 
   //컨트롤러 생성 및 삽입시 초기에 실행.
@@ -501,5 +506,10 @@ class HomeController extends GetxController {
 class Event {
   String title;
 
-  Event(this.title);
+  Event({
+    required this.title,
+  });
+  s(){
+    return title;
+  }
 }

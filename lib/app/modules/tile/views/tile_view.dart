@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:memotile/app/global/marker_tile.dart';
 import 'package:memotile/app/modules/home/controllers/home_controller.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -43,6 +44,18 @@ class TileView extends GetView<HomeController> {
         child: Column(
           children: [
             TableCalendar(
+              calendarBuilders: CalendarBuilders(
+                //마커 타일 빌더.
+                //context 와 날짜(년월일시분초까지 다 표시되는 버전), event(List)를 넘겨줄수 있음.
+                markerBuilder: (context, day, events) => events.isNotEmpty
+                    ? MarKerTile(
+                        date: '',
+                        //리스트 객체의 첫번째를 색상 값으로 가져옴.
+                        event: events.length.toString(),
+                        color: int.parse(events.first.toString()),
+                      )
+                    : null,
+              ),
               calendarStyle: CalendarStyle(
                 markerDecoration: BoxDecoration(
                   color: Colors.red,
@@ -55,7 +68,9 @@ class TileView extends GetView<HomeController> {
                 rightChevronVisible: false,
                 formatButtonVisible: false,
               ),
-              eventLoader: controller.getEvents,
+              eventLoader: (day) {
+                return controller.getEvents(day);
+              },
               focusedDay: DateTime.now(),
               firstDay: DateTime(2010, 5, 1),
               lastDay: DateTime(2033, 12, 31),
