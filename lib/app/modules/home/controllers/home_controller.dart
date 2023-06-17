@@ -283,7 +283,7 @@ class HomeController extends GetxController {
     await getCurrentMonthMM();
     print(CurrentMM.value);
     final data = await MemoHelper.getItemsByDateMM(CurrentMM.value);
-    memoForEvent.value = data;
+    // memoForEvent.value = data;
     isLoading.value = false;
     print('memo refreshed by dateMM $data');
   }
@@ -509,7 +509,4 @@ class Event {
   Event({
     required this.title,
   });
-  s(){
-    return title;
-  }
 }
