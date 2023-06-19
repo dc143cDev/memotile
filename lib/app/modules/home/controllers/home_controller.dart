@@ -280,36 +280,21 @@ class HomeController extends GetxController {
 
   //월별로 데이터 가져오기.
   RxList eventRaw = [].obs;
-  Map<String, dynamic> eventRawParsed = {};
 
   refreshMemoByDateMM() async {
     await getCurrentMonthMM();
     print(CurrentMM.value);
-    //test 필드
+    //tile 구현 스텝 1. MM 단위로 데이터 가져오기.
     final data = await MemoHelper.getItemsByDateMM(CurrentMM.value);
+    //tile 구현 스텝 2. Raw 데이터 넣어주기.
     eventRaw.value = data;
+    //tile 구현 스텝 3. forEach 사용해서 map 형태인 eventHash 에 eventRaw 의 알맞은 key value 넣기.
     eventRaw.forEach((element) {
-      // eventRawParsed.addAll(element['createdAt'] = element['colorValue']);
       eventsHash['${element['createdAt']}'] = ['${element['colorValue']}'];
-      // print(element['createdAt']);
-      // print(element['colorValue']);
       print(eventsHash);
     });
-    // for(int i = 0; i < eventRaw.length; i++){
-    //   eventRaw.forEach((element) {
-    //     eventRawParsed.addAll(Map<String, dynamic>.from(element));
-    //   });
-    //   print('memo refreshed by dateMM $eventRaw');
-    //   print('memo refreshed by dateMM parse $eventRawParsed');
-    // }
-
-    // eventRawParsed.forEach((element) {
-    //   element['createdAt'] = new String.fromCharCodes(element['createdAt']);
-    // });
-    // memoForEvent.value = data;
     isLoading.value = false;
     print('memo refreshed by dateMM $eventRaw');
-    print('memo refreshed by dateMM parse $eventRawParsed');
   }
 
   addEventToList() {
@@ -406,6 +391,7 @@ class HomeController extends GetxController {
     refreshMemo();
   }
 
+
   //UI part(bottom sheet)
 
   //search bar controller
@@ -475,10 +461,12 @@ class HomeController extends GetxController {
     // '20230614': [4278228616],
     // '20230615': [4278228616],
     // '20230616': [4294085505],
+    //data
   };
 
   //eventLoader 가 가져갈 해시맵.
   //DateTime, List<> 에 들어갈 첫번째 객체가 타일뷰에 표시될 색상값이 됨.
+  //현재 사용 안함.
   Map<DateTime, List<dynamic>> events = LinkedHashMap(
     equals: isSameDay,
   )..addAll({
@@ -489,11 +477,13 @@ class HomeController extends GetxController {
     });
 
   //해당 포맷(yyyy-mm-dd)의 데이터가 존재하지 않으면 [] 을 리턴시켜 null error 방지.
+  //tile 구현 스텝 4. 그렇게 완성된 eventsHash 의 첫 객체를 DateTime 포맷에 맞추어 인식시켜 타일 구현.
   List<dynamic> getEvents(DateTime day) {
     if (eventsHash[DateFormat('yyyyMMdd').format(day)] != null) {
       print(eventsHash[DateFormat('yyyyMMdd').format(day)]);
       return eventsHash[DateFormat('yyyyMMdd').format(day)]!;
     } else {
+      //해당 날짜에 해당하는 데이터가 없다면 미표기. 이거 없으면 다 표시되는 버그가 생김.
       return [];
     }
     // return events[day] ?? [];
