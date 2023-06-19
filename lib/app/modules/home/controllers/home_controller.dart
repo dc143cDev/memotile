@@ -279,13 +279,33 @@ class HomeController extends GetxController {
   }
 
   //월별로 데이터 가져오기.
+  RxList eventRaw = [].obs;
+  Map eventRawParsed = {};
+
   refreshMemoByDateMM() async {
     await getCurrentMonthMM();
     print(CurrentMM.value);
+    //test 필드
     final data = await MemoHelper.getItemsByDateMM(CurrentMM.value);
+    eventRaw.value = data;
+    eventRaw.forEach((element) {
+      eventRawParsed.addAll(Map<String, dynamic>.from(element));
+    });
+    // eventRawParsed.forEach((element) {
+    //   element['createdAt'] = new String.fromCharCodes(element['createdAt']);
+    // });
     // memoForEvent.value = data;
     isLoading.value = false;
-    print('memo refreshed by dateMM $data');
+    print('memo refreshed by dateMM $eventRaw');
+    print('memo refreshed by dateMM parse $eventRawParsed');
+  }
+
+  addEventToList() {
+    for (int i = 0; i < eventRaw.length; i++) {
+      // eventsHash.addAll(eventRaw[1]);
+      // // eventsHash['${eventRaw[i]}'] = [i];
+      // print(eventsHash);
+    }
   }
 
   //정해진 포맷의 날짜를 받아올 RxString
@@ -438,13 +458,11 @@ class HomeController extends GetxController {
   //월별로 가져온 메모 데이터. 이벤트 표시를 위해 사용됨.
 
   // late List<Map<DateTime, List<Event>>> events;
-  Map<DateTime, List<dynamic>> eventsHash = {
-    DateTime.utc(2023, 6, 13): [
-      4294198070
-    ],
-    DateTime.utc(2023, 6, 14): [20230617, Event(title: '1')],
-    DateTime.utc(2023, 6, 15): [20230617],
-    DateTime.utc(2023, 6, 16): [4278228616],
+  final Map<String, List<dynamic>> eventsHash = {
+    // '20230613': [4294198070],
+    // '20230614': [4278228616],
+    // '20230615': [4278228616],
+    // '20230616': [4294085505],
   };
 
   //eventLoader 가 가져갈 해시맵.
@@ -458,10 +476,15 @@ class HomeController extends GetxController {
       DateTime.utc(2023, 6, 17): [4294085505],
     });
 
-
   //해당 포맷(yyyy-mm-dd)의 데이터가 존재하지 않으면 [] 을 리턴시켜 null error 방지.
   List<dynamic> getEvents(DateTime day) {
-    return events[day] ?? [];
+    if (eventsHash[DateFormat('yyyyMMdd').format(day)] != null) {
+      print(eventsHash[DateFormat('yyyyMMdd').format(day)]);
+      return eventsHash[DateFormat('yyyyMMdd').format(day)]!;
+    } else {
+      return [];
+    }
+    // return events[day] ?? [];
   }
 
   //컨트롤러 생성 및 삽입시 초기에 실행.

@@ -27,8 +27,8 @@ class MemoHelper {
     });
   }
 
-  static Future<int> createItem(
-      String content, String createdAt, String yyyy, String mm, String dd, int isFirst, String date, int color) async {
+  static Future<int> createItem(String content, String createdAt, String yyyy,
+      String mm, String dd, int isFirst, String date, int color) async {
     final db = await MemoHelper.db();
 
     final data = {
@@ -69,9 +69,12 @@ class MemoHelper {
 
   static Future<List<Map<String, dynamic>>> getItemsByDateMM(int mm) async {
     final db = await MemoHelper.db();
-    return db.query('memo_test20',
-    orderBy: "mm");
-        // orderBy: "mm", whereArgs: [mm], where: "mm = $mm");
+    return db.query(
+      'memo_test20',
+      orderBy: "mm",
+      //event 필요한 columns 들만 가져오기.
+      columns: ['createdAt', 'colorValue'],
+    );
   }
 
   static Future<List<Map<String, dynamic>>> getItemsByColor(int color) async {
@@ -85,8 +88,8 @@ class MemoHelper {
   static Future<List<Map<String, dynamic>>> getItemsByContent(
       String content) async {
     final db = await MemoHelper.db();
-    return db
-        .rawQuery("SELECT * FROM memo_test20 WHERE content LIKE '%${content}%'");
+    return db.rawQuery(
+        "SELECT * FROM memo_test20 WHERE content LIKE '%${content}%'");
   }
 
   static Future<int> updateItem(
