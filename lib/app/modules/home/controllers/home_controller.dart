@@ -280,7 +280,7 @@ class HomeController extends GetxController {
 
   //월별로 데이터 가져오기.
   RxList eventRaw = [].obs;
-  Map eventRawParsed = {};
+  Map<String, dynamic> eventRawParsed = {};
 
   refreshMemoByDateMM() async {
     await getCurrentMonthMM();
@@ -289,8 +289,20 @@ class HomeController extends GetxController {
     final data = await MemoHelper.getItemsByDateMM(CurrentMM.value);
     eventRaw.value = data;
     eventRaw.forEach((element) {
-      eventRawParsed.addAll(Map<String, dynamic>.from(element));
+      // eventRawParsed.addAll(element['createdAt'] = element['colorValue']);
+      eventsHash['${element['createdAt']}'] = ['${element['colorValue']}'];
+      // print(element['createdAt']);
+      // print(element['colorValue']);
+      print(eventsHash);
     });
+    // for(int i = 0; i < eventRaw.length; i++){
+    //   eventRaw.forEach((element) {
+    //     eventRawParsed.addAll(Map<String, dynamic>.from(element));
+    //   });
+    //   print('memo refreshed by dateMM $eventRaw');
+    //   print('memo refreshed by dateMM parse $eventRawParsed');
+    // }
+
     // eventRawParsed.forEach((element) {
     //   element['createdAt'] = new String.fromCharCodes(element['createdAt']);
     // });
