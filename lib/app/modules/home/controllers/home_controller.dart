@@ -291,18 +291,10 @@ class HomeController extends GetxController {
     //tile 구현 스텝 3. forEach 사용해서 map 형태인 eventHash 에 eventRaw 의 알맞은 key value 넣기.
     eventRaw.forEach((element) {
       eventsHash['${element['createdAt']}'] = ['${element['colorValue']}'];
-      print(eventsHash);
     });
     isLoading.value = false;
+    print('event Hash = $eventsHash');
     print('memo refreshed by dateMM $eventRaw');
-  }
-
-  addEventToList() {
-    for (int i = 0; i < eventRaw.length; i++) {
-      // eventsHash.addAll(eventRaw[1]);
-      // // eventsHash['${eventRaw[i]}'] = [i];
-      // print(eventsHash);
-    }
   }
 
   //정해진 포맷의 날짜를 받아올 RxString

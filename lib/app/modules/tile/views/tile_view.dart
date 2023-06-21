@@ -51,7 +51,7 @@ class TileView extends GetView<HomeController> {
                     ? MarKerTile(
                         date: '',
                         //리스트 객체의 첫번째를 색상 값으로 가져옴.
-                        event: events.length.toString(),
+                        event: DateFormat('dd').format(day),
                         color: int.parse(events.first.toString()),
                       )
                     : null,
