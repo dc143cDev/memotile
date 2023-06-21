@@ -43,6 +43,7 @@ class HomeView extends GetView<HomeController> {
           () => controller.searchModeOn == true || controller.tagModeOn == true
               ? MaterialButton(
                   onPressed: () {
+                    controller.goToDown();
                     controller.searchModeOn.value = false;
                     controller.tagModeOn.value = false;
                     controller.refreshMemo();
@@ -79,6 +80,7 @@ class HomeView extends GetView<HomeController> {
                     await controller.refreshMemo();
                     //Tile View 로 넘어가기 전에 memoForEvent 에 월별로 가져온 데이터 넣기.
                     await controller.refreshMemoByDateMM();
+                    await controller.goToDown();
                     // await controller.eventsValueInit();
                     controller.dateModeOn.value == true
                         ? controller.defaultModeOn()

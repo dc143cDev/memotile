@@ -76,6 +76,7 @@ class TileView extends GetView<HomeController> {
               lastDay: DateTime(2033, 12, 31),
               onDaySelected: (DateTime selectedDay, DateTime focusedDay) async {
                 //DB 검색 용이성을 위해 미리 지정된 포맷으로 selectedDay 반환.
+                await controller.goToTop();
                 controller.selectedDay.value =
                     DateFormat("yyyyMMdd").format(selectedDay);
                 print('$selectedDay is selected');
