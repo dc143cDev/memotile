@@ -290,7 +290,12 @@ class HomeController extends GetxController {
     eventRaw.value = data;
     //tile 구현 스텝 3. forEach 사용해서 map 형태인 eventHash 에 eventRaw 의 알맞은 key value 넣기.
     eventRaw.forEach((element) {
-      eventsHash['${element['createdAt']}'] = ['${element['colorValue']}'];
+      //white 타일은 존재하지 않기 때문에 colorValue 가 white 면 eventsHash 에 추가하지 않도록 함.
+      if(element['colorValue'] == 4294967295) {
+        null;
+      }else{
+        eventsHash['${element['createdAt']}'] = ['${element['colorValue']}'];
+      }
     });
     isLoading.value = false;
     print('event Hash = $eventsHash');
