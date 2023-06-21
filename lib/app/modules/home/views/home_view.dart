@@ -14,6 +14,9 @@ class HomeView extends GetView<HomeController> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        centerTitle: true,
         actions: [
           // IconButton(
           //   onPressed: () {
@@ -123,8 +126,7 @@ class HomeView extends GetView<HomeController> {
                   ),
                 ),
         ),
-        backgroundColor: Colors.white,
-        elevation: 0,
+
         //타이틀도 leading 과 같이 모드 가변형 ui.
         title: Obx(
           () => controller.tagModeOn == true || controller.searchModeOn == true
@@ -192,7 +194,6 @@ class HomeView extends GetView<HomeController> {
                   ],
                 ),
         ),
-        centerTitle: true,
       ),
       body: Obx(
         () => SafeArea(

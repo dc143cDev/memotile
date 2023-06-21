@@ -5,10 +5,13 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import '../../../global/memo.dart';
 
 class HomeController extends GetxController {
+  //set up part.
+
   //가장 중요한 변수. 여기에 모든 db 의 data 가 담김.
   //실질적 데이터인 MemoHelper 에서 내려온 data 변수가 ui 에 표시되기 위해 여기에 담김.
   RxList memo = [].obs;
@@ -38,7 +41,7 @@ class HomeController extends GetxController {
   //스크롤 아래로 내리기.
   //아이템 추가, 처음 ui 진입 시 호출됨.
   goToDown() async {
-    //비동기적으로 getItems 로 메모 데이터를 가져온 뒤에 화면을 내려야 하기에, 딜레이를 줬음.
+    //비동기적인 메모 데이터를 가져온 뒤에 화면을 내려야 하기에, 딜레이를 줬음.
     await Future.delayed(Duration(milliseconds: 100));
     scrollController.value.animateTo(
       scrollController.value.position.maxScrollExtent,
@@ -51,12 +54,12 @@ class HomeController extends GetxController {
   }
 
   goToTop() async {
-    //비동기적으로 getItems 로 메모 데이터를 가져온 뒤에 화면을 올려야 하기에, 딜레이를 줬음.
+    //특정 모드 해제 이후 메모 데이터를 가져온 뒤에 화면을 올려야 하기에, 딜레이를 줬음.
     await Future.delayed(Duration(milliseconds: 100));
     scrollController.value.animateTo(
       scrollController.value.position.minScrollExtent,
       curve: Curves.easeOut,
-      //딜레이는 화면이 내려가는 애니메이션의 Duration 과 같게 해서 위화감이 없도록 함.
+      //딜레이는 화면이 올라가는 애니메이션의 Duration 과 같게 해서 위화감이 없도록 함.
       duration: const Duration(milliseconds: 100),
     );
 
