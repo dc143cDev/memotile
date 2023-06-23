@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:memotile/app/global/notification_service.dart';
+import 'package:memotile/app/global/notification.dart';
 
 import 'app/routes/app_pages.dart';
 
 void main() async{
   await GetStorage.init();
   WidgetsFlutterBinding.ensureInitialized();
-  await notificationService().setup();
+  await notification().setup();
   runApp(
     GetMaterialApp(
       theme: ThemeData(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:memotile/app/global/notification.dart';
 
 import '../../../global/horizontal_line.dart';
 import '../../../global/memo_tile.dart';
@@ -18,16 +19,16 @@ class HomeView extends GetView<HomeController> {
         elevation: 0,
         centerTitle: true,
         actions: [
-          // IconButton(
-          //   onPressed: () {
-          //     controller.refreshMemoByDate();
-          //     // Get.changeTheme(ThemeData.dark());
-          //   },
-          //   icon: Icon(
-          //     Icons.menu_rounded,
-          //     color: Colors.red,
-          //   ),
-          // ),
+          IconButton(
+            onPressed: () {
+              notification().getNotification();
+              // Get.changeTheme(ThemeData.dark());
+            },
+            icon: Icon(
+              Icons.menu_rounded,
+              color: Colors.red,
+            ),
+          ),
           IconButton(
             onPressed: () {
               openBottomSheet();

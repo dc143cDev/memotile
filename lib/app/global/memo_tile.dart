@@ -58,7 +58,7 @@ class MemoTile extends GetView<HomeController> {
             children: [
               Padding(
                 padding: const EdgeInsets.only(
-                    left: 5, top: 20, right: 7, bottom: 12),
+                    left: 15, top: 20, right: 7, bottom: 12),
                 child: Text(
                   date!,
                   style: TextStyle(color: Colors.grey),
