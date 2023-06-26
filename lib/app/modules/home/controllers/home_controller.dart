@@ -106,6 +106,7 @@ class HomeController extends GetxController {
   RxString CurrentDayDetail = ''.obs;
   RxString CurrentMonthMMM = ''.obs;
   RxString CurrentMonthMM = ''.obs;
+  RxString CurrentMonthForTile = ''.obs;
   RxString CurrentYear = ''.obs;
 
   RxInt CurrentYyyy = 0.obs;

@@ -760,6 +760,7 @@ class HomeView extends GetView<HomeController> {
           ),
           HorizontalLine(),
           InkWell(
+            onTap: (){},
             child: Container(
               width: double.infinity,
               height: 70,
@@ -776,6 +777,34 @@ class HomeView extends GetView<HomeController> {
                     ),
                     Text(
                       'Setting',
+                      style: TextStyle(
+                        color: Colors.grey[700],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          HorizontalLine(),
+          InkWell(
+            onTap: (){},
+            child: Container(
+              width: double.infinity,
+              height: 70,
+              child: Padding(
+                padding: const EdgeInsets.all(18.0),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.info_outline,
+                      color: Colors.grey[700],
+                    ),
+                    SizedBox(
+                      width: 15,
+                    ),
+                    Text(
+                      'Infomation',
                       style: TextStyle(
                         color: Colors.grey[700],
                       ),

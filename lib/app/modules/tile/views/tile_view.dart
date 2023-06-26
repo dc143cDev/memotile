@@ -34,58 +34,79 @@ class TileView extends GetView<HomeController> {
         ),
         backgroundColor: Colors.white,
         elevation: 0,
-        title: Text(
-          '${Get.arguments['TileMonth']}',
-          style: TextStyle(color: Colors.black),
+        title: Obx(
+          ()=> Text(
+            controller.CurrentMonthForTile.value == '' ?
+            '${Get.arguments['TileMonth']}' :
+            controller.CurrentMonthForTile.value,
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          ),
         ),
         centerTitle: true,
       ),
       body: SafeArea(
         child: Column(
           children: [
-            TableCalendar(
-              calendarBuilders: CalendarBuilders(
-                //마커 타일 빌더.
-                //context 와 날짜(년월일시분초까지 다 표시되는 버전), event(List)를 넘겨줄수 있음.
-                markerBuilder: (context, day, events) => events.isNotEmpty
-                    ? MarKerTile(
-                        date: '',
-                        //리스트 객체의 첫번째를 색상 값으로 가져옴.
-                        event: DateFormat('dd').format(day),
-                        color: int.parse(events.first.toString()),
+            Expanded(
+              flex: 5,
+              child: TableCalendar(
+                calendarBuilders: CalendarBuilders(
+                  //마커 타일 빌더.
+                  //context 와 날짜(년월일시분초까지 다 표시되는 버전), event(List)를 넘겨줄수 있음.
+                  markerBuilder: (context, day, events) => events.isNotEmpty
+                      ? Center(
+                        child: MarKerTile(
+                            date: '',
+                            //리스트 객체의 첫번째를 색상 값으로 가져옴.
+                            event: DateFormat('dd').format(day),
+                            color: int.parse(events.first.toString()),
+                          ),
                       )
-                    : null,
-              ),
-              calendarStyle: CalendarStyle(
-                markerDecoration: BoxDecoration(
-                  color: Colors.red,
+                      : null,
                 ),
+                calendarStyle: CalendarStyle(
+                  markerDecoration: BoxDecoration(
+                    color: Colors.red,
+                  ),
+                ),
+                headerStyle: HeaderStyle(
+                  titleTextStyle: TextStyle(color: Colors.white),
+                  titleCentered: true,
+                  leftChevronVisible: false,
+                  rightChevronVisible: false,
+                  formatButtonVisible: false,
+                ),
+                eventLoader: (day) {
+                  return controller.getEvents(day);
+                },
+                focusedDay: DateTime.now(),
+                firstDay: DateTime(2010, 5, 1),
+                lastDay: DateTime(2033, 12, 31),
+                onDaySelected:
+                    (DateTime selectedDay, DateTime focusedDay) async {
+                  //DB 검색 용이성을 위해 미리 지정된 포맷으로 selectedDay 반환.
+                  await controller.goToTop();
+                  controller.selectedDay.value =
+                      DateFormat("yyyyMMdd").format(selectedDay);
+                  print('$selectedDay is selected');
+                  print('$focusedDay is focused');
+                  print(controller.selectedDay);
+                  controller.refreshMemoByDateTile(controller.selectedDay);
+                  controller.dateButtonClicked();
+                  Get.back();
+                },
+                onPageChanged: (day){
+                  controller.CurrentMonthForTile.value = DateFormat('MMM').format(day);
+                },
               ),
-              headerStyle: HeaderStyle(
-                titleTextStyle: TextStyle(color: Colors.white),
-                titleCentered: true,
-                leftChevronVisible: false,
-                rightChevronVisible: false,
-                formatButtonVisible: false,
+            ),
+            Expanded(
+              flex: 5,
+              child: Column(
+                children: [
+
+                ],
               ),
-              eventLoader: (day) {
-                return controller.getEvents(day);
-              },
-              focusedDay: DateTime.now(),
-              firstDay: DateTime(2010, 5, 1),
-              lastDay: DateTime(2033, 12, 31),
-              onDaySelected: (DateTime selectedDay, DateTime focusedDay) async {
-                //DB 검색 용이성을 위해 미리 지정된 포맷으로 selectedDay 반환.
-                await controller.goToTop();
-                controller.selectedDay.value =
-                    DateFormat("yyyyMMdd").format(selectedDay);
-                print('$selectedDay is selected');
-                print('$focusedDay is focused');
-                print(controller.selectedDay);
-                controller.refreshMemoByDateTile(controller.selectedDay);
-                controller.dateButtonClicked();
-                Get.back();
-              },
             ),
           ],
         ),

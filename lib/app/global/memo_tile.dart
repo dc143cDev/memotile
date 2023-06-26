@@ -29,28 +29,27 @@ class MemoTile extends GetView<HomeController> {
         children: [
           //해당 날짜의 첫번째 메모라면 위에 날짜 표시줄 생성.
           isFirst == 1
-              ? Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(width: 15,),
-                      Container(
-                        width: 200,
-                        height: 30,
-                        decoration: BoxDecoration(
-                          color: Colors.grey[100],
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(createdAt!),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-              )
+              ? Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(width: 25,),
+                    Container(
+                      width: 200,
+                      height: 30,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[100],
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(createdAt!),
+                        ],
+                      ),
+                    )
+                  ],
+                )
               : Container(),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -83,7 +82,7 @@ class MemoTile extends GetView<HomeController> {
                               color: Colors.grey.withOpacity(0.7),
                               blurRadius: 5.0,
                               spreadRadius: 0.0,
-                              offset: Offset(0, 7),
+                              offset: Offset(0, 4),
                             )
                           ],
                           borderRadius: BorderRadius.circular(8),
