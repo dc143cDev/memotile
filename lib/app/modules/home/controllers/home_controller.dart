@@ -441,6 +441,7 @@ class HomeController extends GetxController {
 
   //월별로 데이터 가져오기.
   RxList eventRaw = [].obs;
+  RxList keyColorValue = [].obs;
   RxList sameKeyColorValueList = [].obs;
   RxList colorValueRaw = [].obs;
   RxList keys = [].obs;
@@ -448,9 +449,10 @@ class HomeController extends GetxController {
   RxString keyValue = ''.obs;
 
   //eventhsHash 를 그대로 두면 내용이 겹쳐 타일이 이상하게 표기되는 오류가 있음.
-  tileClear(){
+  tileClear() {
     eventsHash.clear();
     eventRaw.value = [];
+    keyColorValue.value = [];
     sameKeyColorValueList.value = [];
     colorValueRaw.value = [];
     keys.value = [];
@@ -504,28 +506,36 @@ class HomeController extends GetxController {
         print(dateData['colorValue']);
         print('eventHashRaw: ${eventsHash}');
         //이쪽에서도 white 걸러주기.
-        if(dateData['colorValue'] == 4294967295){
+        if (dateData['colorValue'] == 4294967295) {
           null;
         } else if (eventsHash.containsKey(dateData['createdAt']) == true) {
           //같은 key 의 데이터가 존재하면 map 을 생성하는게 아니라 이미 있던 맵에 colorValue add.
           print('same obj');
           //null check 위해 사전에 선언한 list 에 데이터 먼저 넣어주기.
+          //아래를 거쳐와서 이미 첫번째 colorValue는 들어가있음.
           sameKeyColorValueList.add(dateData['colorValue']);
           //완성된 데이터 리스트를 toString, 그리고 []를 제거하여 이벤트 해쉬에 삽입.
           eventsHash[dateData['createdAt']] = [
-            sameKeyColorValueList.toString().replaceAll('[', '').replaceAll(']', '')
+            sameKeyColorValueList
+                .toString()
+                .replaceAll('[', '')
+                .replaceAll(']', '')
           ];
           print('eventRaw2:${sameKeyColorValueList}');
           print('same hash: ${eventsHash}');
           // eventsHashRaw[dateData['createdAt']] = [].addAll(dateData);
         } else {
           //같은 Key 의 데이터가 존재하지 않으면 평소대로 map 생성.
-          eventsHash[dateData['createdAt']] = [dateData['colorValue']];
+          //위에서 대체되지 않도록 same value 상태를 상정하고 미리 초기 데이터 넣어두기.
+          sameKeyColorValueList.add(dateData['colorValue']);
+          keyColorValue.add(dateData['colorValue']);
+          eventsHash[dateData['createdAt']] = [
+            keyColorValue.toString().replaceAll('[', '').replaceAll(']', '')
+          ];
         }
+        print('eventHashRaw final: ${eventsHash}');
       });
     });
-
-    // print('memo refreshed by dateMM $eventRaw');
   } //getTiles
 
   //월별로 가져온 메모 데이터. 이벤트 표시를 위해 사용됨.
@@ -545,7 +555,8 @@ class HomeController extends GetxController {
   //tile 구현 스텝 4. 그렇게 완성된 eventsHash 의 첫 객체를 DateTime 포맷에 맞추어 인식시켜 타일 구현.
   List<dynamic> getEvents(DateTime day) {
     if (eventsHash[DateFormat('yyyyMMdd').format(day)] != null) {
-      print('eventHash to Load: ${eventsHash[DateFormat('yyyyMMdd').format(day)]}');
+      print(
+          'eventHash to Load: ${eventsHash[DateFormat('yyyyMMdd').format(day)]}');
       return eventsHash[DateFormat('yyyyMMdd').format(day)]!;
     } else {
       //해당 날짜에 해당하는 데이터가 없다면 미표기. 이거 없으면 다 표시되는 버그가 생김.
@@ -553,6 +564,21 @@ class HomeController extends GetxController {
     }
     // return events[day] ?? [];
   }
+
+  // emptyCheck() async{
+  //   await getDefaultColor();
+  //   await getCurrentDay();
+  //   await getCurrentMonthMM();
+  //   await getCurrentYear();
+  //   await getCurrentDayDetail();
+  //   await getCurrentDate();
+  //   await firstCheckByDate();
+  //   if(memo == []) {
+  //     addItem();
+  //   } else{
+  //     null;
+  //   }
+  // }
 
   //컨트롤러 생성 및 삽입시 초기에 실행.
   //여기서 db 를 init 하고 고정적으로 불러와야 할 값들을 가져옴.
@@ -570,6 +596,7 @@ class HomeController extends GetxController {
     await getDayColor();
     await getCurrentMonthMMM();
     await tagInit();
+    // await emptyCheck();
     // await eventsValueInit();
     //처음 한번 새로고침으로 메모 가져오기.
     refreshMemo();

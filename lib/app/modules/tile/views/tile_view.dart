@@ -75,6 +75,7 @@ class TileView extends GetView<HomeController> {
                         ),
                       );
                     }
+                    return null;
                   }
                   // markerBuilder: (context, day, events) => events.isNotEmpty
                   //     ? Center(

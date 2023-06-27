@@ -215,56 +215,56 @@ class HomeView extends GetView<HomeController> {
                       child: SizedBox(),
                     ),
                     //textField. empty 상태일때 굳이 필요 없다고 판단.
-                    // Expanded(
-                    //   flex: 1,
-                    //   child: Row(
-                    //     children: [
-                    //       Expanded(
-                    //         child: Padding(
-                    //           padding: const EdgeInsets.all(14.0),
-                    //           child: TextFormField(
-                    //             controller: controller.memoController,
-                    //             cursorColor: Colors.black,
-                    //             decoration: InputDecoration(
-                    //               border: InputBorder.none,
-                    //               focusColor: Colors.black,
-                    //               hintText: ' Insert here',
-                    //             ),
-                    //           ),
-                    //         ),
-                    //       ),
-                    //       Padding(
-                    //         padding: const EdgeInsets.only(
-                    //             left: 0, top: 5, right: 14, bottom: 5),
-                    //         child: IconButton(
-                    //           //+ 버튼
-                    //           //눌렀을 때 addItem 메소드 실행
-                    //           //->TextField 의 Text, 현재 시간, colorValue 의 값을 db 에 insert
-                    //           onPressed: () async {
-                    //             //dateTime 데이터는 원래 '' 이므로 해당 값을 가져와주는 메소드를 먼저 실행.
-                    //             await controller.getDefaultColor();
-                    //             await controller.getCurrentDay();
-                    //             await controller.getCurrentDayDetail();
-                    //             await controller.getCurrentDate();
-                    //             await controller.firstCheckByDate();
-                    //             controller.addItem();
-                    //             //스크롤 아래로 내리기.
-                    //             controller.goToDown();
-                    //             //TextField 초기화.
-                    //             controller.memoController.clear();
-                    //             //defaultModeOn
-                    //             controller.defaultModeOn();
-                    //             //debug.
-                    //             print(controller.colorValue.value.toString());
-                    //             print(controller.CurrentDayDetail.value
-                    //                 .toString());
-                    //           },
-                    //           icon: Icon(Icons.send_rounded),
-                    //         ),
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
+                    Expanded(
+                      flex: 1,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.all(14.0),
+                              child: TextFormField(
+                                controller: controller.memoController,
+                                cursorColor: Colors.black,
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  focusColor: Colors.black,
+                                  hintText: ' Insert here',
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                left: 0, top: 5, right: 14, bottom: 5),
+                            child: IconButton(
+                              //+ 버튼
+                              //눌렀을 때 addItem 메소드 실행
+                              //->TextField 의 Text, 현재 시간, colorValue 의 값을 db 에 insert
+                              onPressed: () async {
+                                //dateTime 데이터는 원래 '' 이므로 해당 값을 가져와주는 메소드를 먼저 실행.
+                                await controller.getDefaultColor();
+                                await controller.getCurrentDay();
+                                await controller.getCurrentDayDetail();
+                                await controller.getCurrentDate();
+                                await controller.firstCheckByDate();
+                                controller.addItem();
+                                //스크롤 아래로 내리기.
+                                controller.goToDown();
+                                //TextField 초기화.
+                                controller.memoController.clear();
+                                //defaultModeOn
+                                controller.defaultModeOn();
+                                //debug.
+                                print(controller.colorValue.value.toString());
+                                print(controller.CurrentDayDetail.value
+                                    .toString());
+                              },
+                              icon: Icon(Icons.send_rounded),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 )
               : Column(
