@@ -67,6 +67,20 @@ class MemoHelper {
         orderBy: "createdAt", whereArgs: [date], where: "createdAt = $date");
   }
 
+  //날짜를 기반으로 컬러 찾기.
+  static Future<List<Map<String, dynamic>>> getItemsByDateToColor(
+      String date) async {
+    final db = await MemoHelper.db();
+    // return db.rawQuery("SELECT * FROM memo_test20 WHERE createdAt LIKE '%${date}%'");
+    return db.query(
+      'memo_test20',
+      orderBy: "createdAt",
+      whereArgs: [date],
+      where: "createdAt = $date",
+      columns: ['createdAt', 'colorValue'],
+    );
+  }
+
   static Future<List<Map<String, dynamic>>> getItemsByDateMM(int mm) async {
     final db = await MemoHelper.db();
     return db.query(

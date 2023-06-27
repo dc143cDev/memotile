@@ -83,7 +83,7 @@ class HomeView extends GetView<HomeController> {
                     //모드 초기화를 위해 메모 리프레쉬.
                     await controller.refreshMemo();
                     //Tile View 로 넘어가기 전에 memoForEvent 에 월별로 가져온 데이터 넣기.
-                    await controller.refreshMemoByDateMM();
+                    await controller.getTiles();
                     await controller.goToDown();
                     // await controller.eventsValueInit();
                     controller.dateModeOn.value == true

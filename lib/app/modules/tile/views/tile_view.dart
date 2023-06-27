@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -36,6 +38,9 @@ class TileView extends GetView<HomeController> {
         elevation: 0,
         title: Obx(
           ()=> Text(
+            //CurrentMonthForTile 의 초기 값은 '' 이므로 평소에는 타이틀에 아무 값도 나오지 않음.
+            //때문에 값이 '' 일때는 HomeView 에서 가져온 월을 먼저 표시하고,
+            //페이지가 전환되어 데이터가 생기면 그때부터 CurrentMonthForTile 로 표기.
             controller.CurrentMonthForTile.value == '' ?
             '${Get.arguments['TileMonth']}' :
             controller.CurrentMonthForTile.value,
@@ -53,16 +58,35 @@ class TileView extends GetView<HomeController> {
                 calendarBuilders: CalendarBuilders(
                   //마커 타일 빌더.
                   //context 와 날짜(년월일시분초까지 다 표시되는 버전), event(List)를 넘겨줄수 있음.
-                  markerBuilder: (context, day, events) => events.isNotEmpty
-                      ? Center(
+                  markerBuilder: (context, day, events){
+                    //events 의 원형은 [ 단일객체 ] (length == 1) 이기때문에 두번 걸러 리스트화 해야함.
+                    //to String,
+                    String eventToString = events.toString();
+                    //jsonDecode from String to List.
+                    List stringEventToList = jsonDecode(eventToString);
+                    if(events.isNotEmpty == true){
+                      return Center(
                         child: MarKerTile(
-                            date: '',
-                            //리스트 객체의 첫번째를 색상 값으로 가져옴.
-                            event: DateFormat('dd').format(day),
-                            color: int.parse(events.first.toString()),
-                          ),
-                      )
-                      : null,
+                          date: '',
+                          event: DateFormat('dd').format(day),
+                          //그렇게 리스트화된 colorValue 객체 중 하나를 ui에 넣어주기.
+                          colorList: stringEventToList,
+                          color: stringEventToList.last,
+                        ),
+                      );
+                    }
+                  }
+                  // markerBuilder: (context, day, events) => events.isNotEmpty
+                  //     ? Center(
+                  //       child: MarKerTile(
+                  //           date: '',
+                  //           //리스트 객체의 첫번째를 색상 값으로 가져옴.
+                  //           event: DateFormat('dd').format(day),
+                  //           color: jsonDecode(events.toString()),
+                  //           // color: int.parse(events.last.toString().replaceAll(',', ']')),
+                  //         ),
+                  //     )
+                  //     : null,
                 ),
                 calendarStyle: CalendarStyle(
                   markerDecoration: BoxDecoration(
@@ -93,9 +117,11 @@ class TileView extends GetView<HomeController> {
                   print(controller.selectedDay);
                   controller.refreshMemoByDateTile(controller.selectedDay);
                   controller.dateButtonClicked();
+                  controller.goToDown();
                   Get.back();
                 },
                 onPageChanged: (day){
+                  //페이지 전환할때마다 값을 지금이 몇월인지 값 넘겨주기.
                   controller.CurrentMonthForTile.value = DateFormat('MMM').format(day);
                 },
               ),

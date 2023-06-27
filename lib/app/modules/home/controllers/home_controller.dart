@@ -1,11 +1,7 @@
-import 'dart:collection';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:table_calendar/table_calendar.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import '../../../global/memo.dart';
 
@@ -295,30 +291,6 @@ class HomeController extends GetxController {
     print('memo refreshed by date $date');
   }
 
-  //월별로 데이터 가져오기.
-  RxList eventRaw = [].obs;
-
-  refreshMemoByDateMM() async {
-    await getCurrentMonthMM();
-    print(CurrentMM.value);
-    //tile 구현 스텝 1. MM 단위로 데이터 가져오기.
-    final data = await MemoHelper.getItemsByDateMM(CurrentMM.value);
-    //tile 구현 스텝 2. Raw 데이터 넣어주기.
-    eventRaw.value = data;
-    //tile 구현 스텝 3. forEach 사용해서 map 형태인 eventHash 에 eventRaw 의 알맞은 key value 넣기.
-    eventRaw.forEach((element) {
-      //white 타일은 존재하지 않기 때문에 colorValue 가 white 면 eventsHash 에 추가하지 않도록 함.
-      if(element['colorValue'] == 4294967295) {
-        null;
-      }else{
-        eventsHash['${element['createdAt']}'] = ['${element['colorValue']}'];
-      }
-    });
-    isLoading.value = false;
-    print('event Hash = $eventsHash');
-    print('memo refreshed by dateMM $eventRaw');
-  }
-
   //정해진 포맷의 날짜를 받아올 RxString
   RxString selectedDay = ''.obs;
 
@@ -329,7 +301,7 @@ class HomeController extends GetxController {
     final data = await MemoHelper.getItemsByDate(selectedDay.value);
     memo.value = data;
     isLoading.value = false;
-    print('memo refreshed by date $selectedDay');
+    print('memo refreshed by date $data');
   }
 
   //검색 기능. 내용에 따라 아이템 가져오기.
@@ -405,7 +377,6 @@ class HomeController extends GetxController {
     refreshMemo();
   }
 
-
   //UI part(bottom sheet)
 
   //search bar controller
@@ -467,6 +438,96 @@ class HomeController extends GetxController {
   }
 
   //tileView part
+
+  //월별로 데이터 가져오기.
+  RxList eventRaw = [].obs;
+  RxList sameKeyColorValueList = [].obs;
+  RxList colorValueRaw = [].obs;
+  RxList keys = [].obs;
+
+  RxString keyValue = ''.obs;
+
+  //eventhsHash 를 그대로 두면 내용이 겹쳐 타일이 이상하게 표기되는 오류가 있음.
+  tileClear(){
+    eventsHash.clear();
+    eventRaw.value = [];
+    sameKeyColorValueList.value = [];
+    colorValueRaw.value = [];
+    keys.value = [];
+    keyValue.value = '';
+  }
+
+  //타일 뷰 들어가기 전에 호출.
+  //타일에 들어갈 데이터를 정제하는 과정.
+  getTiles() async {
+    await tileClear();
+    //tile 구현 스텝 1. MM 단위로 데이터 가져오기.
+    await getCurrentMonthMM();
+    print('currentMM : ${CurrentMM.value}');
+    final data = await MemoHelper.getItemsByDateMM(CurrentMM.value);
+
+    //tile 구현 스텝 2. Raw 데이터 넣어주기.
+    eventRaw.value = data;
+    print('data: ${data}');
+    //tile 구현 스텝 3. forEach 사용해서 map 형태인 eventHash 에 eventRaw 의 알맞은 key value 넣기.
+
+    eventRaw.forEach(
+      (element) {
+        // print('element: ${element}');
+        //white 타일은 존재하지 않기 때문에 colorValue 가 white 면 eventsHash 에 추가하지 않도록 함.
+        if (element['colorValue'] == 4294967295) {
+          null;
+        } else {
+          print('now element: ${element}');
+          //키를 만들어야 하기 때문에 우선 데이터 삽입.
+          eventsHashRaw['${element['createdAt'].toString()}'] = [
+            '${element['colorValue'].toString()}'
+          ];
+        }
+      },
+    );
+    isLoading.value = false;
+    //키 표시 및 선언.
+    keys.value = eventsHashRaw.keys.toList();
+    print('event Hash Keys = $keys');
+    print('event Hash raw = $eventsHashRaw');
+
+    keys.forEach((key) async {
+      print('key: ${key}');
+      //2023NN key 로 일별 데이터 조회.
+      final dateData = await MemoHelper.getItemsByDateToColor(key);
+      print('dateData: ${dateData}');
+
+      //조회된 일별 데이터로 forEach 사용.
+      dateData.forEach((dateData) {
+        print(dateData['createdAt']);
+        print(dateData['colorValue']);
+        print('eventHashRaw: ${eventsHash}');
+        //이쪽에서도 white 걸러주기.
+        if(dateData['colorValue'] == 4294967295){
+          null;
+        } else if (eventsHash.containsKey(dateData['createdAt']) == true) {
+          //같은 key 의 데이터가 존재하면 map 을 생성하는게 아니라 이미 있던 맵에 colorValue add.
+          print('same obj');
+          //null check 위해 사전에 선언한 list 에 데이터 먼저 넣어주기.
+          sameKeyColorValueList.add(dateData['colorValue']);
+          //완성된 데이터 리스트를 toString, 그리고 []를 제거하여 이벤트 해쉬에 삽입.
+          eventsHash[dateData['createdAt']] = [
+            sameKeyColorValueList.toString().replaceAll('[', '').replaceAll(']', '')
+          ];
+          print('eventRaw2:${sameKeyColorValueList}');
+          print('same hash: ${eventsHash}');
+          // eventsHashRaw[dateData['createdAt']] = [].addAll(dateData);
+        } else {
+          //같은 Key 의 데이터가 존재하지 않으면 평소대로 map 생성.
+          eventsHash[dateData['createdAt']] = [dateData['colorValue']];
+        }
+      });
+    });
+
+    // print('memo refreshed by dateMM $eventRaw');
+  } //getTiles
+
   //월별로 가져온 메모 데이터. 이벤트 표시를 위해 사용됨.
 
   // late List<Map<DateTime, List<Event>>> events;
@@ -478,23 +539,13 @@ class HomeController extends GetxController {
     //data
   };
 
-  //eventLoader 가 가져갈 해시맵.
-  //DateTime, List<> 에 들어갈 첫번째 객체가 타일뷰에 표시될 색상값이 됨.
-  //현재 사용 안함.
-  Map<DateTime, List<dynamic>> events = LinkedHashMap(
-    equals: isSameDay,
-  )..addAll({
-      DateTime.utc(2023, 6, 13): [4294198070],
-      DateTime.utc(2023, 6, 14): [4278228616],
-      DateTime.utc(2023, 6, 15): [4278228616],
-      DateTime.utc(2023, 6, 17): [4294085505],
-    });
+  final Map<String, List<dynamic>> eventsHashRaw = {};
 
   //해당 포맷(yyyy-mm-dd)의 데이터가 존재하지 않으면 [] 을 리턴시켜 null error 방지.
   //tile 구현 스텝 4. 그렇게 완성된 eventsHash 의 첫 객체를 DateTime 포맷에 맞추어 인식시켜 타일 구현.
   List<dynamic> getEvents(DateTime day) {
     if (eventsHash[DateFormat('yyyyMMdd').format(day)] != null) {
-      print(eventsHash[DateFormat('yyyyMMdd').format(day)]);
+      print('eventHash to Load: ${eventsHash[DateFormat('yyyyMMdd').format(day)]}');
       return eventsHash[DateFormat('yyyyMMdd').format(day)]!;
     } else {
       //해당 날짜에 해당하는 데이터가 없다면 미표기. 이거 없으면 다 표시되는 버그가 생김.
