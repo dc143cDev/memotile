@@ -15,6 +15,9 @@ class HomeController extends GetxController {
   //클릭 감지.
   RxBool memoLongClicked = false.obs;
 
+  //focus node.
+  FocusNode textFocus = FocusNode();
+
   //insert here.
   TextEditingController memoController = TextEditingController();
 
