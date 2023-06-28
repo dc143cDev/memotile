@@ -77,17 +77,6 @@ class TileView extends GetView<HomeController> {
                     }
                     return null;
                   }
-                  // markerBuilder: (context, day, events) => events.isNotEmpty
-                  //     ? Center(
-                  //       child: MarKerTile(
-                  //           date: '',
-                  //           //리스트 객체의 첫번째를 색상 값으로 가져옴.
-                  //           event: DateFormat('dd').format(day),
-                  //           color: jsonDecode(events.toString()),
-                  //           // color: int.parse(events.last.toString().replaceAll(',', ']')),
-                  //         ),
-                  //     )
-                  //     : null,
                 ),
                 calendarStyle: CalendarStyle(
                   markerDecoration: BoxDecoration(

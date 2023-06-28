@@ -27,13 +27,20 @@ class MemoTile extends GetView<HomeController> {
     final memo = Flexible(
       child: Column(
         children: [
+          isFirst == 1
+              ? SizedBox(
+                  height: 5,
+                )
+              : SizedBox(),
           //해당 날짜의 첫번째 메모라면 위에 날짜 표시줄 생성.
           isFirst == 1
               ? Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SizedBox(width: 25,),
+                    SizedBox(
+                      width: 25,
+                    ),
                     Container(
                       width: 200,
                       height: 30,

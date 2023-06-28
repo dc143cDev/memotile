@@ -535,6 +535,8 @@ class HomeController extends GetxController {
         }
         print('eventHashRaw final: ${eventsHash}');
       });
+      sameKeyColorValueList.clear();
+      keyColorValue.clear();
     });
   } //getTiles
 
@@ -565,21 +567,6 @@ class HomeController extends GetxController {
     // return events[day] ?? [];
   }
 
-  // emptyCheck() async{
-  //   await getDefaultColor();
-  //   await getCurrentDay();
-  //   await getCurrentMonthMM();
-  //   await getCurrentYear();
-  //   await getCurrentDayDetail();
-  //   await getCurrentDate();
-  //   await firstCheckByDate();
-  //   if(memo == []) {
-  //     addItem();
-  //   } else{
-  //     null;
-  //   }
-  // }
-
   //컨트롤러 생성 및 삽입시 초기에 실행.
   //여기서 db 를 init 하고 고정적으로 불러와야 할 값들을 가져옴.
   //초기에 불러와야 할 값들 : ui 에 표시될 날짜들, 메모 기본 색상 등.
@@ -596,8 +583,6 @@ class HomeController extends GetxController {
     await getDayColor();
     await getCurrentMonthMMM();
     await tagInit();
-    // await emptyCheck();
-    // await eventsValueInit();
     //처음 한번 새로고침으로 메모 가져오기.
     refreshMemo();
   }

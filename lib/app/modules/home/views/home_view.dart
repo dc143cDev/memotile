@@ -1,9 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:intl/intl.dart';
 import 'package:memotile/app/global/notification.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 import '../../../global/horizontal_line.dart';
+import '../../../global/marker_tile.dart';
 import '../../../global/memo_tile.dart';
 import '../controllers/home_controller.dart';
 
@@ -19,19 +25,34 @@ class HomeView extends GetView<HomeController> {
         elevation: 0,
         centerTitle: true,
         actions: [
+          // 타일 탭 오픈.
+          Obx(
+            () => controller.dateModeOn.value == true
+                ? Container()
+                : IconButton(
+                    onPressed: () {
+                      openTileSheet();
+                    },
+                    icon: Icon(
+                      Icons.calendar_month_sharp,
+                      color: Colors.black,
+                    ),
+                  ),
+          ),
+          //앱바 검색모드로 변경.
           IconButton(
             onPressed: () {
-              notification().getNotification();
-              // Get.changeTheme(ThemeData.dark());
+              openTapSheet();
             },
             icon: Icon(
-              Icons.menu_rounded,
-              color: Colors.red,
+              Icons.search_rounded,
+              color: Colors.black,
             ),
           ),
+          //메뉴 탭 오픈.
           IconButton(
             onPressed: () {
-              openBottomSheet();
+              openTapSheet();
             },
             icon: Icon(
               Icons.menu_rounded,
@@ -77,55 +98,82 @@ class HomeView extends GetView<HomeController> {
                     ],
                   ),
                 )
-              //디폴트 모드 or 날짜모드.
-              : MaterialButton(
-                  onPressed: () async {
-                    //모드 초기화를 위해 메모 리프레쉬.
-                    await controller.refreshMemo();
-                    //Tile View 로 넘어가기 전에 memoForEvent 에 월별로 가져온 데이터 넣기.
-                    await controller.getTiles();
-                    await controller.goToDown();
-                    // await controller.eventsValueInit();
-                    controller.dateModeOn.value == true
-                        ? controller.defaultModeOn()
-                        : Get.toNamed(
-                            '/tile',
-                            arguments: {
-                              'TileMonth': controller.CurrentMonthMMM.value,
-                              'TileDay': controller.CurrentDay.value,
-                            },
-                          );
-                  },
-                  child: Container(
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: controller.dateModeOn.value == true
-                              ? Icon(
+              : Container(
+                  child: controller.dateModeOn.value == true
+                      ? MaterialButton(
+                          onPressed: () {
+                            controller.defaultModeOn();
+                            controller.refreshMemo();
+                          },
+                          child: Expanded(
+                            child: Row(
+                              children: [
+                                Icon(
                                   Icons.close,
-                                )
-                              : Icon(
-                                  Icons.arrow_back_ios_new,
                                   color: Colors.black,
                                 ),
-                        ),
-                        Expanded(
-                          child: Obx(
-                            () => controller.dateModeOn.value == true
-                                ? Icon(Icons.calendar_month)
-                                : Text(
-                                    controller.CurrentMonthMMM.value,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black,
-                                        fontSize: 15),
-                                  ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Icon(
+                                  Icons.calendar_month,
+                                  color: Colors.grey,
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
+                        )
+                      : Container(),
                 ),
+          //디폴트 모드 or 날짜모드.
+          // : MaterialButton(
+          //     onPressed: () async {
+          //       //모드 초기화를 위해 메모 리프레쉬.
+          //       await controller.refreshMemo();
+          //       //Tile View 로 넘어가기 전에 memoForEvent 에 월별로 가져온 데이터 넣기.
+          //       await controller.getTiles();
+          //       await controller.goToDown();
+          //       // await controller.eventsValueInit();
+          //       controller.dateModeOn.value == true
+          //           ? controller.defaultModeOn()
+          //           : Get.toNamed(
+          //               '/tile',
+          //               arguments: {
+          //                 'TileMonth': controller.CurrentMonthMMM.value,
+          //                 'TileDay': controller.CurrentDay.value,
+          //               },
+          //             );
+          //     },
+          //     child: Container(
+          //       child: Row(
+          //         children: [
+          //           Expanded(
+          //             child: controller.dateModeOn.value == true
+          //                 ? Icon(
+          //                     Icons.close,
+          //                   )
+          //                 : Icon(
+          //                     Icons.arrow_back_ios_new,
+          //                     color: Colors.black,
+          //                   ),
+          //           ),
+          //           Expanded(
+          //             child: Obx(
+          //               () => controller.dateModeOn.value == true
+          //                   ? Icon(Icons.calendar_month, color: Colors.grey,)
+          //                   : Text(
+          //                       controller.CurrentMonthMMM.value,
+          //                       style: TextStyle(
+          //                           fontWeight: FontWeight.bold,
+          //                           color: Colors.black,
+          //                           fontSize: 15),
+          //                     ),
+          //             ),
+          //           ),
+          //         ],
+          //       ),
+          //     ),
+          //   ),
         ),
 
         //타이틀도 leading 과 같이 모드 가변형 ui.
@@ -348,9 +396,92 @@ class HomeView extends GetView<HomeController> {
     );
   }
 
-  //바텀시트.
-  //위에서 아래 순서대로 태그 선택 기능 및 태그 커스터마이징 뷰 넘어가는 버튼/ 서칭/ 설정/ 아직 미정.
-  openBottomSheet() async {
+  //타일뷰 바텀시트.
+  openTileSheet() async {
+    //모드 초기화를 위해 메모 리프레쉬.
+    await controller.refreshMemo();
+    await controller.defaultModeOn();
+    //Tile View 로 넘어가기 전에 memoForEvent 에 월별로 가져온 데이터 넣기.
+    await controller.getTiles();
+    await controller.goToDown();
+    Get.bottomSheet(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      backgroundColor: Colors.white,
+      elevation: 0,
+      SafeArea(
+        child: Column(
+          children: [
+            Expanded(
+              child: TableCalendar(
+                calendarBuilders: CalendarBuilders(
+                    //마커 타일 빌더.
+                    //context 와 날짜(년월일시분초까지 다 표시되는 버전), event(List)를 넘겨줄수 있음.
+                    markerBuilder: (context, day, events) {
+                  //events 의 원형은 [ 단일객체 ] (length == 1) 이기때문에 두번 걸러 리스트화 해야함.
+                  //to String,
+                  String eventToString = events.toString();
+                  //jsonDecode from String to List.
+                  List stringEventToList = jsonDecode(eventToString);
+                  if (events.isNotEmpty == true) {
+                    return Center(
+                      child: MarKerTile(
+                        date: '',
+                        event: DateFormat('dd').format(day),
+                        //그렇게 리스트화된 colorValue 객체 중 하나를 ui에 넣어주기.
+                        colorList: stringEventToList,
+                        color: stringEventToList.last,
+                      ),
+                    );
+                  }
+                  return null;
+                }),
+                calendarStyle: CalendarStyle(
+                  markerDecoration: BoxDecoration(
+                    color: Colors.red,
+                  ),
+                ),
+                headerStyle: HeaderStyle(
+                  titleTextStyle: TextStyle(color: Colors.white),
+                  titleCentered: true,
+                  leftChevronVisible: false,
+                  rightChevronVisible: false,
+                  formatButtonVisible: false,
+                ),
+                eventLoader: (day) {
+                  return controller.getEvents(day);
+                },
+                focusedDay: DateTime.now(),
+                firstDay: DateTime(2010, 5, 1),
+                lastDay: DateTime(2033, 12, 31),
+                onDaySelected:
+                    (DateTime selectedDay, DateTime focusedDay) async {
+                  //DB 검색 용이성을 위해 미리 지정된 포맷으로 selectedDay 반환.
+                  await controller.goToTop();
+                  controller.selectedDay.value =
+                      DateFormat("yyyyMMdd").format(selectedDay);
+                  print('$selectedDay is selected');
+                  print('$focusedDay is focused');
+                  print(controller.selectedDay);
+                  controller.refreshMemoByDateTile(controller.selectedDay);
+                  controller.dateButtonClicked();
+                  controller.goToDown();
+                  Get.back();
+                },
+                onPageChanged: (day) {
+                  //페이지 전환할때마다 값을 지금이 몇월인지 값 넘겨주기.
+                  controller.CurrentMonthForTile.value =
+                      DateFormat('MMM').format(day);
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  //메뉴 탭 바텀시트.
+  openTapSheet() async {
     //검색버튼을 누르는 순간에 클리어를 두면 앱바 ui에 반영되지 않기에 바텀시트를 불러올때 클리어를 둠.
     controller.searchBarController.clear();
     if (controller.tagModeOn.value == true) {
@@ -760,7 +891,7 @@ class HomeView extends GetView<HomeController> {
           ),
           HorizontalLine(),
           InkWell(
-            onTap: (){},
+            onTap: () {},
             child: Container(
               width: double.infinity,
               height: 70,
@@ -788,7 +919,7 @@ class HomeView extends GetView<HomeController> {
           ),
           HorizontalLine(),
           InkWell(
-            onTap: (){},
+            onTap: () {},
             child: Container(
               width: double.infinity,
               height: 70,
