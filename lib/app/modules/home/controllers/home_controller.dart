@@ -382,19 +382,24 @@ class HomeController extends GetxController {
     //가져온 데이터의 isFirst가 false라면, 바로 삭제하고.
     //ifFirst가 true라면, 삭제와 동시에 다음 순번의 메모의 isFirst를 true로 만듦.
     final dataForCheck = await MemoHelper.getItem(id);
+    final dataForCheckToDateList = await MemoHelper.getItemsByDateToFirstCheck(
+        dataForCheck[0]['createdAt']);
     if (dataForCheck[0]['isFirst'] == 0) {
       print('dataForCheck: ${dataForCheck}');
       await MemoHelper.deleteItem(id);
+    } else if (dataForCheckToDateList.length == 1) {
+      //해당 날짜에 isFirst이자 그 메모 하나 뿐이라면, 그냥 삭제.
+      await MemoHelper.deleteItem(dataForCheck[0]['id']);
     } else {
+      //해당 날짜에 메모 데이터가 둘 이상이라는 대전제 추가.
       //ifFirst가 true라면, dataForCheck의 createdAt으로 날짜로 메모조회 메소드를 실행->
       //해당 날짜의 메모들중 dataForCheck의 id와 일치하는 아이템의 다음 순번 아이템의 index를 구함->
       //해당 index의 아이템의 isFirst를 1로 만들고 dataForCheck와 일치한 id의 아이템은 삭제.
-      final dataForCheckToDateList = await MemoHelper.getItemsByDateToFirstCheck(
-          dataForCheck[0]['createdAt']);
       //isFirst가 true인 메모는 항상 0번 인덱스이므로, 우리가 구할 그 아이템의 인덱스는 항상 1임.
       print('dataForCTDG: ${dataForCheckToDateList[1]}');
       await MemoHelper.deleteItem(dataForCheck[0]['id']);
-      await MemoHelper.updateItemForFirstCheck(dataForCheckToDateList[1]['id'], 1);
+      await MemoHelper.updateItemForFirstCheck(
+          dataForCheckToDateList[1]['id'], 1);
     }
     refreshMemo();
   }

@@ -101,7 +101,7 @@ class MarKerTile extends GetView<HomeController> {
         children: [
           Positioned(
             top: 17,
-            left: 17,
+            left: 16,
             child: Container(
               height: 30,
               width: 30,
@@ -137,7 +137,7 @@ class MarKerTile extends GetView<HomeController> {
             ),
           ),
           Positioned(
-            left: 28,
+            left: 25,
             child: Container(
               height: 30,
               width: 30,
