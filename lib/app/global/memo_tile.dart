@@ -34,30 +34,39 @@ class MemoTile extends GetView<HomeController> {
               : SizedBox(),
           //해당 날짜의 첫번째 메모라면 위에 날짜 표시줄 생성.
           isFirst == 1
-              ? Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      width: 25,
-                    ),
-                    Container(
-                      width: 200,
-                      height: 30,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[100],
-                        borderRadius: BorderRadius.circular(20),
+              ? Padding(
+                padding: const EdgeInsets.only(bottom: 15),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: 25,
                       ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(createdAt!),
-                        ],
-                      ),
-                    )
-                  ],
-                )
+                      Container(
+                        width: 200,
+                        height: 30,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[100],
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(createdAt!),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+              )
               : Container(),
+          //왜인지 타일의 텍스트가 길면 날짜 표시줄과 간격이 벌어지지 않음. 임의로 작성.
+          // text!.length >= 30
+          //     ? SizedBox(
+          //         height: 15,
+          //       )
+          //     : Container(),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.end,
