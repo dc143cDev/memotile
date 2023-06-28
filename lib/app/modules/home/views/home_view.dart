@@ -17,7 +17,7 @@ class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         //어느 화면이나 눌렀을때 텍스트 필드를 내리기 위해 Gesture Detector 감싸주기.
         controller.textFocus.unfocus();
       },
@@ -68,7 +68,8 @@ class HomeView extends GetView<HomeController> {
           leading: Obx(
             //모드에 따라 바뀌는 ui.
             //서치 모드일 경우 아이콘이, 태그 모드일 경우 색상 팔레트가 출력.
-            () => controller.searchModeOn == true || controller.tagModeOn == true
+            () => controller.searchModeOn == true ||
+                    controller.tagModeOn == true
                 ? MaterialButton(
                     onPressed: () {
                       controller.goToDown();
@@ -131,60 +132,12 @@ class HomeView extends GetView<HomeController> {
                         //디폴트 모드.
                         : Container(),
                   ),
-            //디폴트 모드 or 날짜모드.
-            // : MaterialButton(
-            //     onPressed: () async {
-            //       //모드 초기화를 위해 메모 리프레쉬.
-            //       await controller.refreshMemo();
-            //       //Tile View 로 넘어가기 전에 memoForEvent 에 월별로 가져온 데이터 넣기.
-            //       await controller.getTiles();
-            //       await controller.goToDown();
-            //       // await controller.eventsValueInit();
-            //       controller.dateModeOn.value == true
-            //           ? controller.defaultModeOn()
-            //           : Get.toNamed(
-            //               '/tile',
-            //               arguments: {
-            //                 'TileMonth': controller.CurrentMonthMMM.value,
-            //                 'TileDay': controller.CurrentDay.value,
-            //               },
-            //             );
-            //     },
-            //     child: Container(
-            //       child: Row(
-            //         children: [
-            //           Expanded(
-            //             child: controller.dateModeOn.value == true
-            //                 ? Icon(
-            //                     Icons.close,
-            //                   )
-            //                 : Icon(
-            //                     Icons.arrow_back_ios_new,
-            //                     color: Colors.black,
-            //                   ),
-            //           ),
-            //           Expanded(
-            //             child: Obx(
-            //               () => controller.dateModeOn.value == true
-            //                   ? Icon(Icons.calendar_month, color: Colors.grey,)
-            //                   : Text(
-            //                       controller.CurrentMonthMMM.value,
-            //                       style: TextStyle(
-            //                           fontWeight: FontWeight.bold,
-            //                           color: Colors.black,
-            //                           fontSize: 15),
-            //                     ),
-            //             ),
-            //           ),
-            //         ],
-            //       ),
-            //     ),
-            //   ),
           ),
 
           //타이틀도 leading 과 같이 모드 가변형 ui.
           title: Obx(
-            () => controller.tagModeOn == true || controller.searchModeOn == true
+            () => controller.tagModeOn == true ||
+                    controller.searchModeOn == true
                 ? Column(
                     children: [
                       Text(
@@ -337,7 +290,8 @@ class HomeView extends GetView<HomeController> {
                                 createdAt: controller.memo[index]['createdAt'],
                                 date: controller.memo[index]['dateData'],
                                 isFirst: controller.memo[index]['isFirst'],
-                                colorValue: controller.memo[index]['colorValue'],
+                                colorValue: controller.memo[index]
+                                    ['colorValue'],
                               );
                             },
                           ),
@@ -420,12 +374,27 @@ class HomeView extends GetView<HomeController> {
       elevation: 0,
       SafeArea(
         child: SizedBox(
-          height: 430,
+          height: 440,
           width: double.infinity,
           child: Column(
             children: [
               SizedBox(
-                height: 20,
+                height: 13,
+              ),
+              Center(
+                child: SizedBox(
+                  width: 50,
+                  height: 5,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 16,
               ),
               Expanded(
                 flex: 1,
@@ -931,62 +900,6 @@ class HomeView extends GetView<HomeController> {
             SizedBox(
               height: 20,
             ),
-            // InkWell(
-            //   onTap: () {},
-            //   child: Container(
-            //     width: double.infinity,
-            //     height: 70,
-            //     child: Padding(
-            //       padding: const EdgeInsets.all(18.0),
-            //       child: Row(
-            //         children: [
-            //           Icon(
-            //             Icons.settings,
-            //             color: Colors.grey[700],
-            //           ),
-            //           SizedBox(
-            //             width: 15,
-            //           ),
-            //           Text(
-            //             'Setting',
-            //             style: TextStyle(
-            //               color: Colors.grey[700],
-            //             ),
-            //           ),
-            //         ],
-            //       ),
-            //     ),
-            //   ),
-            // ),
-            // HorizontalLine(),
-            // InkWell(
-            //   onTap: () {},
-            //   child: Container(
-            //     width: double.infinity,
-            //     height: 70,
-            //     child: Padding(
-            //       padding: const EdgeInsets.all(18.0),
-            //       child: Row(
-            //         children: [
-            //           Icon(
-            //             Icons.info_outline,
-            //             color: Colors.grey[700],
-            //           ),
-            //           SizedBox(
-            //             width: 15,
-            //           ),
-            //           Text(
-            //             'Infomation',
-            //             style: TextStyle(
-            //               color: Colors.grey[700],
-            //             ),
-            //           ),
-            //         ],
-            //       ),
-            //     ),
-            //   ),
-            // ),
-            // HorizontalLine(),
           ],
         ),
       ),
@@ -996,7 +909,84 @@ class HomeView extends GetView<HomeController> {
   //메뉴 탭 클릭시 오픈.
   openMenuSheet() {
     Get.bottomSheet(
-      Column(),
+      Column(
+        children: [
+          SizedBox(
+            height: 13,
+          ),
+          Center(
+            child: SizedBox(
+              width: 50,
+              height: 5,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey,
+                  borderRadius: BorderRadius.circular(15),
+                ),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 16,
+          ),
+          InkWell(
+            onTap: () {},
+            child: Container(
+              width: double.infinity,
+              height: 70,
+              child: Padding(
+                padding: const EdgeInsets.all(18.0),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.settings,
+                      color: Colors.grey[700],
+                    ),
+                    SizedBox(
+                      width: 15,
+                    ),
+                    Text(
+                      'Setting',
+                      style: TextStyle(
+                        color: Colors.grey[700],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          HorizontalLine(),
+          InkWell(
+            onTap: () {},
+            child: Container(
+              width: double.infinity,
+              height: 70,
+              child: Padding(
+                padding: const EdgeInsets.all(18.0),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.info_outline,
+                      color: Colors.grey[700],
+                    ),
+                    SizedBox(
+                      width: 15,
+                    ),
+                    Text(
+                      'Infomation',
+                      style: TextStyle(
+                        color: Colors.grey[700],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          HorizontalLine(),
+        ],
+      ),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       backgroundColor: Colors.white,
       elevation: 0,
