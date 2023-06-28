@@ -323,7 +323,7 @@ class HomeController extends GetxController {
     await getCurrentDayDetail();
     final data = await MemoHelper.getItemsByDate(CurrentDayDetail.value);
     firstCheckValue.value = data;
-    print('memo refreshed by date ${firstCheckValue}');
+    // print('memo refreshed by date ${firstCheckValue}');
   }
 
   //C
@@ -375,8 +375,27 @@ class HomeController extends GetxController {
   }
 
   //D
+  //그 날의 첫번째 메모는 위에 날짜표시줄이 표기되는데, 그런 날짜표시줄이 표기된 아이템을 지우면 표시줄도 같이 지워짐.
+  //이러한 문제를 해결하기 위한 과정이 필요함.
   void deleteItem(int id) async {
-    await MemoHelper.deleteItem(id);
+    //item 삭제 전 삭제할 item의 데이터를 가져옴.
+    //가져온 데이터의 isFirst가 false라면, 바로 삭제하고.
+    //ifFirst가 true라면, 삭제와 동시에 다음 순번의 메모의 isFirst를 true로 만듦.
+    final dataForCheck = await MemoHelper.getItem(id);
+    if (dataForCheck[0]['isFirst'] == 0) {
+      print('dataForCheck: ${dataForCheck}');
+      await MemoHelper.deleteItem(id);
+    } else {
+      //ifFirst가 true라면, dataForCheck의 createdAt으로 날짜로 메모조회 메소드를 실행->
+      //해당 날짜의 메모들중 dataForCheck의 id와 일치하는 아이템의 다음 순번 아이템의 index를 구함->
+      //해당 index의 아이템의 isFirst를 1로 만들고 dataForCheck와 일치한 id의 아이템은 삭제.
+      final dataForCheckToDateList = await MemoHelper.getItemsByDateToFirstCheck(
+          dataForCheck[0]['createdAt']);
+      //isFirst가 true인 메모는 항상 0번 인덱스이므로, 우리가 구할 그 아이템의 인덱스는 항상 1임.
+      print('dataForCTDG: ${dataForCheckToDateList[1]}');
+      await MemoHelper.deleteItem(dataForCheck[0]['id']);
+      await MemoHelper.updateItemForFirstCheck(dataForCheckToDateList[1]['id'], 1);
+    }
     refreshMemo();
   }
 
