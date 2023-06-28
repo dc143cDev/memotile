@@ -40,16 +40,18 @@ class HomeController extends GetxController {
   //스크롤 아래로 내리기.
   //아이템 추가, 처음 ui 진입 시 호출됨.
   goToDown() async {
-    //비동기적인 메모 데이터를 가져온 뒤에 화면을 내려야 하기에, 딜레이를 줬음.
-    await Future.delayed(Duration(milliseconds: 100));
-    scrollController.value.animateTo(
-      scrollController.value.position.maxScrollExtent,
-      curve: Curves.easeOut,
-      //딜레이는 화면이 내려가는 애니메이션의 Duration 과 같게 해서 위화감이 없도록 함.
-      duration: const Duration(milliseconds: 100),
-    );
-
-    print('go to down');
+    //memo(리스트)에 아무런 데이터가 없으면 스크롤 컨트롤러 에러가 뜸. 때문에 조건 추가.
+    if(memo.isNotEmpty){
+      //비동기적인 메모 데이터를 가져온 뒤에 화면을 내려야 하기에, 딜레이를 줬음.
+      await Future.delayed(Duration(milliseconds: 100));
+      scrollController.value.animateTo(
+        scrollController.value.position.maxScrollExtent,
+        curve: Curves.easeOut,
+        //딜레이는 화면이 내려가는 애니메이션의 Duration 과 같게 해서 위화감이 없도록 함.
+        duration: const Duration(milliseconds: 100),
+      );
+      print('go to down');
+    }
   }
 
   goToTop() async {
