@@ -9,6 +9,7 @@ abstract class Routes {
   static const TAGS = _Paths.TAGS;
   static const CALENDAR = _Paths.CALENDAR;
   static const MEMO_CALENDAR = _Paths.MEMO_CALENDAR;
+  static const THEME = _Paths.THEME;
 }
 
 abstract class _Paths {
@@ -19,4 +20,5 @@ abstract class _Paths {
   static const TAGS = '/tags';
   static const CALENDAR = '/calendar';
   static const MEMO_CALENDAR = '/memo-calendar';
+  static const THEME = '/theme';
 }

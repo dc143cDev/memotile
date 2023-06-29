@@ -8,13 +8,14 @@ import 'app/routes/app_pages.dart';
 
 void main() async{
   await GetStorage.init();
-  WidgetsFlutterBinding.ensureInitialized();
   await notification().setup();
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(
     GetMaterialApp(
       theme: ThemeData(
         useMaterial3: true,
       ),
+      darkTheme: ThemeData.dark(),
       debugShowCheckedModeBanner: false,
       title: "Applicatin",
       initialRoute: AppPages.INITIAL,

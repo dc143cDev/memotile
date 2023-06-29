@@ -369,6 +369,8 @@ class HomeView extends GetView<HomeController> {
     //CurrentMonthForTile 의 초기 값은 '' 이므로 평소에는 타이틀에 아무 값도 나오지 않음.
     controller.CurrentMonthForTile.value = controller.CurrentMonthMMM.value;
     Get.bottomSheet(
+      enterBottomSheetDuration: Duration(milliseconds: 200),
+      exitBottomSheetDuration: Duration(milliseconds: 200),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       backgroundColor: Colors.white,
       elevation: 0,
@@ -487,6 +489,8 @@ class HomeView extends GetView<HomeController> {
       controller.refreshMemoByColor(controller.colorValue.value);
     }
     Get.bottomSheet(
+      enterBottomSheetDuration: Duration(milliseconds: 200),
+      exitBottomSheetDuration: Duration(milliseconds: 200),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(10),
@@ -909,6 +913,8 @@ class HomeView extends GetView<HomeController> {
   //메뉴 탭 클릭시 오픈.
   openMenuSheet() {
     Get.bottomSheet(
+      enterBottomSheetDuration: Duration(milliseconds: 200),
+      exitBottomSheetDuration: Duration(milliseconds: 200),
       Column(
         children: [
           SizedBox(
@@ -930,7 +936,9 @@ class HomeView extends GetView<HomeController> {
             height: 16,
           ),
           InkWell(
-            onTap: () {},
+            onTap: () {
+
+            },
             child: Container(
               width: double.infinity,
               height: 70,
@@ -939,14 +947,14 @@ class HomeView extends GetView<HomeController> {
                 child: Row(
                   children: [
                     Icon(
-                      Icons.settings,
+                      Icons.style,
                       color: Colors.grey[700],
                     ),
                     SizedBox(
                       width: 15,
                     ),
                     Text(
-                      'Setting',
+                      'Themes and Fonts',
                       style: TextStyle(
                         color: Colors.grey[700],
                       ),
@@ -974,7 +982,7 @@ class HomeView extends GetView<HomeController> {
                       width: 15,
                     ),
                     Text(
-                      'Infomation',
+                      'Infomation and Connect',
                       style: TextStyle(
                         color: Colors.grey[700],
                       ),

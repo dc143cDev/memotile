@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
-class MemoCalendarController extends GetxController {
-  //TODO: Implement MemoCalendarController
+class ThemeController extends GetxController {
+  //TODO: Implement ThemeController
 
   final count = 0.obs;
   @override
