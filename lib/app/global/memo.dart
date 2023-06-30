@@ -50,9 +50,16 @@ class MemoHelper {
     return id;
   }
 
+  //get all items
   static Future<List<Map<String, dynamic>>> getItems() async {
     final db = await MemoHelper.db();
     return db.query('memo_test21', orderBy: "id");
+  }
+
+  //get all createdAt
+  static Future<List<Map<String, dynamic>>> getItemsCreatedAt() async {
+    final db = await MemoHelper.db();
+    return db.query('memo_test21', orderBy: "id", columns: ['id', 'createdAt']);
   }
 
   static Future<List<Map<String, dynamic>>> getItem(int id) async {

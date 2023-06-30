@@ -22,9 +22,7 @@ class HomeView extends GetView<HomeController> {
         controller.textFocus.unfocus();
       },
       child: Scaffold(
-        backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: Colors.white,
           elevation: 0,
           centerTitle: true,
           actions: [
@@ -38,7 +36,6 @@ class HomeView extends GetView<HomeController> {
                       },
                       icon: Icon(
                         Icons.calendar_month_sharp,
-                        color: Colors.black,
                       ),
                     ),
             ),
@@ -49,7 +46,6 @@ class HomeView extends GetView<HomeController> {
               },
               icon: Icon(
                 Icons.search_rounded,
-                color: Colors.black,
               ),
             ),
             //메뉴 탭 오픈.
@@ -59,7 +55,6 @@ class HomeView extends GetView<HomeController> {
               },
               icon: Icon(
                 Icons.menu_rounded,
-                color: Colors.black,
               ),
             ),
           ],
@@ -87,7 +82,6 @@ class HomeView extends GetView<HomeController> {
                           child: controller.searchModeOn.value == true
                               ? Icon(
                                   Icons.search_rounded,
-                                  color: Colors.black,
                                 )
                               //태그모드.
                               : Container(
@@ -116,14 +110,12 @@ class HomeView extends GetView<HomeController> {
                                 children: [
                                   Icon(
                                     Icons.close,
-                                    color: Colors.black,
                                   ),
                                   SizedBox(
                                     width: 10,
                                   ),
                                   Icon(
                                     Icons.calendar_month,
-                                    color: Colors.grey,
                                   ),
                                 ],
                               ),
@@ -144,7 +136,6 @@ class HomeView extends GetView<HomeController> {
                         //일
                         controller.CurrentDay.value,
                         style: TextStyle(
-                            color: Colors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.bold),
                       ),
@@ -176,7 +167,6 @@ class HomeView extends GetView<HomeController> {
                         //일
                         controller.CurrentDay.value,
                         style: TextStyle(
-                            color: Colors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.bold),
                       ),
@@ -194,7 +184,7 @@ class HomeView extends GetView<HomeController> {
                               //요일
                               controller.CurrentDayOf.value,
                               style: TextStyle(
-                                color: Color(controller.ssDayColorValue.value),
+                                // color: Color(controller.ssDayColorValue.value),
                                 fontSize: 12,
                                 fontWeight: FontWeight.w700,
                               ),
@@ -280,6 +270,8 @@ class HomeView extends GetView<HomeController> {
                         flex: 9,
                         child: Obx(
                           () => ListView.builder(
+                            reverse: false,
+                            physics: AlwaysScrollableScrollPhysics(),
                             controller: controller.scrollController.value,
                             itemCount: controller.memo.length,
                             itemBuilder: (context, index) {
@@ -372,7 +364,7 @@ class HomeView extends GetView<HomeController> {
       enterBottomSheetDuration: Duration(milliseconds: 200),
       exitBottomSheetDuration: Duration(milliseconds: 200),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      backgroundColor: Colors.white,
+      backgroundColor: Get.isDarkMode? Colors.black :Colors.white,
       elevation: 0,
       SafeArea(
         child: SizedBox(
@@ -497,7 +489,7 @@ class HomeView extends GetView<HomeController> {
           topRight: Radius.circular(10),
         ),
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: Get.isDarkMode? Colors.black :Colors.white,
       elevation: 0,
       SizedBox(
         height: 340,
@@ -915,6 +907,9 @@ class HomeView extends GetView<HomeController> {
     Get.bottomSheet(
       enterBottomSheetDuration: Duration(milliseconds: 200),
       exitBottomSheetDuration: Duration(milliseconds: 200),
+      backgroundColor: Get.isDarkMode? Colors.black :Colors.white,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      elevation: 0,
       Column(
         children: [
           SizedBox(
@@ -936,8 +931,10 @@ class HomeView extends GetView<HomeController> {
             height: 16,
           ),
           InkWell(
-            onTap: () {
-
+            onTap: () async{
+              //바텀시트 내리고 테마 뷰로 이동.
+              Get.back();
+              Get.toNamed('/theme');
             },
             child: Container(
               width: double.infinity,
@@ -995,9 +992,6 @@ class HomeView extends GetView<HomeController> {
           HorizontalLine(),
         ],
       ),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      backgroundColor: Colors.white,
-      elevation: 0,
     );
   }
 }

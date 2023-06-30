@@ -1,9 +1,8 @@
 import 'package:get/get.dart';
 
 class ThemeController extends GetxController {
-  //TODO: Implement ThemeController
 
-  final count = 0.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -18,6 +17,4 @@ class ThemeController extends GetxController {
   void onClose() {
     super.onClose();
   }
-
-  void increment() => count.value++;
 }

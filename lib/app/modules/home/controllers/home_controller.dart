@@ -8,7 +8,7 @@ import '../../../global/memo.dart';
 class HomeController extends GetxController {
   //set up part.
 
-  //가장 중요한 변수. 여기에 모든 db 의 data 가 담김.
+  //가장 중요한 변수. 여기에 모든 db 의 data 가 담김.2
   //실질적 데이터인 MemoHelper 에서 내려온 data 변수가 ui 에 표시되기 위해 여기에 담김.
   RxList memo = [].obs;
 
@@ -36,12 +36,14 @@ class HomeController extends GetxController {
 
   //scroll control.
   var scrollController = ScrollController().obs;
+  var isLoading = true.obs;
+  var hasMore = false.obs;
 
   //스크롤 아래로 내리기.
   //아이템 추가, 처음 ui 진입 시 호출됨.
   goToDown() async {
     //memo(리스트)에 아무런 데이터가 없으면 스크롤 컨트롤러 에러가 뜸. 때문에 조건 추가.
-    if(memo.isNotEmpty){
+    if (memo.isNotEmpty) {
       //비동기적인 메모 데이터를 가져온 뒤에 화면을 내려야 하기에, 딜레이를 줬음.
       await Future.delayed(Duration(milliseconds: 100));
       scrollController.value.animateTo(
@@ -66,9 +68,6 @@ class HomeController extends GetxController {
 
     print('go to Top');
   }
-
-  //로딩.
-  RxBool isLoading = true.obs;
 
   //상세 페이지로 이동.
   //홈 화면의 메모 타일의 데이터가 상세 페이지로 옮겨지는 과정 - 2.
@@ -206,6 +205,17 @@ class HomeController extends GetxController {
     Color(0xffe9eaee) // light gray
   ];
 
+  //color part 다크모드.
+  RxInt darkModeDateIndicatorColor = Colors.grey.value.obs;
+  RxInt lightModeDateIndicatorColor = Colors.white.value.obs;
+
+  darkModeOn() {
+    // print('ddI: ${darkModeDateIndicatorColor.value}');
+    Get.changeTheme(ThemeData.dark());
+    // darkModeDateIndicatorColor.value = Colors.grey.value;
+    // print('ddI: ${darkModeDateIndicatorColor.value}');
+  }
+
   //앱 시작시 초기 컬러 가져오기.
   getDefaultColor() {
     colorValue.value = whiteValue;
@@ -263,10 +273,17 @@ class HomeController extends GetxController {
   //MemoHelper 에서 아이템을 추가하거나 업데이트하면 실행됨.
   //최상단의 memo RxList 를 db 의 데이터를 가져온 data 내부 변수로 저장함.
   //실질적 db 데이터인 data = ui 에 표시되기 위한 데이터 List 인 memo.
+
+  //infinitiScroll updata로 역할 변경.
+  //initKeyList의 마지막 인덱스의 데이터를 가져와 넣어줌.
   refreshMemo() async {
-    final data = await MemoHelper.getItems();
-    memo.value = data;
-    isLoading.value = false;
+    final data = await MemoHelper.getItemsByDate(initKeyList.last);
+    //메모가 중복으로 add 되는걸 막기 위해 우선 비우기.
+    memo.value = [];
+    memo.addAll(data);
+    // isLoading.value = false;
+    goToDown();
+    print('refresh data: ${data}');
     print('memo refreshed');
   }
 
@@ -597,6 +614,48 @@ class HomeController extends GetxController {
   }
 
   //컨트롤러 생성 및 삽입시 초기에 실행.
+  //
+  //최초 1회 컨트롤러 init시 모든 데이터 날짜 키 가져오기.
+  RxList initDataList = [].obs;
+  RxList initKeyList = [].obs;
+  final Map<String, List<dynamic>> initKeyRaw = {};
+
+  //위의 getTiles와 동일한 메커니즘.
+  //다만 getTiles는 현재 달에 해당되는 데이터만 가져오고, 이건 모든 데이터를 가져옴.
+  //최적화를 위해 이것도 달별로 가져올까 고민중. 아직은 보류.
+  firstInitGetDataKey() async {
+    final data = await MemoHelper.getItemsCreatedAt();
+    initDataList.value = data;
+    initDataList.forEach((element) {
+      initKeyRaw[element['createdAt']] = [element['id']];
+    });
+    //모든 데이터에서 날짜 키 정보만 추산한 initKeyList는 infinityScroll 기능을 위해 쓰임.
+    //스크롤을 위로 올릴때마다 initKeyList의 -1 index의 데이터를 가져와 memo list에 add 하는 식.
+    print('data::: ${data}');
+    initKeyList.value = initKeyRaw.keys.toList();
+    print('initKeyList: ${initKeyList}');
+  }
+
+  //스크롤을 맨 위로 올렸을때 아이템 가져오기.
+  addPatchData() async {
+    final prevDataLenght = initKeyList.length.toInt() - 2;
+    final prevDataLenghtToCheck = initKeyList[prevDataLenght];
+    final data = await MemoHelper.getItemsByDate(initKeyList[prevDataLenght]);
+    //리스트의 첫번째에 데이터 삽입.
+    //중복 add를 방지하기 위한 장치
+    //memo 리스트의 첫번째 아이템의 createdAt과 add할 데이터의 createdAt이 같으면 add 안됨.
+    if (memo[0]['createdAt'] == initKeyList[prevDataLenght]) {
+      null;
+    } else {
+      memo.insertAll(0, data);
+    }
+    //
+    // print('prevL: ${prevDataLenght}');
+    print('prevLC: ${prevDataLenghtToCheck}');
+    // print('prev data: ${data}');
+    // print('memo0: ${memo[0]['createdAt']}');
+  }
+
   //여기서 db 를 init 하고 고정적으로 불러와야 할 값들을 가져옴.
   //초기에 불러와야 할 값들 : ui 에 표시될 날짜들, 메모 기본 색상 등.
   @override
@@ -612,6 +671,15 @@ class HomeController extends GetxController {
     await getDayColor();
     await getCurrentMonthMMM();
     await tagInit();
+    await firstInitGetDataKey();
+    scrollController.value.addListener(() async {
+      //offset이 0보다 낮아지면(화면이 위로 오버스크롤되면) 데이터 불러오기.
+
+      if (-100 >= scrollController.value.offset) {
+        await addPatchData();
+        print('sc');
+      }
+    });
     //처음 한번 새로고침으로 메모 가져오기.
     refreshMemo();
   }

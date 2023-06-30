@@ -13,9 +13,12 @@ void main() async{
   runApp(
     GetMaterialApp(
       theme: ThemeData(
+        iconTheme: IconThemeData(color: Colors.black),
         useMaterial3: true,
       ),
-      darkTheme: ThemeData.dark(),
+      darkTheme: ThemeData.dark(
+
+      ),
       debugShowCheckedModeBanner: false,
       title: "Applicatin",
       initialRoute: AppPages.INITIAL,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 
@@ -35,8 +36,8 @@ class MemoTile extends GetView<HomeController> {
           //해당 날짜의 첫번째 메모라면 위에 날짜 표시줄 생성.
           isFirst == 1
               ? Padding(
-                padding: const EdgeInsets.only(bottom: 15),
-                child: Row(
+                  padding: const EdgeInsets.only(bottom: 15),
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -47,19 +48,20 @@ class MemoTile extends GetView<HomeController> {
                         width: 200,
                         height: 30,
                         decoration: BoxDecoration(
-                          color: Colors.grey[100],
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(createdAt!),
+                            Text(
+                              createdAt!,
+                            ),
                           ],
                         ),
-                      )
+                      ),
                     ],
                   ),
-              )
+                )
               : Container(),
           //왜인지 타일의 텍스트가 길면 날짜 표시줄과 간격이 벌어지지 않음. 임의로 작성.
           // text!.length >= 30
@@ -95,10 +97,9 @@ class MemoTile extends GetView<HomeController> {
                         decoration: BoxDecoration(
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.grey.withOpacity(0.7),
-                              blurRadius: 5.0,
+                              blurRadius: 0.1,
                               spreadRadius: 0.0,
-                              offset: Offset(0, 4),
+                              offset: Offset(0, 1),
                             )
                           ],
                           borderRadius: BorderRadius.circular(8),
@@ -106,7 +107,10 @@ class MemoTile extends GetView<HomeController> {
                         ),
                         child: Text(
                           text!,
-                          style: TextStyle(fontWeight: FontWeight.w600),
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black,
+                          ),
                         ),
                       ),
                     ],

@@ -23,7 +23,6 @@ class MemoDetailView extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return Obx(
       () => Scaffold(
-        backgroundColor: Colors.white,
         appBar: AppBar(
           actions: [
             IconButton(
