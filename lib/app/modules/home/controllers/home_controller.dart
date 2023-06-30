@@ -277,6 +277,8 @@ class HomeController extends GetxController {
   //infinitiScroll updata로 역할 변경.
   //initKeyList의 마지막 인덱스의 데이터를 가져와 넣어줌.
   refreshMemo() async {
+    minusValue.value = 1;
+    await firstInitGetDataKey();
     final data = await MemoHelper.getItemsByDate(initKeyList.last);
     //메모가 중복으로 add 되는걸 막기 위해 우선 비우기.
     memo.value = [];
@@ -637,14 +639,19 @@ class HomeController extends GetxController {
   }
 
   //스크롤을 맨 위로 올렸을때 아이템 가져오기.
+  RxInt minusValue = 1.obs;
+
   addPatchData() async {
-    final prevDataLenght = initKeyList.length.toInt() - 2;
+    // final minusKey = initKeyList.length.toInt() - 1;
+    await minusValue++;
+    final prevDataLenght = initKeyList.length.toInt() - minusValue.value;
     final prevDataLenghtToCheck = initKeyList[prevDataLenght];
     final data = await MemoHelper.getItemsByDate(initKeyList[prevDataLenght]);
     //리스트의 첫번째에 데이터 삽입.
     //중복 add를 방지하기 위한 장치
     //memo 리스트의 첫번째 아이템의 createdAt과 add할 데이터의 createdAt이 같으면 add 안됨.
     if (memo[0]['createdAt'] == initKeyList[prevDataLenght]) {
+      print('has no more');
       null;
     } else {
       memo.insertAll(0, data);
@@ -676,8 +683,9 @@ class HomeController extends GetxController {
       //offset이 0보다 낮아지면(화면이 위로 오버스크롤되면) 데이터 불러오기.
 
       if (-100 >= scrollController.value.offset) {
-        await addPatchData();
-        print('sc');
+        await firstInitGetDataKey();
+        addPatchData();
+        // print('sc');
       }
     });
     //처음 한번 새로고침으로 메모 가져오기.

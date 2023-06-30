@@ -841,7 +841,7 @@ class HomeView extends GetView<HomeController> {
               padding: const EdgeInsets.all(13.0),
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.grey[200],
+                  color: Get.isDarkMode? Colors.grey[800] :Colors.grey[200],
                   borderRadius: BorderRadius.circular(15),
                 ),
                 child: Padding(
@@ -869,7 +869,7 @@ class HomeView extends GetView<HomeController> {
                             hintStyle: TextStyle(
                               fontWeight: FontWeight.w400,
                               fontSize: 15,
-                              color: Colors.grey[400],
+                              color: Get.isDarkMode? Colors.grey[200] :Colors.grey[800],
                             ),
                             border: InputBorder.none,
                           ),
