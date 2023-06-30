@@ -642,8 +642,13 @@ class HomeController extends GetxController {
   RxInt minusValue = 1.obs;
 
   addPatchData() async {
-    // final minusKey = initKeyList.length.toInt() - 1;
-    await minusValue++;
+    //minusValue를 증가시켜 계속 올려도 데이터 인덱스를 찾을수 있도록 함.
+    //다만 minusValue가 데이터의 총 인덱스보다 높아지면 에러가 뜨기에, 조건을 추가.
+    if(minusValue.value == initKeyList.length){
+      minusValue.value = initKeyList.length;
+    }else{
+      minusValue++;
+    }
     final prevDataLenght = initKeyList.length.toInt() - minusValue.value;
     final prevDataLenghtToCheck = initKeyList[prevDataLenght];
     final data = await MemoHelper.getItemsByDate(initKeyList[prevDataLenght]);
