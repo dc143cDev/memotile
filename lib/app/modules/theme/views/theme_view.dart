@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:memotile/app/modules/home/controllers/home_controller.dart';
 
-import '../controllers/theme_controller.dart';
-
-class ThemeView extends GetView<ThemeController> {
+class ThemeView extends GetView<HomeController> {
   const ThemeView({Key? key}) : super(key: key);
 
   @override
@@ -20,14 +18,31 @@ class ThemeView extends GetView<ThemeController> {
           children: [
             TextButton(
               onPressed: () async {
-
-                await HomeController().darkModeOn();
+                Get.changeTheme(ThemeData.dark());
+                controller.isDarkModeOn.value = true;
               },
               child: Text('get dark'),
             ),
             TextButton(
-              onPressed: () {
-                Get.changeTheme(ThemeData());
+              onPressed: () async {
+                controller.isDarkModeOn.value = false;
+                Get.changeTheme(
+                  ThemeData(
+                    useMaterial3: true,
+                    primaryColor: Colors.black,
+                    // textTheme: TextTheme(
+                    //   bodyText1: TextStyle(color: Colors.black),
+                    // ),
+                    // backgroundColor: Colors.white,
+                    // appBarTheme: AppBarTheme(
+                    //   backgroundColor: Colors.grey[100],
+                    //   titleTextStyle: TextStyle(color: Colors.black),
+                    // ),
+                    iconButtonTheme: IconButtonThemeData(),
+                    primaryIconTheme: IconThemeData(color: Colors.black),
+                    iconTheme: IconThemeData(color: Colors.black),
+                  ),
+                );
               },
               child: Text('get right'),
             ),

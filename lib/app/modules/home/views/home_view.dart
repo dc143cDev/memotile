@@ -22,6 +22,61 @@ class HomeView extends GetView<HomeController> {
         controller.textFocus.unfocus();
       },
       child: Scaffold(
+        floatingActionButton: Obx(
+          () => Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              FloatingActionButton.small(
+                heroTag: true,
+                child: Container(
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                    color: Colors.grey.withOpacity(0.8),
+                  ),
+                  child: controller.isEditMode.value == true
+                      ? Icon(Icons.close, color: Colors.black,)
+                      : Icon(Icons.edit, color:  Colors.black,),
+                ),
+                backgroundColor: Colors.transparent,
+                onPressed: () {
+                  if (controller.isEditMode.value == true) {
+                    controller.isEditMode.value = false;
+                  } else {
+                    controller.isEditMode.value = true;
+                  }
+                },
+              ),
+              //스크롤 컨트롤러 offset이 맨 아래가 아니라면 아래로 내리기 버튼을 활성화함.
+              controller.goToDownButtonDontShow.value == true
+                  ? Container()
+                  : Padding(
+                      padding: const EdgeInsets.only(top: 5),
+                      child: FloatingActionButton.small(
+                        child: Container(
+                          width: 50,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50),
+                            color: Colors.grey.withOpacity(0.8),
+                          ),
+                          child: Icon(Icons.arrow_downward_sharp, color: Colors.black,),
+                        ),
+                        backgroundColor: Colors.transparent,
+                        onPressed: () {
+                          controller.goToDown();
+                        },
+                      ),
+                    ),
+              SizedBox(
+                height: 60,
+              ),
+              Container(),
+            ],
+          ),
+        ),
         appBar: AppBar(
           elevation: 0,
           centerTitle: true,
@@ -128,69 +183,67 @@ class HomeView extends GetView<HomeController> {
 
           //타이틀도 leading 과 같이 모드 가변형 ui.
           title: Obx(
-            () => controller.tagModeOn == true ||
-                    controller.searchModeOn == true
-                ? Column(
-                    children: [
-                      Text(
-                        //일
-                        controller.CurrentDay.value,
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold),
+            () =>
+                controller.tagModeOn == true || controller.searchModeOn == true
+                    ? Column(
+                        children: [
+                          Text(
+                            //일
+                            controller.CurrentDay.value,
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                          controller.searchModeOn.value == true
+                              ? Text(
+                                  //서치모드
+                                  controller.searchBarController.text,
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                )
+                              : Text(
+                                  //태그모드
+                                  controller.tag.read(controller.nowTag.value),
+                                  style: TextStyle(
+                                    color: Color(controller.colorValue.value),
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                        ],
+                      )
+                    //디폴트 모드 or 날짜모드.
+                    : Column(
+                        children: [
+                          Text(
+                            //일
+                            controller.CurrentDay.value,
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                          controller.dateModeOn.value == true
+                              ? Text(
+                                  //요일
+                                  controller.selectedDay.value,
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                )
+                              : Text(
+                                  //요일
+                                  controller.CurrentDayOf.value,
+                                  style: TextStyle(
+                                    // color: Color(controller.ssDayColorValue.value),
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                        ],
                       ),
-                      controller.searchModeOn.value == true
-                          ? Text(
-                              //서치모드
-                              controller.searchBarController.text,
-                              style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            )
-                          : Text(
-                              //태그모드
-                              controller.tag.read(controller.nowTag.value),
-                              style: TextStyle(
-                                color: Color(controller.colorValue.value),
-                                fontSize: 12,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                    ],
-                  )
-                //디폴트 모드 or 날짜모드.
-                : Column(
-                    children: [
-                      Text(
-                        //일
-                        controller.CurrentDay.value,
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      controller.dateModeOn.value == true
-                          ? Text(
-                              //요일
-                              controller.selectedDay.value,
-                              style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            )
-                          : Text(
-                              //요일
-                              controller.CurrentDayOf.value,
-                              style: TextStyle(
-                                // color: Color(controller.ssDayColorValue.value),
-                                fontSize: 12,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                    ],
-                  ),
           ),
         ),
         body: Obx(
@@ -364,7 +417,7 @@ class HomeView extends GetView<HomeController> {
       enterBottomSheetDuration: Duration(milliseconds: 200),
       exitBottomSheetDuration: Duration(milliseconds: 200),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      backgroundColor: Get.isDarkMode? Colors.black :Colors.white,
+      backgroundColor: Get.isDarkMode ? Colors.black : Colors.white,
       elevation: 0,
       SafeArea(
         child: SizedBox(
@@ -489,7 +542,7 @@ class HomeView extends GetView<HomeController> {
           topRight: Radius.circular(10),
         ),
       ),
-      backgroundColor: Get.isDarkMode? Colors.black :Colors.white,
+      backgroundColor: Get.isDarkMode ? Colors.black : Colors.white,
       elevation: 0,
       SizedBox(
         height: 340,
@@ -841,7 +894,7 @@ class HomeView extends GetView<HomeController> {
               padding: const EdgeInsets.all(13.0),
               child: Container(
                 decoration: BoxDecoration(
-                  color: Get.isDarkMode? Colors.grey[800] :Colors.grey[200],
+                  color: Get.isDarkMode ? Colors.grey[800] : Colors.grey[200],
                   borderRadius: BorderRadius.circular(15),
                 ),
                 child: Padding(
@@ -869,7 +922,9 @@ class HomeView extends GetView<HomeController> {
                             hintStyle: TextStyle(
                               fontWeight: FontWeight.w400,
                               fontSize: 15,
-                              color: Get.isDarkMode? Colors.grey[200] :Colors.grey[800],
+                              color: Get.isDarkMode
+                                  ? Colors.grey[200]
+                                  : Colors.grey[800],
                             ),
                             border: InputBorder.none,
                           ),
@@ -907,7 +962,7 @@ class HomeView extends GetView<HomeController> {
     Get.bottomSheet(
       enterBottomSheetDuration: Duration(milliseconds: 200),
       exitBottomSheetDuration: Duration(milliseconds: 200),
-      backgroundColor: Get.isDarkMode? Colors.black :Colors.white,
+      backgroundColor: Get.isDarkMode ? Colors.black : Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       elevation: 0,
       Column(
@@ -931,7 +986,7 @@ class HomeView extends GetView<HomeController> {
             height: 16,
           ),
           InkWell(
-            onTap: () async{
+            onTap: () async {
               //바텀시트 내리고 테마 뷰로 이동.
               Get.back();
               Get.toNamed('/theme');

@@ -25,101 +25,107 @@ class MemoTile extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    final memo = Flexible(
-      child: Column(
-        children: [
-          isFirst == 1
-              ? SizedBox(
-                  height: 5,
-                )
-              : SizedBox(),
-          //해당 날짜의 첫번째 메모라면 위에 날짜 표시줄 생성.
-          isFirst == 1
-              ? Padding(
-                  padding: const EdgeInsets.only(bottom: 15),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        width: 25,
-                      ),
-                      Container(
-                        width: 200,
-                        height: 30,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
+    final memo = Obx(
+      () => Flexible(
+        child: Column(
+          children: [
+            isFirst == 1
+                ? SizedBox(
+                    height: 5,
+                  )
+                : SizedBox(),
+            //해당 날짜의 첫번째 메모라면 위에 날짜 표시줄 생성.
+            isFirst == 1
+                ? Padding(
+                    padding: const EdgeInsets.only(bottom: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: 25,
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              createdAt!,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              : Container(),
-          //왜인지 타일의 텍스트가 길면 날짜 표시줄과 간격이 벌어지지 않음. 임의로 작성.
-          // text!.length >= 30
-          //     ? SizedBox(
-          //         height: 15,
-          //       )
-          //     : Container(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                    left: 15, top: 20, right: 7, bottom: 12),
-                child: Text(
-                  date!,
-                  style: TextStyle(color: Colors.grey),
-                ),
-              ),
-              Flexible(
-                child: InkWell(
-                  onLongPress: () {
-                    controller.colorValue.value = colorValue!;
-                    //홈 화면의 메모 타일의 데이터가 상세 페이지로 옮겨지는 과정 - 1.
-                    //이 파트에서 goToDetail 로 네가지 arguments 를 전달.
-                    print(createdAt);
-                    controller.goToDetail(id!, text!, date!, colorValue!);
-                  },
-                  child: Stack(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.all(14),
-                        decoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                              blurRadius: 0.1,
-                              spreadRadius: 0.0,
-                              offset: Offset(0, 1),
-                            )
-                          ],
-                          borderRadius: BorderRadius.circular(8),
-                          color: Color(colorValue!),
-                        ),
-                        child: Text(
-                          text!,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black,
+                        Container(
+                          width: 200,
+                          height: 30,
+                          decoration: BoxDecoration(
+                            color: controller.isDarkModeOn.value == true
+                                ? Colors.grey[800]
+                                : Colors.grey[200],
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                createdAt!,
+                              ),
+                            ],
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
+                  )
+                : Container(),
+            //왜인지 타일의 텍스트가 길면 날짜 표시줄과 간격이 벌어지지 않음. 임의로 작성.
+            // text!.length >= 30
+            //     ? SizedBox(
+            //         height: 15,
+            //       )
+            //     : Container(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(
+                      left: 15, top: 20, right: 7, bottom: 12),
+                  child: Text(
+                    date!,
+                    style: TextStyle(color: Colors.grey),
                   ),
                 ),
-              ),
-            ],
-          ),
-        ],
+                Flexible(
+                  child: InkWell(
+                    onLongPress: () {
+                      controller.colorValue.value = colorValue!;
+                      //홈 화면의 메모 타일의 데이터가 상세 페이지로 옮겨지는 과정 - 1.
+                      //이 파트에서 goToDetail 로 네가지 arguments 를 전달.
+                      print(createdAt);
+                      controller.goToDetail(id!, text!, date!, colorValue!);
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(14),
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            blurRadius: 0.1,
+                            spreadRadius: 0.0,
+                            offset: Offset(0, 1),
+                          )
+                        ],
+                        borderRadius: BorderRadius.circular(8),
+                        color: Color(colorValue!),
+                      ),
+                      child: Text(
+                        text!,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                controller.isEditMode.value == true
+                    ? Flexible(
+                        child: Text('t'),
+                      )
+                    : Container(),
+              ],
+            ),
+          ],
+        ),
       ),
     );
     return Form(

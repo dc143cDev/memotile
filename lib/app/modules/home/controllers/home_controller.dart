@@ -18,6 +18,9 @@ class HomeController extends GetxController {
   //focus node.
   FocusNode textFocus = FocusNode();
 
+  //edit 버튼 클릭시.
+  var isEditMode = false.obs;
+
   //insert here.
   TextEditingController memoController = TextEditingController();
 
@@ -38,6 +41,7 @@ class HomeController extends GetxController {
   var scrollController = ScrollController().obs;
   var isLoading = true.obs;
   var hasMore = false.obs;
+  var goToDownButtonDontShow = true.obs;
 
   //스크롤 아래로 내리기.
   //아이템 추가, 처음 ui 진입 시 호출됨.
@@ -46,11 +50,17 @@ class HomeController extends GetxController {
     if (memo.isNotEmpty) {
       //비동기적인 메모 데이터를 가져온 뒤에 화면을 내려야 하기에, 딜레이를 줬음.
       await Future.delayed(Duration(milliseconds: 100));
-      scrollController.value.animateTo(
+      await scrollController.value.animateTo(
         scrollController.value.position.maxScrollExtent,
         curve: Curves.easeOut,
         //딜레이는 화면이 내려가는 애니메이션의 Duration 과 같게 해서 위화감이 없도록 함.
         duration: const Duration(milliseconds: 100),
+      );
+      //끝까지 안내려가는걸 방지하여 100ms의 애니메이션 후 다시 한번 내리기.
+      scrollController.value.animateTo(
+        scrollController.value.position.maxScrollExtent,
+        curve: Curves.easeOut,
+        duration: const Duration(milliseconds: 1),
       );
       print('go to down');
     }
@@ -206,12 +216,14 @@ class HomeController extends GetxController {
   ];
 
   //color part 다크모드.
+  var isDarkModeOn = false.obs;
   RxInt darkModeDateIndicatorColor = Colors.grey.value.obs;
   RxInt lightModeDateIndicatorColor = Colors.white.value.obs;
 
   darkModeOn() {
     // print('ddI: ${darkModeDateIndicatorColor.value}');
     Get.changeTheme(ThemeData.dark());
+    isDarkModeOn.value = true;
     // darkModeDateIndicatorColor.value = Colors.grey.value;
     // print('ddI: ${darkModeDateIndicatorColor.value}');
   }
@@ -644,9 +656,9 @@ class HomeController extends GetxController {
   addPatchData() async {
     //minusValue를 증가시켜 계속 올려도 데이터 인덱스를 찾을수 있도록 함.
     //다만 minusValue가 데이터의 총 인덱스보다 높아지면 에러가 뜨기에, 조건을 추가.
-    if(minusValue.value == initKeyList.length){
+    if (minusValue.value == initKeyList.length) {
       minusValue.value = initKeyList.length;
-    }else{
+    } else {
       minusValue++;
     }
     final prevDataLenght = initKeyList.length.toInt() - minusValue.value;
@@ -684,15 +696,27 @@ class HomeController extends GetxController {
     await getCurrentMonthMMM();
     await tagInit();
     await firstInitGetDataKey();
-    scrollController.value.addListener(() async {
-      //offset이 0보다 낮아지면(화면이 위로 오버스크롤되면) 데이터 불러오기.
-
-      if (-100 >= scrollController.value.offset) {
-        await firstInitGetDataKey();
-        addPatchData();
-        // print('sc');
-      }
-    });
+    try {
+      scrollController.value.addListener(() async {
+        //아래로 내리기 버튼 활성화 감지를 위한 조건문.
+        //현재 오프셋이 스크롤 컨트롤러 최대값보다 적다면 버튼을 활성화시킴.
+        if (scrollController.value.offset <
+            scrollController.value.position.maxScrollExtent) {
+          goToDownButtonDontShow.value = false;
+          // print('${goToDownButtonDontShow.value}');
+        } else {
+          goToDownButtonDontShow.value = true;
+        }
+        //offset이 0보다 낮아지면(화면이 위로 오버스크롤되면) 데이터 불러오기.
+        if (-100 >= scrollController.value.offset) {
+          await firstInitGetDataKey();
+          addPatchData();
+          // print('sc');
+        }
+      });
+    } catch (e, s) {
+      print(s);
+    }
     //처음 한번 새로고침으로 메모 가져오기.
     refreshMemo();
   }

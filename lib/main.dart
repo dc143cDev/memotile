@@ -12,12 +12,14 @@ void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
     GetMaterialApp(
-      theme: ThemeData(
-        iconTheme: IconThemeData(color: Colors.black),
+      theme: ThemeData.light(
+        // primaryColor: Colors.white,
+        // appBarTheme: AppBarTheme(backgroundColor: Colors.white),
+        // iconTheme: IconThemeData(color: Colors.black),
         useMaterial3: true,
       ),
       darkTheme: ThemeData.dark(
-
+        useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
       title: "Applicatin",
