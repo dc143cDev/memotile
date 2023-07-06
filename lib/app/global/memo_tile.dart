@@ -102,16 +102,16 @@ class MemoTile extends GetView<HomeController> {
                           decoration: BoxDecoration(
                             boxShadow: [
                               BoxShadow(
-                                blurRadius: 0.2,
-                                spreadRadius: 0.1,
-                                offset: Offset(0, 2),
+                                blurRadius: 0.1,
+                                spreadRadius: 0.0,
+                                offset: Offset(0, 1),
                                 // color: colorValue == 4294967295
                                 //     ? Colors.grey
                                 //     : Color(colorValue!),
                               )
                             ],
                             borderRadius: BorderRadius.circular(8),
-                            color: Colors.white,
+                            color: Color(colorValue!),
                           ),
                           child: Text(
                             text!,
@@ -121,17 +121,17 @@ class MemoTile extends GetView<HomeController> {
                             ),
                           ),
                         ),
-                        Container(
-                          width: 30,
-                          height: 6,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(8),
-                              bottomLeft: Radius.circular(15),
-                            ),
-                            color: Color(colorValue!),
-                          ),
-                        ),
+                        // Container(
+                        //   width: 30,
+                        //   height: 6,
+                        //   decoration: BoxDecoration(
+                        //     borderRadius: BorderRadius.only(
+                        //       topRight: Radius.circular(8),
+                        //       bottomLeft: Radius.circular(15),
+                        //     ),
+                        //     color: Color(colorValue!),
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),

@@ -201,14 +201,14 @@ class HomeController extends GetxController {
   int plumValue = Color(0xffd7aefc).value;
 
   //new palette
-  int blueValue = Color(0xff4584ea).value;
-  int redredValue = Color(0xfff12038).value;
-  int aquaValue = Color(0xff45cabf).value;
-  int greenValue = Color(0xff52b135).value;
-  int pinkValue = Color(0xffee2fb7).value;
-  int orangeValue = Color(0xfff37b31).value;
-  int purpleValue = Color(0xff8a50e2).value;
-  int mustardValue = Color(0xfff3d544).value;
+  int blueValue = Color(0xff86b1f7).value;
+  int redredValue = Color(0xfffa6173).value;
+  int aquaValue = Color(0xffb8f2ed).value;
+  int greenValue = Color(0xff98e381).value;
+  int pinkValue = Color(0xfff5a6de).value;
+  int orangeValue = Color(0xfffca772).value;
+  int purpleValue = Color(0xffbb9beb).value;
+  int mustardValue = Color(0xfff0dc7a).value;
 
   final colors = [
     // Color(0xffffffff), // classic white
