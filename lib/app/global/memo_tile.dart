@@ -94,26 +94,45 @@ class MemoTile extends GetView<HomeController> {
                       print(createdAt);
                       controller.goToDetail(id!, text!, date!, colorValue!);
                     },
-                    child: Container(
-                      padding: EdgeInsets.all(14),
-                      decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            blurRadius: 0.1,
-                            spreadRadius: 0.0,
-                            offset: Offset(0, 1),
-                          )
-                        ],
-                        borderRadius: BorderRadius.circular(8),
-                        color: Color(colorValue!),
-                      ),
-                      child: Text(
-                        text!,
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black,
+                    child: Stack(
+                      alignment: Alignment.topRight,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(14),
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                blurRadius: 0.2,
+                                spreadRadius: 0.1,
+                                offset: Offset(0, 2),
+                                // color: colorValue == 4294967295
+                                //     ? Colors.grey
+                                //     : Color(colorValue!),
+                              )
+                            ],
+                            borderRadius: BorderRadius.circular(8),
+                            color: Colors.white,
+                          ),
+                          child: Text(
+                            text!,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              color: Colors.grey[900],
+                            ),
+                          ),
                         ),
-                      ),
+                        Container(
+                          width: 30,
+                          height: 6,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(8),
+                              bottomLeft: Radius.circular(15),
+                            ),
+                            color: Color(colorValue!),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -126,13 +145,11 @@ class MemoTile extends GetView<HomeController> {
                             onTap: () async {
                               if (isEditChecked == 1) {
                                 print('iseidt: ${isEditChecked}');
-                                await MemoHelper.updateItemForEdit(
-                                    id!, 0);
+                                await MemoHelper.updateItemForEdit(id!, 0);
                                 controller.refreshMemo();
                               } else {
                                 print('iseidt: ${isEditChecked}');
-                                await MemoHelper.updateItemForEdit(
-                                    id!, 1);
+                                await MemoHelper.updateItemForEdit(id!, 1);
                                 controller.refreshMemo();
                               }
                             },
