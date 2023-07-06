@@ -37,13 +37,21 @@ class HomeView extends GetView<HomeController> {
                     color: Colors.grey.withOpacity(0.8),
                   ),
                   child: controller.isEditMode.value == true
-                      ? Icon(Icons.close, color: Colors.black,)
-                      : Icon(Icons.edit, color:  Colors.black,),
+                      ? Icon(
+                          Icons.close,
+                          color: Colors.black,
+                        )
+                      : Icon(
+                          Icons.edit,
+                          color: Colors.black,
+                        ),
                 ),
                 backgroundColor: Colors.transparent,
                 onPressed: () {
                   if (controller.isEditMode.value == true) {
                     controller.isEditMode.value = false;
+                    //에딧모드 종료시 실행되는 메소드.
+                    controller.editModeDone();
                   } else {
                     controller.isEditMode.value = true;
                   }
@@ -62,7 +70,10 @@ class HomeView extends GetView<HomeController> {
                             borderRadius: BorderRadius.circular(50),
                             color: Colors.grey.withOpacity(0.8),
                           ),
-                          child: Icon(Icons.arrow_downward_sharp, color: Colors.black,),
+                          child: Icon(
+                            Icons.arrow_downward_sharp,
+                            color: Colors.black,
+                          ),
                         ),
                         backgroundColor: Colors.transparent,
                         onPressed: () {
@@ -79,7 +90,7 @@ class HomeView extends GetView<HomeController> {
         ),
         appBar: AppBar(
           elevation: 0,
-          centerTitle: true,
+          centerTitle: false,
           actions: [
             // 타일 탭 오픈.
             Obx(
@@ -91,6 +102,7 @@ class HomeView extends GetView<HomeController> {
                       },
                       icon: Icon(
                         Icons.calendar_month_sharp,
+                        // size: 18,
                       ),
                     ),
             ),
@@ -101,6 +113,16 @@ class HomeView extends GetView<HomeController> {
               },
               icon: Icon(
                 Icons.search_rounded,
+                // size: 18,
+              ),
+            ),
+            IconButton(
+              onPressed: () {
+                // openSearchSheet();
+              },
+              icon: Icon(
+                Icons.alarm,
+                // size: 18,
               ),
             ),
             //메뉴 탭 오픈.
@@ -110,10 +132,14 @@ class HomeView extends GetView<HomeController> {
               },
               icon: Icon(
                 Icons.menu_rounded,
+                // size: 18,
               ),
             ),
           ],
-          leadingWidth: 100,
+          leadingWidth:
+              controller.searchModeOn == true || controller.tagModeOn == true
+                  ? null
+                  : 90,
           //appBar 왼쪽 상단의 리딩 버튼, 처음부터 되돌아가기 모양, 월 정보 표시.
           leading: Obx(
             //모드에 따라 바뀌는 ui.
@@ -177,7 +203,7 @@ class HomeView extends GetView<HomeController> {
                             ),
                           )
                         //디폴트 모드.
-                        : Container(),
+                        : null,
                   ),
           ),
 
@@ -323,6 +349,7 @@ class HomeView extends GetView<HomeController> {
                         flex: 9,
                         child: Obx(
                           () => ListView.builder(
+                            shrinkWrap: true,
                             reverse: false,
                             physics: AlwaysScrollableScrollPhysics(),
                             controller: controller.scrollController.value,
@@ -333,6 +360,8 @@ class HomeView extends GetView<HomeController> {
                                 id: controller.memo[index]['id'],
                                 text: controller.memo[index]['content'],
                                 createdAt: controller.memo[index]['createdAt'],
+                                isEditChecked: controller.memo[index]
+                                    ['isEditChecked'],
                                 date: controller.memo[index]['dateData'],
                                 isFirst: controller.memo[index]['isFirst'],
                                 colorValue: controller.memo[index]
@@ -344,56 +373,64 @@ class HomeView extends GetView<HomeController> {
                       ),
                       Expanded(
                         flex: 1,
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.all(14.0),
-                                child: TextFormField(
-                                  focusNode: controller.textFocus,
-                                  controller: controller.memoController,
-                                  cursorColor: Colors.black,
-                                  decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    focusColor: Colors.black,
-                                    hintText: ' Insert here',
+                        //에딧모드가 켜지면 텍스트필드가 아닌 태그설정 및 지우기 탭이 나옴.
+                        child: controller.isEditMode.value == true
+                            ? Row(
+                                children: [
+
+                                ],
+                              )
+                            : Row(
+                                children: [
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(14.0),
+                                      child: TextFormField(
+                                        focusNode: controller.textFocus,
+                                        controller: controller.memoController,
+                                        cursorColor: Colors.black,
+                                        decoration: InputDecoration(
+                                          border: InputBorder.none,
+                                          focusColor: Colors.black,
+                                          hintText: ' Insert here',
+                                        ),
+                                      ),
+                                    ),
                                   ),
-                                ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 0, top: 5, right: 14, bottom: 5),
+                                    child: IconButton(
+                                      //+ 버튼
+                                      //눌렀을 때 addItem 메소드 실행
+                                      //->TextField 의 Text, 현재 시간, colorValue 의 값을 db 에 insert
+                                      onPressed: () async {
+                                        //dateTime 데이터는 원래 '' 이므로 해당 값을 가져와주는 메소드를 먼저 실행.
+                                        await controller.getDefaultColor();
+                                        await controller.getCurrentDay();
+                                        await controller.getCurrentMonthMM();
+                                        await controller.getCurrentYear();
+                                        await controller.getCurrentDayDetail();
+                                        await controller.getCurrentDate();
+                                        await controller.firstCheckByDate();
+                                        controller.addItem();
+                                        //스크롤 아래로 내리기.
+                                        controller.goToDown();
+                                        //TextField 초기화.
+                                        controller.memoController.clear();
+                                        //defaultModeOn
+                                        controller.defaultModeOn();
+                                        //debug.
+                                        print(controller.colorValue.value
+                                            .toString());
+                                        print(controller.CurrentDayDetail.value
+                                            .toString());
+                                      },
+                                      icon: Icon(Icons.send_rounded),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 0, top: 5, right: 14, bottom: 5),
-                              child: IconButton(
-                                //+ 버튼
-                                //눌렀을 때 addItem 메소드 실행
-                                //->TextField 의 Text, 현재 시간, colorValue 의 값을 db 에 insert
-                                onPressed: () async {
-                                  //dateTime 데이터는 원래 '' 이므로 해당 값을 가져와주는 메소드를 먼저 실행.
-                                  await controller.getDefaultColor();
-                                  await controller.getCurrentDay();
-                                  await controller.getCurrentMonthMM();
-                                  await controller.getCurrentYear();
-                                  await controller.getCurrentDayDetail();
-                                  await controller.getCurrentDate();
-                                  await controller.firstCheckByDate();
-                                  controller.addItem();
-                                  //스크롤 아래로 내리기.
-                                  controller.goToDown();
-                                  //TextField 초기화.
-                                  controller.memoController.clear();
-                                  //defaultModeOn
-                                  controller.defaultModeOn();
-                                  //debug.
-                                  print(controller.colorValue.value.toString());
-                                  print(controller.CurrentDayDetail.value
-                                      .toString());
-                                },
-                                icon: Icon(Icons.send_rounded),
-                              ),
-                            ),
-                          ],
-                        ),
                       ),
                     ],
                   ),

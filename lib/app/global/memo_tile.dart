@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import 'package:get/get_state_manager/src/simple/get_view.dart';
+import 'package:memotile/app/global/memo.dart';
 
 import 'package:memotile/app/modules/home/controllers/home_controller.dart';
 
@@ -13,6 +12,7 @@ class MemoTile extends GetView<HomeController> {
       this.createdAt,
       this.date,
       this.isFirst,
+      this.isEditChecked,
       this.colorValue})
       : super(key: key);
 
@@ -21,6 +21,7 @@ class MemoTile extends GetView<HomeController> {
   final String? createdAt;
   final String? date;
   final int? isFirst;
+  final int? isEditChecked;
   final int? colorValue;
 
   @override
@@ -75,7 +76,6 @@ class MemoTile extends GetView<HomeController> {
             //     : Container(),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Padding(
                   padding: const EdgeInsets.only(
@@ -118,8 +118,42 @@ class MemoTile extends GetView<HomeController> {
                   ),
                 ),
                 controller.isEditMode.value == true
-                    ? Flexible(
-                        child: Text('t'),
+                    ? Padding(
+                        padding:
+                            const EdgeInsets.only(left: 10, bottom: 8, top: 8),
+                        child: Align(
+                          child: InkWell(
+                            onTap: () async {
+                              if (isEditChecked == 1) {
+                                print('iseidt: ${isEditChecked}');
+                                await MemoHelper.updateItemForEdit(
+                                    id!, 0);
+                                controller.refreshMemo();
+                              } else {
+                                print('iseidt: ${isEditChecked}');
+                                await MemoHelper.updateItemForEdit(
+                                    id!, 1);
+                                controller.refreshMemo();
+                              }
+                            },
+                            child: SizedBox(
+                              height: 30,
+                              child: CircleAvatar(
+                                backgroundColor: Colors.grey[400],
+                                child: SizedBox(
+                                  height: 15,
+                                  child: isEditChecked == 1
+                                      ? CircleAvatar(
+                                          backgroundColor: Colors.cyan,
+                                        )
+                                      : CircleAvatar(
+                                          backgroundColor: Colors.grey[600],
+                                        ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
                       )
                     : Container(),
               ],

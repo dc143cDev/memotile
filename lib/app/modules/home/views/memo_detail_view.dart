@@ -427,10 +427,4 @@ class MemoDetailView extends GetView<HomeController> {
       ),
     );
   }
-
-  ColorPickerBar() {
-    return ListView(
-      children: [],
-    );
-  }
 }
