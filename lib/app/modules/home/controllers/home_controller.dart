@@ -211,7 +211,6 @@ class HomeController extends GetxController {
   int mustardValue = Color(0xfff3d544).value;
 
   final colors = [
-
     // Color(0xffffffff), // classic white
     // Color(0xfff28b81), // light pink
     // Color(0xfff7bd02), // yellow
@@ -294,6 +293,38 @@ class HomeController extends GetxController {
     colorValue.value = plumValue;
   }
 
+  getBlue() {
+    colorValue.value = blueValue;
+  }
+
+  getRedRed() {
+    colorValue.value = redredValue;
+  }
+
+  getAqua() {
+    colorValue.value = aquaValue;
+  }
+
+  getGreen() {
+    colorValue.value = greenValue;
+  }
+
+  getPink() {
+    colorValue.value = pinkValue;
+  }
+
+  getOrange() {
+    colorValue.value = orangeValue;
+  }
+
+  getPurple() {
+    colorValue.value = purpleValue;
+  }
+
+  getMustard() {
+    colorValue.value = mustardValue;
+  }
+
   //tags customize 시 사용될 TextField controllers
   TextEditingController redTagController = TextEditingController();
   TextEditingController tealTagController = TextEditingController();
@@ -304,6 +335,16 @@ class HomeController extends GetxController {
   TextEditingController lightCyanTagController = TextEditingController();
   TextEditingController lightBlueTagController = TextEditingController();
   TextEditingController plumTagController = TextEditingController();
+
+  TextEditingController blueTagController = TextEditingController();
+  TextEditingController redredTagController = TextEditingController();
+  TextEditingController aquaTagController = TextEditingController();
+  TextEditingController greenTagController = TextEditingController();
+  TextEditingController pinkTagController = TextEditingController();
+  TextEditingController orangeTagController = TextEditingController();
+  TextEditingController purpleTagController = TextEditingController();
+  TextEditingController mustardTagController = TextEditingController();
+
 
   //DB PART
   //새로고침.
@@ -517,14 +558,13 @@ class HomeController extends GetxController {
   //최초 실행시 태그 밸류 null 방지를 위한(동시에 색상 이름 표시) 메소드.
   tagInit() {
     tag.writeIfNull('red', 'red');
-    tag.writeIfNull('teal', 'teal');
-    tag.writeIfNull('lightPink', 'lightPink');
-    tag.writeIfNull('yellow', 'yellow');
-    tag.writeIfNull('lightGreen', 'lightGreen');
-    tag.writeIfNull('turquoise', 'turquoise');
-    tag.writeIfNull('lightCyan', 'lightCyan');
-    tag.writeIfNull('lightBlue', 'lightBlue');
-    tag.writeIfNull('plum', 'plum');
+    tag.writeIfNull('blue', 'blue');
+    tag.writeIfNull('aqua', 'aqua');
+    tag.writeIfNull('green', 'green');
+    tag.writeIfNull('pink', 'pink');
+    tag.writeIfNull('orange', 'orange');
+    tag.writeIfNull('purple', 'purple');
+    tag.writeIfNull('mustard', 'mustard');
   }
 
   //tileView part

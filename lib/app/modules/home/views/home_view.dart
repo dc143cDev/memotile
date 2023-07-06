@@ -644,14 +644,14 @@ class HomeView extends GetView<HomeController> {
                           width: 48,
                           child: MaterialButton(
                             onPressed: () async {
-                              await controller.getRed();
+                              await controller.getRedRed();
                               controller.nowTag.value = 'red';
                               controller.tagButtonClicked();
                               controller.refreshMemoByColor(
                                   controller.colorValue.value);
                               Get.back();
                             },
-                            color: Colors.red,
+                            color: Color(controller.redredValue),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(50),
                             ),
@@ -673,14 +673,14 @@ class HomeView extends GetView<HomeController> {
                           width: 48,
                           child: MaterialButton(
                             onPressed: () async {
-                              await controller.getTeal();
-                              controller.nowTag.value = 'teal';
+                              await controller.getBlue();
+                              controller.nowTag.value = 'blue';
                               controller.tagButtonClicked();
                               controller.refreshMemoByColor(
                                   controller.colorValue.value);
                               Get.back();
                             },
-                            color: Colors.teal,
+                            color: Color(controller.blueValue),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(50),
                             ),
@@ -689,7 +689,7 @@ class HomeView extends GetView<HomeController> {
                         SizedBox(
                           height: 5,
                         ),
-                        Text(controller.tag.read('teal')),
+                        Text(controller.tag.read('blue')),
                       ],
                     ),
                     SizedBox(
@@ -702,15 +702,14 @@ class HomeView extends GetView<HomeController> {
                           width: 48,
                           child: MaterialButton(
                             onPressed: () {
-                              controller.getLightPink();
-                              controller.nowTag.value = 'lightPink';
+                              controller.getAqua();
+                              controller.nowTag.value = 'aqua';
                               controller.tagButtonClicked();
                               controller.refreshMemoByColor(
-                                Color(0xfff28b81).value,
-                              );
+                                  controller.colorValue.value);
                               Get.back();
                             },
-                            color: Color(0xfff28b81),
+                            color: Color(controller.aquaValue),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(50),
                             ),
@@ -719,7 +718,7 @@ class HomeView extends GetView<HomeController> {
                         SizedBox(
                           height: 5,
                         ),
-                        Text(controller.tag.read('lightPink')),
+                        Text(controller.tag.read('aqua')),
                       ],
                     ),
                     SizedBox(
@@ -732,15 +731,14 @@ class HomeView extends GetView<HomeController> {
                           width: 48,
                           child: MaterialButton(
                             onPressed: () {
-                              controller.getYellow();
-                              controller.nowTag.value = 'yellow';
+                              controller.getGreen();
+                              controller.nowTag.value = 'green';
                               controller.tagButtonClicked();
                               controller.refreshMemoByColor(
-                                Color(0xfffbf476).value,
-                              );
+                                  controller.colorValue.value);
                               Get.back();
                             },
-                            color: Color(0xfffbf476),
+                            color: Color(controller.greenValue),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(50),
                             ),
@@ -749,7 +747,7 @@ class HomeView extends GetView<HomeController> {
                         SizedBox(
                           height: 5,
                         ),
-                        Text(controller.tag.read('yellow')),
+                        Text(controller.tag.read('green')),
                       ],
                     ),
                     SizedBox(
@@ -762,15 +760,15 @@ class HomeView extends GetView<HomeController> {
                           width: 48,
                           child: MaterialButton(
                             onPressed: () {
-                              controller.getLightGreen();
-                              controller.nowTag.value = 'lightGreen';
+                              controller.getPink();
+                              controller.nowTag.value = 'pink';
                               controller.tagButtonClicked();
                               controller.refreshMemoByColor(
-                                Color(0xffcdff90).value,
+                                controller.colorValue.value,
                               );
                               Get.back();
                             },
-                            color: Color(0xffcdff90),
+                            color: Color(controller.pinkValue),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(50),
                             ),
@@ -779,7 +777,7 @@ class HomeView extends GetView<HomeController> {
                         SizedBox(
                           height: 5,
                         ),
-                        Text(controller.tag.read('lightGreen')),
+                        Text(controller.tag.read('pink')),
                       ],
                     ),
                     SizedBox(
@@ -792,15 +790,15 @@ class HomeView extends GetView<HomeController> {
                           width: 48,
                           child: MaterialButton(
                             onPressed: () {
-                              controller.getTurquoise();
-                              controller.nowTag.value = 'turquoise';
+                              controller.getOrange();
+                              controller.nowTag.value = 'orange';
                               controller.tagButtonClicked();
                               controller.refreshMemoByColor(
-                                Color(0xffa7feeb).value,
+                                controller.colorValue.value
                               );
                               Get.back();
                             },
-                            color: Color(0xffa7feeb),
+                            color: Color(controller.orangeValue),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(50),
                             ),
@@ -809,7 +807,7 @@ class HomeView extends GetView<HomeController> {
                         SizedBox(
                           height: 5,
                         ),
-                        Text(controller.tag.read('turquoise')),
+                        Text(controller.tag.read('orange')),
                       ],
                     ),
                     SizedBox(
@@ -822,15 +820,15 @@ class HomeView extends GetView<HomeController> {
                           width: 48,
                           child: MaterialButton(
                             onPressed: () {
-                              controller.getLightCyan();
-                              controller.nowTag.value = 'lightCyan';
+                              controller.getPurple();
+                              controller.nowTag.value = 'purple';
                               controller.tagButtonClicked();
                               controller.refreshMemoByColor(
-                                Color(0xffcbf0f8).value,
+                                controller.colorValue.value
                               );
                               Get.back();
                             },
-                            color: Color(0xffcbf0f8),
+                            color: Color(controller.pinkValue),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(50),
                             ),
@@ -839,7 +837,7 @@ class HomeView extends GetView<HomeController> {
                         SizedBox(
                           height: 5,
                         ),
-                        Text(controller.tag.read('lightCyan')),
+                        Text(controller.tag.read('purple')),
                       ],
                     ),
                     SizedBox(
@@ -852,15 +850,15 @@ class HomeView extends GetView<HomeController> {
                           width: 48,
                           child: MaterialButton(
                             onPressed: () {
-                              controller.getLightBlue();
-                              controller.nowTag.value = 'lightBlue';
+                              controller.getMustard();
+                              controller.nowTag.value = 'mustard';
                               controller.tagButtonClicked();
                               controller.refreshMemoByColor(
-                                Color(0xffafcbfa).value,
+                               controller.colorValue.value
                               );
                               Get.back();
                             },
-                            color: Color(0xffafcbfa),
+                            color: Color(controller.mustardValue),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(50),
                             ),
@@ -869,37 +867,7 @@ class HomeView extends GetView<HomeController> {
                         SizedBox(
                           height: 5,
                         ),
-                        Text(controller.tag.read('lightBlue')),
-                      ],
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Column(
-                      children: [
-                        SizedBox(
-                          height: 48,
-                          width: 48,
-                          child: MaterialButton(
-                            onPressed: () {
-                              controller.getPlum();
-                              controller.nowTag.value = 'plum';
-                              controller.tagButtonClicked();
-                              controller.refreshMemoByColor(
-                                Color(0xffd7aefc).value,
-                              );
-                              Get.back();
-                            },
-                            color: Color(0xffd7aefc),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Text(controller.tag.read('plum')),
+                        Text(controller.tag.read('mustard')),
                       ],
                     ),
                     SizedBox(

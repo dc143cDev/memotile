@@ -56,7 +56,7 @@ class TagsCustomizeView extends GetView<HomeController> {
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(50)),
-                                      color: Colors.red,
+                                      color: Color(controller.redredValue),
                                     ),
                                   ),
                                 ),
@@ -67,7 +67,7 @@ class TagsCustomizeView extends GetView<HomeController> {
                             flex: 7,
                             child: TextField(
                               maxLength: 10,
-                              controller: controller.redTagController,
+                              controller: controller.redredTagController,
                               decoration: InputDecoration(
                                 counterText: '',
                                 border: InputBorder.none,
@@ -75,7 +75,7 @@ class TagsCustomizeView extends GetView<HomeController> {
                                 suffixIcon: IconButton(
                                   onPressed: () {
                                     controller.tag.write('red',
-                                        controller.redTagController.text);
+                                        controller.redredTagController.text);
                                   },
                                   icon: Icon(Icons.edit),
                                 ),
@@ -113,8 +113,8 @@ class TagsCustomizeView extends GetView<HomeController> {
                                       onPressed: () {},
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
-                                          BorderRadius.circular(50)),
-                                      color: Colors.teal,
+                                              BorderRadius.circular(50)),
+                                      color: Color(controller.blueValue),
                                     ),
                                   ),
                                 ),
@@ -125,18 +125,18 @@ class TagsCustomizeView extends GetView<HomeController> {
                             flex: 7,
                             child: TextField(
                               maxLength: 10,
-                              controller: controller.tealTagController,
+                              controller: controller.blueTagController,
                               decoration: InputDecoration(
                                 counterText: '',
                                 border: InputBorder.none,
                                 hintText:
-                                    controller.tag.read('teal').toString() == ''
-                                        ? 'teal'
-                                        : controller.tag.read('teal'),
+                                    controller.tag.read('blue').toString() == ''
+                                        ? 'blue'
+                                        : controller.tag.read('blue'),
                                 suffixIcon: IconButton(
                                   onPressed: () {
-                                    controller.tag.write('teal',
-                                        controller.tealTagController.text);
+                                    controller.tag.write('blue',
+                                        controller.blueTagController.text);
                                   },
                                   icon: Icon(Icons.edit),
                                 ),
@@ -174,8 +174,8 @@ class TagsCustomizeView extends GetView<HomeController> {
                                       onPressed: () {},
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
-                                          BorderRadius.circular(50)),
-                                      color: Color(0xfff28b81),
+                                              BorderRadius.circular(50)),
+                                      color: Color(controller.aquaValue),
                                     ),
                                   ),
                                 ),
@@ -186,15 +186,15 @@ class TagsCustomizeView extends GetView<HomeController> {
                             flex: 7,
                             child: TextField(
                               maxLength: 10,
-                              controller: controller.lightPinkTagController,
+                              controller: controller.aquaTagController,
                               decoration: InputDecoration(
                                 counterText: '',
                                 border: InputBorder.none,
-                                hintText: controller.tag.read('lightPink'),
+                                hintText: controller.tag.read('aqua'),
                                 suffixIcon: IconButton(
                                   onPressed: () {
-                                    controller.tag.write('lightPink',
-                                        controller.lightPinkTagController.text);
+                                    controller.tag.write('aqua',
+                                        controller.aquaTagController.text);
                                   },
                                   icon: Icon(Icons.edit),
                                 ),
@@ -232,8 +232,8 @@ class TagsCustomizeView extends GetView<HomeController> {
                                       onPressed: () {},
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
-                                          BorderRadius.circular(50)),
-                                      color: Color(0xfffbf476),
+                                              BorderRadius.circular(50)),
+                                      color: Color(controller.greenValue),
                                     ),
                                   ),
                                 ),
@@ -244,15 +244,15 @@ class TagsCustomizeView extends GetView<HomeController> {
                             flex: 7,
                             child: TextField(
                               maxLength: 8,
-                              controller: controller.yellowTagController,
+                              controller: controller.greenTagController,
                               decoration: InputDecoration(
                                 counterText: '',
                                 border: InputBorder.none,
-                                hintText: controller.tag.read('yellow'),
+                                hintText: controller.tag.read('green'),
                                 suffixIcon: IconButton(
                                   onPressed: () {
-                                    controller.tag.write('yellow',
-                                        controller.yellowTagController.text);
+                                    controller.tag.write('green',
+                                        controller.greenTagController.text);
                                   },
                                   icon: Icon(Icons.edit),
                                 ),
@@ -290,8 +290,8 @@ class TagsCustomizeView extends GetView<HomeController> {
                                       onPressed: () {},
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
-                                          BorderRadius.circular(50)),
-                                      color: Color(0xffcdff90),
+                                              BorderRadius.circular(50)),
+                                      color: Color(controller.pinkValue),
                                     ),
                                   ),
                                 ),
@@ -301,16 +301,14 @@ class TagsCustomizeView extends GetView<HomeController> {
                           Expanded(
                             flex: 7,
                             child: TextField(
-                              controller: controller.lightGreenTagController,
+                              controller: controller.pinkTagController,
                               decoration: InputDecoration(
                                 border: InputBorder.none,
-                                hintText: controller.tag.read('lightGreen'),
+                                hintText: controller.tag.read('pink'),
                                 suffixIcon: IconButton(
                                   onPressed: () {
-                                    controller.tag.write(
-                                        'lightGreen',
-                                        controller
-                                            .lightGreenTagController.text);
+                                    controller.tag.write('pink',
+                                        controller.pinkTagController.text);
                                   },
                                   icon: Icon(Icons.edit),
                                 ),
@@ -348,8 +346,8 @@ class TagsCustomizeView extends GetView<HomeController> {
                                       onPressed: () {},
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
-                                          BorderRadius.circular(50)),
-                                      color: Color(0xffa7feeb),
+                                              BorderRadius.circular(50)),
+                                      color: Color(controller.orangeValue),
                                     ),
                                   ),
                                 ),
@@ -359,14 +357,14 @@ class TagsCustomizeView extends GetView<HomeController> {
                           Expanded(
                             flex: 7,
                             child: TextField(
-                              controller: controller.turquoiseTagController,
+                              controller: controller.orangeTagController,
                               decoration: InputDecoration(
                                 border: InputBorder.none,
-                                hintText: controller.tag.read('turquoise'),
+                                hintText: controller.tag.read('orange'),
                                 suffixIcon: IconButton(
                                   onPressed: () {
-                                    controller.tag.write('turquoise',
-                                        controller.turquoiseTagController.text);
+                                    controller.tag.write('orange',
+                                        controller.orangeTagController.text);
                                   },
                                   icon: Icon(Icons.edit),
                                 ),
@@ -404,8 +402,8 @@ class TagsCustomizeView extends GetView<HomeController> {
                                       onPressed: () {},
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
-                                          BorderRadius.circular(50)),
-                                      color: Color(0xffcbf0f8),
+                                              BorderRadius.circular(50)),
+                                      color: Color(controller.purpleValue),
                                     ),
                                   ),
                                 ),
@@ -415,14 +413,14 @@ class TagsCustomizeView extends GetView<HomeController> {
                           Expanded(
                             flex: 7,
                             child: TextField(
-                              controller: controller.lightCyanTagController,
+                              controller: controller.purpleTagController,
                               decoration: InputDecoration(
                                 border: InputBorder.none,
-                                hintText: controller.tag.read('lightCyan'),
+                                hintText: controller.tag.read('purple'),
                                 suffixIcon: IconButton(
                                   onPressed: () {
-                                    controller.tag.write('lightCyan',
-                                        controller.lightCyanTagController.text);
+                                    controller.tag.write('purple',
+                                        controller.purpleTagController.text);
                                   },
                                   icon: Icon(Icons.edit),
                                 ),
@@ -460,8 +458,8 @@ class TagsCustomizeView extends GetView<HomeController> {
                                       onPressed: () {},
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
-                                          BorderRadius.circular(50)),
-                                      color: Color(0xffafcbfa),
+                                              BorderRadius.circular(50)),
+                                      color: Color(controller.mustardValue),
                                     ),
                                   ),
                                 ),
@@ -471,14 +469,14 @@ class TagsCustomizeView extends GetView<HomeController> {
                           Expanded(
                             flex: 7,
                             child: TextField(
-                              controller: controller.lightBlueTagController,
+                              controller: controller.mustardTagController,
                               decoration: InputDecoration(
                                 border: InputBorder.none,
-                                hintText: controller.tag.read('lightBlue'),
+                                hintText: controller.tag.read('mustard'),
                                 suffixIcon: IconButton(
                                   onPressed: () {
-                                    controller.tag.write('lightBlue',
-                                        controller.lightBlueTagController.text);
+                                    controller.tag.write('mustard',
+                                        controller.mustardTagController.text);
                                   },
                                   icon: Icon(Icons.edit),
                                 ),
@@ -493,59 +491,6 @@ class TagsCustomizeView extends GetView<HomeController> {
                     ),
                     SizedBox(
                       height: 15,
-                    ),
-                    Container(
-                      width: 380,
-                      height: 80,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[100],
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            flex: 3,
-                            child: Stack(
-                              children: [
-                                Center(
-                                  child: SizedBox(
-                                    width: 40,
-                                    height: 40,
-                                    child: MaterialButton(
-                                      splashColor: Colors.transparent,
-                                      onPressed: () {},
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                          BorderRadius.circular(50)),
-                                      color: Color(0xffd7aefc),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            flex: 7,
-                            child: TextField(
-                              controller: controller.plumTagController,
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText: controller.tag.read('plum'),
-                                suffixIcon: IconButton(
-                                  onPressed: () {
-                                    controller.tag.write('plum',
-                                        controller.plumTagController.text);
-                                  },
-                                  icon: Icon(Icons.edit),
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 15,
-                          ),
-                        ],
-                      ),
                     ),
                   ],
                 ),

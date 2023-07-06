@@ -109,10 +109,10 @@ class MemoDetailView extends GetView<HomeController> {
                             width: 38,
                             child: MaterialButton(
                               onPressed: () {
-                                controller.getRed();
+                                controller.getRedRed();
                                 controller.isColorChanged.value = true;
                               },
-                              color: Colors.red,
+                              color: Color(controller.redredValue),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(50),
                               ),
@@ -142,10 +142,10 @@ class MemoDetailView extends GetView<HomeController> {
                             width: 38,
                             child: MaterialButton(
                               onPressed: () {
-                                controller.getTeal();
+                                controller.getBlue();
                                 controller.isColorChanged.value = true;
                               },
-                              color: Colors.teal,
+                              color: Color(controller.blueValue),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(50),
                               ),
@@ -158,7 +158,7 @@ class MemoDetailView extends GetView<HomeController> {
                             width: 52,
                             child: Center(
                               child: Text(
-                                controller.tag.read('teal'),
+                                controller.tag.read('blue'),
                                 style: TextStyle(
                                     fontWeight: FontWeight.w600, fontSize: 11),
                               ),
@@ -175,10 +175,10 @@ class MemoDetailView extends GetView<HomeController> {
                             width: 38,
                             child: MaterialButton(
                               onPressed: () {
-                                controller.getLightPink();
+                                controller.getAqua();
                                 controller.isColorChanged.value = true;
                               },
-                              color: Color(0xfff28b81),
+                              color: Color(controller.aquaValue),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(50),
                               ),
@@ -191,7 +191,7 @@ class MemoDetailView extends GetView<HomeController> {
                             width: 60,
                             child: Center(
                               child: Text(
-                                controller.tag.read('lightPink'),
+                                controller.tag.read('aqua'),
                                 style: TextStyle(
                                     fontWeight: FontWeight.w600, fontSize: 11),
                               ),
@@ -208,10 +208,10 @@ class MemoDetailView extends GetView<HomeController> {
                             width: 38,
                             child: MaterialButton(
                               onPressed: () {
-                                controller.getYellow();
+                                controller.getGreen();
                                 controller.isColorChanged.value = true;
                               },
-                              color: Color(0xfffbf476),
+                              color: Color(controller.greenValue),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(50),
                               ),
@@ -224,7 +224,7 @@ class MemoDetailView extends GetView<HomeController> {
                             width: 60,
                             child: Center(
                               child: Text(
-                                controller.tag.read('yellow'),
+                                controller.tag.read('green'),
                                 style: TextStyle(
                                     fontWeight: FontWeight.w600, fontSize: 11),
                               ),
@@ -241,10 +241,10 @@ class MemoDetailView extends GetView<HomeController> {
                             width: 38,
                             child: MaterialButton(
                               onPressed: () {
-                                controller.getLightGreen();
+                                controller.getPink();
                                 controller.isColorChanged.value = true;
                               },
-                              color: Color(0xffcdff90),
+                              color: Color(controller.pinkValue),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(50),
                               ),
@@ -257,7 +257,7 @@ class MemoDetailView extends GetView<HomeController> {
                             width: 60,
                             child: Center(
                               child: Text(
-                                controller.tag.read('lightGreen'),
+                                controller.tag.read('pink'),
                                 style: TextStyle(
                                     fontWeight: FontWeight.w600, fontSize: 11),
                               ),
@@ -274,10 +274,10 @@ class MemoDetailView extends GetView<HomeController> {
                             width: 38,
                             child: MaterialButton(
                               onPressed: () {
-                                controller.getTurquoise();
+                                controller.getOrange();
                                 controller.isColorChanged.value = true;
                               },
-                              color: Color(0xffa7feeb),
+                              color: Color(controller.orangeValue),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(50),
                               ),
@@ -290,7 +290,7 @@ class MemoDetailView extends GetView<HomeController> {
                             width: 60,
                             child: Center(
                               child: Text(
-                                controller.tag.read('turquoise'),
+                                controller.tag.read('orange'),
                                 style: TextStyle(
                                     fontWeight: FontWeight.w600, fontSize: 11),
                               ),
@@ -307,10 +307,10 @@ class MemoDetailView extends GetView<HomeController> {
                             width: 38,
                             child: MaterialButton(
                               onPressed: () {
-                                controller.getLightCyan();
+                                controller.getPurple();
                                 controller.isColorChanged.value = true;
                               },
-                              color: Color(0xffcbf0f8),
+                              color: Color(controller.purpleValue),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(50),
                               ),
@@ -323,7 +323,7 @@ class MemoDetailView extends GetView<HomeController> {
                             width: 60,
                             child: Center(
                               child: Text(
-                                controller.tag.read('lightCyan'),
+                                controller.tag.read('purple'),
                                 style: TextStyle(
                                     fontWeight: FontWeight.w600, fontSize: 11),
                               ),
@@ -340,10 +340,10 @@ class MemoDetailView extends GetView<HomeController> {
                             width: 38,
                             child: MaterialButton(
                               onPressed: () {
-                                controller.getLightBlue();
+                                controller.getMustard();
                                 controller.isColorChanged.value = true;
                               },
-                              color: Color(0xffafcbfa),
+                              color: Color(controller.mustardValue),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(50),
                               ),
@@ -356,7 +356,7 @@ class MemoDetailView extends GetView<HomeController> {
                             width: 60,
                             child: Center(
                               child: Text(
-                                controller.tag.read('lightBlue'),
+                                controller.tag.read('mustard'),
                                 style: TextStyle(
                                     fontWeight: FontWeight.w600, fontSize: 11),
                               ),
@@ -366,36 +366,6 @@ class MemoDetailView extends GetView<HomeController> {
                       ),
                       SizedBox(
                         width: 10,
-                      ),
-                      Column(
-                        children: [
-                          SizedBox(
-                            width: 38,
-                            child: MaterialButton(
-                              onPressed: () {
-                                controller.getPlum();
-                                controller.isColorChanged.value = true;
-                              },
-                              color: Color(0xffd7aefc),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(50),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          SizedBox(
-                            width: 60,
-                            child: Center(
-                              child: Text(
-                                controller.tag.read('plum'),
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w600, fontSize: 11),
-                              ),
-                            ),
-                          ),
-                        ],
                       ),
                     ],
                   ),
