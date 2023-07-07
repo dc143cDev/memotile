@@ -189,6 +189,21 @@ class MemoHelper {
     return result;
   }
 
+  static Future<int> updateItemForEditItemColor(int id, int color) async {
+    final db = await MemoHelper.db();
+
+    final data = {
+      'colorValue' : color,
+    };
+    final result = await db.update(
+      'memo_test24',
+      data,
+      where: "id = ?",
+      whereArgs: [id],
+    );
+    return result;
+  }
+
   static Future<void> deleteItem(int id) async {
     final db = await MemoHelper.db();
     try {

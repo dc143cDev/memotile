@@ -249,7 +249,7 @@ class HomeController extends GetxController {
     print('edited: ${data}');
     editedMemo.addAll(data);
     editedMemo.forEach((element) {
-      updateItemForEditCheck(element['id'], 0);
+      updateItemForEditCheckControll(element['id'], 0);
     });
     // refreshMemo();
     print('edit mode done');
@@ -261,6 +261,17 @@ class HomeController extends GetxController {
     editedMemo.addAll(data);
     editedMemo.forEach((element) {
       deleteItem(element['id']);
+    });
+    // refreshMemo();
+    print('edit mode done');
+  }
+
+  editModeCheckedItemColorFill(color) async{
+    final data = await MemoHelper.getItemsByEditModeCheck();
+    print('edited: ${data}');
+    editedMemo.addAll(data);
+    editedMemo.forEach((element) {
+      updateItemForEditCheckItemColorControll(element['id'], color, );
     });
     // refreshMemo();
     print('edit mode done');
@@ -508,8 +519,13 @@ class HomeController extends GetxController {
     refreshMemo();
   }
 
-  Future<void> updateItemForEditCheck(int id, int isEditChecked) async {
+  Future<void> updateItemForEditCheckControll(int id, int isEditChecked) async {
     await MemoHelper.updateItemForEdit(id, 0);
+    refreshMemo();
+  }
+
+  Future<void> updateItemForEditCheckItemColorControll(int id, int color) async {
+    await MemoHelper.updateItemForEditItemColor(id, color);
     refreshMemo();
   }
 

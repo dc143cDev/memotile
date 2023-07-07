@@ -389,8 +389,6 @@ class HomeView extends GetView<HomeController> {
                                       child: Column(
                                         children: [
                                           Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
                                             children: [
                                               Column(
                                                 children: [
@@ -401,16 +399,11 @@ class HomeView extends GetView<HomeController> {
                                                       onPressed: () async {
                                                         await controller
                                                             .getRedRed();
-                                                        controller.nowTag
-                                                            .value = 'red';
                                                         controller
-                                                            .tagButtonClicked();
-                                                        controller
-                                                            .refreshMemoByColor(
+                                                            .editModeCheckedItemColorFill(
                                                                 controller
                                                                     .colorValue
                                                                     .value);
-                                                        Get.back();
                                                       },
                                                       color: Color(controller
                                                           .redredValue),
@@ -429,42 +422,8 @@ class HomeView extends GetView<HomeController> {
                                                       .read('red')),
                                                 ],
                                               ),
-                                              Column(
-                                                children: [
-                                                  SizedBox(
-                                                    height: 48,
-                                                    width: 48,
-                                                    child: MaterialButton(
-                                                      onPressed: () async {
-                                                        await controller
-                                                            .getRedRed();
-                                                        controller.nowTag
-                                                            .value = 'red';
-                                                        controller
-                                                            .tagButtonClicked();
-                                                        controller
-                                                            .refreshMemoByColor(
-                                                                controller
-                                                                    .colorValue
-                                                                    .value);
-                                                        Get.back();
-                                                      },
-                                                      color: Color(controller
-                                                          .redredValue),
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(50),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    height: 5,
-                                                  ),
-                                                  Text(controller.tag
-                                                      .read('red')),
-                                                ],
+                                              SizedBox(
+                                                width: 35,
                                               ),
                                               Column(
                                                 children: [
@@ -474,20 +433,15 @@ class HomeView extends GetView<HomeController> {
                                                     child: MaterialButton(
                                                       onPressed: () async {
                                                         await controller
-                                                            .getRedRed();
-                                                        controller.nowTag
-                                                            .value = 'red';
+                                                            .getBlue();
                                                         controller
-                                                            .tagButtonClicked();
-                                                        controller
-                                                            .refreshMemoByColor(
-                                                                controller
-                                                                    .colorValue
-                                                                    .value);
-                                                        Get.back();
+                                                            .editModeCheckedItemColorFill(
+                                                            controller
+                                                                .colorValue
+                                                                .value);
                                                       },
-                                                      color: Color(controller
-                                                          .redredValue),
+                                                      color: Color(
+                                                          controller.blueValue),
                                                       shape:
                                                           RoundedRectangleBorder(
                                                         borderRadius:
@@ -500,8 +454,11 @@ class HomeView extends GetView<HomeController> {
                                                     height: 5,
                                                   ),
                                                   Text(controller.tag
-                                                      .read('red')),
+                                                      .read('blue')),
                                                 ],
+                                              ),
+                                              SizedBox(
+                                                width: 35,
                                               ),
                                               Column(
                                                 children: [
@@ -511,20 +468,15 @@ class HomeView extends GetView<HomeController> {
                                                     child: MaterialButton(
                                                       onPressed: () async {
                                                         await controller
-                                                            .getRedRed();
-                                                        controller.nowTag
-                                                            .value = 'red';
+                                                            .getAqua();
                                                         controller
-                                                            .tagButtonClicked();
-                                                        controller
-                                                            .refreshMemoByColor(
-                                                                controller
-                                                                    .colorValue
-                                                                    .value);
-                                                        Get.back();
+                                                            .editModeCheckedItemColorFill(
+                                                            controller
+                                                                .colorValue
+                                                                .value);
                                                       },
-                                                      color: Color(controller
-                                                          .redredValue),
+                                                      color: Color(
+                                                          controller.aquaValue),
                                                       shape:
                                                           RoundedRectangleBorder(
                                                         borderRadius:
@@ -537,14 +489,49 @@ class HomeView extends GetView<HomeController> {
                                                     height: 5,
                                                   ),
                                                   Text(controller.tag
-                                                      .read('red')),
+                                                      .read('aqua')),
+                                                ],
+                                              ),
+                                              SizedBox(
+                                                width: 35,
+                                              ),
+                                              Column(
+                                                children: [
+                                                  SizedBox(
+                                                    height: 48,
+                                                    width: 48,
+                                                    child: MaterialButton(
+                                                      onPressed: () async {
+                                                        await controller
+                                                            .getGreen();
+                                                        controller
+                                                            .editModeCheckedItemColorFill(
+                                                            controller
+                                                                .colorValue
+                                                                .value);
+                                                      },
+                                                      color: Color(controller
+                                                          .greenValue),
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(50),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 5,
+                                                  ),
+                                                  Text(controller.tag
+                                                      .read('green')),
                                                 ],
                                               ),
                                             ],
                                           ),
                                           Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                            // mainAxisAlignment:
+                                            //     MainAxisAlignment.spaceBetween,
                                             children: [
                                               Column(
                                                 children: [
@@ -554,20 +541,15 @@ class HomeView extends GetView<HomeController> {
                                                     child: MaterialButton(
                                                       onPressed: () async {
                                                         await controller
-                                                            .getRedRed();
-                                                        controller.nowTag
-                                                            .value = 'red';
+                                                            .getPink();
                                                         controller
-                                                            .tagButtonClicked();
-                                                        controller
-                                                            .refreshMemoByColor(
-                                                                controller
-                                                                    .colorValue
-                                                                    .value);
-                                                        Get.back();
+                                                            .editModeCheckedItemColorFill(
+                                                            controller
+                                                                .colorValue
+                                                                .value);
                                                       },
-                                                      color: Color(controller
-                                                          .redredValue),
+                                                      color: Color(
+                                                          controller.pinkValue),
                                                       shape:
                                                           RoundedRectangleBorder(
                                                         borderRadius:
@@ -580,8 +562,11 @@ class HomeView extends GetView<HomeController> {
                                                     height: 5,
                                                   ),
                                                   Text(controller.tag
-                                                      .read('red')),
+                                                      .read('pink')),
                                                 ],
+                                              ),
+                                              SizedBox(
+                                                width: 35,
                                               ),
                                               Column(
                                                 children: [
@@ -591,20 +576,15 @@ class HomeView extends GetView<HomeController> {
                                                     child: MaterialButton(
                                                       onPressed: () async {
                                                         await controller
-                                                            .getRedRed();
-                                                        controller.nowTag
-                                                            .value = 'red';
+                                                            .getOrange();
                                                         controller
-                                                            .tagButtonClicked();
-                                                        controller
-                                                            .refreshMemoByColor(
-                                                                controller
-                                                                    .colorValue
-                                                                    .value);
-                                                        Get.back();
+                                                            .editModeCheckedItemColorFill(
+                                                            controller
+                                                                .colorValue
+                                                                .value);
                                                       },
                                                       color: Color(controller
-                                                          .redredValue),
+                                                          .orangeValue),
                                                       shape:
                                                           RoundedRectangleBorder(
                                                         borderRadius:
@@ -617,8 +597,11 @@ class HomeView extends GetView<HomeController> {
                                                     height: 5,
                                                   ),
                                                   Text(controller.tag
-                                                      .read('red')),
+                                                      .read('orange')),
                                                 ],
+                                              ),
+                                              SizedBox(
+                                                width: 35,
                                               ),
                                               Column(
                                                 children: [
@@ -628,20 +611,15 @@ class HomeView extends GetView<HomeController> {
                                                     child: MaterialButton(
                                                       onPressed: () async {
                                                         await controller
-                                                            .getRedRed();
-                                                        controller.nowTag
-                                                            .value = 'red';
+                                                            .getPurple();
                                                         controller
-                                                            .tagButtonClicked();
-                                                        controller
-                                                            .refreshMemoByColor(
-                                                                controller
-                                                                    .colorValue
-                                                                    .value);
-                                                        Get.back();
+                                                            .editModeCheckedItemColorFill(
+                                                            controller
+                                                                .colorValue
+                                                                .value);
                                                       },
                                                       color: Color(controller
-                                                          .redredValue),
+                                                          .purpleValue),
                                                       shape:
                                                           RoundedRectangleBorder(
                                                         borderRadius:
@@ -654,8 +632,11 @@ class HomeView extends GetView<HomeController> {
                                                     height: 5,
                                                   ),
                                                   Text(controller.tag
-                                                      .read('red')),
+                                                      .read('purple')),
                                                 ],
+                                              ),
+                                              SizedBox(
+                                                width: 35,
                                               ),
                                               Column(
                                                 children: [
@@ -665,20 +646,15 @@ class HomeView extends GetView<HomeController> {
                                                     child: MaterialButton(
                                                       onPressed: () async {
                                                         await controller
-                                                            .getRedRed();
-                                                        controller.nowTag
-                                                            .value = 'red';
+                                                            .getMustard();
                                                         controller
-                                                            .tagButtonClicked();
-                                                        controller
-                                                            .refreshMemoByColor(
-                                                                controller
-                                                                    .colorValue
-                                                                    .value);
-                                                        Get.back();
+                                                            .editModeCheckedItemColorFill(
+                                                            controller
+                                                                .colorValue
+                                                                .value);
                                                       },
                                                       color: Color(controller
-                                                          .redredValue),
+                                                          .mustardValue),
                                                       shape:
                                                           RoundedRectangleBorder(
                                                         borderRadius:
@@ -691,7 +667,7 @@ class HomeView extends GetView<HomeController> {
                                                     height: 5,
                                                   ),
                                                   Text(controller.tag
-                                                      .read('red')),
+                                                      .read('mustard')),
                                                 ],
                                               ),
                                             ],
