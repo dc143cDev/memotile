@@ -12,6 +12,8 @@ class HomeController extends GetxController {
   //실질적 데이터인 MemoHelper 에서 내려온 data 변수가 ui 에 표시되기 위해 여기에 담김.
   RxList memo = [].obs;
 
+  RxList currentKeyList = [].obs;
+
   //클릭 감지.
   RxBool memoLongClicked = false.obs;
 
@@ -249,6 +251,18 @@ class HomeController extends GetxController {
     editedMemo.forEach((element) {
       updateItemForEditCheck(element['id'], 0);
     });
+    // refreshMemo();
+    print('edit mode done');
+  }
+
+  editModeCheckedItemDelete() async{
+    final data = await MemoHelper.getItemsByEditModeCheck();
+    print('edited: ${data}');
+    editedMemo.addAll(data);
+    editedMemo.forEach((element) {
+      deleteItem(element['id']);
+    });
+    // refreshMemo();
     print('edit mode done');
   }
 
@@ -353,14 +367,35 @@ class HomeController extends GetxController {
   //실질적 db 데이터인 data = ui 에 표시되기 위한 데이터 List 인 memo.
 
   //infinitiScroll updata로 역할 변경.
-  //initKeyList의 마지막 인덱스의 데이터를 가져와 넣어줌.
+  //initKeyList의 마지막 인덱스의 데이터를 가져와 넣어줌. //추가 업데이트로 문제점 발견.
+  //1차 수정 기능을 아래 refreshMemoInit으로 바꾸고 해당 기능은 리뉴얼함.
   refreshMemo() async {
-    minusValue.value = 1;
+    final data = await MemoHelper.getItems();
+    memo.value = data;
+    // memo.value = [];
+    // currentKeyList.forEach((element) async{
+    //   final data = await MemoHelper.getItemsByDate(element);
+    //   memo.addAll(data);
+    // });
+  }
+
+  //최초 로그인시 메모 데이터. 가장 최근 날짜의 데이터만 가져옴.
+  refreshMemoInit() async {
+    // minusValue.value = 1;
     await firstInitGetDataKey();
+    print('refresh key: ${initKeyList}');
     final data = await MemoHelper.getItemsByDate(initKeyList.last);
     //메모가 중복으로 add 되는걸 막기 위해 우선 비우기.
     memo.value = [];
     memo.addAll(data);
+    memo.forEach((element) {
+      if(currentKeyList.contains(element['createdAt'])){
+        null;
+      }else{
+        currentKeyList.add(element['createdAt']);
+      }
+    });
+    print('currentKEy: ${currentKeyList}');
     // isLoading.value = false;
     goToDown();
     print('refresh data: ${data}');
@@ -741,6 +776,7 @@ class HomeController extends GetxController {
       print('has no more');
       null;
     } else {
+      currentKeyList.value = initKeyList;
       memo.insertAll(0, data);
     }
     //
@@ -788,7 +824,7 @@ class HomeController extends GetxController {
       print(s);
     }
     //처음 한번 새로고침으로 메모 가져오기.
-    refreshMemo();
+    refreshMemoInit();
   }
 
   //init 후 1프레임 뒤.

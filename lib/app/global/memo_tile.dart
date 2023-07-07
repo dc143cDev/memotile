@@ -105,9 +105,6 @@ class MemoTile extends GetView<HomeController> {
                                 blurRadius: 0.1,
                                 spreadRadius: 0.0,
                                 offset: Offset(0, 1),
-                                // color: colorValue == 4294967295
-                                //     ? Colors.grey
-                                //     : Color(colorValue!),
                               )
                             ],
                             borderRadius: BorderRadius.circular(8),
@@ -121,17 +118,6 @@ class MemoTile extends GetView<HomeController> {
                             ),
                           ),
                         ),
-                        // Container(
-                        //   width: 30,
-                        //   height: 6,
-                        //   decoration: BoxDecoration(
-                        //     borderRadius: BorderRadius.only(
-                        //       topRight: Radius.circular(8),
-                        //       bottomLeft: Radius.circular(15),
-                        //     ),
-                        //     color: Color(colorValue!),
-                        //   ),
-                        // ),
                       ],
                     ),
                   ),
@@ -158,13 +144,17 @@ class MemoTile extends GetView<HomeController> {
                               child: CircleAvatar(
                                 backgroundColor: Colors.grey[400],
                                 child: SizedBox(
-                                  height: 15,
+                                  height: 22,
                                   child: isEditChecked == 1
                                       ? CircleAvatar(
-                                          backgroundColor: Colors.cyan,
+                                          backgroundColor: Colors.grey[400],
+                                          child: Icon(
+                                            Icons.check,
+                                            color: Colors.white,
+                                          ),
                                         )
                                       : CircleAvatar(
-                                          backgroundColor: Colors.grey[600],
+                                          backgroundColor: Colors.grey[400],
                                         ),
                                 ),
                               ),
