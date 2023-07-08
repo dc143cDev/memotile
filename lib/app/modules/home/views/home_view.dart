@@ -323,22 +323,26 @@ class HomeView extends GetView<HomeController> {
                                 //->TextField 의 Text, 현재 시간, colorValue 의 값을 db 에 insert
                                 onPressed: () async {
                                   //dateTime 데이터는 원래 '' 이므로 해당 값을 가져와주는 메소드를 먼저 실행.
-                                  await controller.getDefaultColor();
-                                  await controller.getCurrentDay();
-                                  await controller.getCurrentDayDetail();
-                                  await controller.getCurrentDate();
-                                  await controller.firstCheckByDate();
-                                  controller.addItem();
-                                  //스크롤 아래로 내리기.
-                                  controller.goToDown();
-                                  //TextField 초기화.
-                                  controller.memoController.clear();
-                                  //defaultModeOn
-                                  controller.defaultModeOn();
-                                  //debug.
-                                  print(controller.colorValue.value.toString());
-                                  print(controller.CurrentDayDetail.value
-                                      .toString());
+                                  //공백 입력 방지.
+                                  if (controller.memoController.text.toString() != '') {
+                                    await controller.getDefaultColor();
+                                    await controller.getCurrentDay();
+                                    await controller.getCurrentDayDetail();
+                                    await controller.getCurrentDate();
+                                    await controller.firstCheckByDate();
+                                    controller.addItem();
+                                    //스크롤 아래로 내리기.
+                                    controller.goToDown();
+                                    //TextField 초기화.
+                                    controller.memoController.clear();
+                                    //defaultModeOn
+                                    controller.defaultModeOn();
+                                    //debug.
+                                    print(
+                                        controller.colorValue.value.toString());
+                                    print(controller.CurrentDayDetail.value
+                                        .toString());
+                                  }
                                 },
                                 icon: Icon(Icons.send_rounded),
                               ),
@@ -436,9 +440,9 @@ class HomeView extends GetView<HomeController> {
                                                             .getBlue();
                                                         controller
                                                             .editModeCheckedItemColorFill(
-                                                            controller
-                                                                .colorValue
-                                                                .value);
+                                                                controller
+                                                                    .colorValue
+                                                                    .value);
                                                       },
                                                       color: Color(
                                                           controller.blueValue),
@@ -471,9 +475,9 @@ class HomeView extends GetView<HomeController> {
                                                             .getAqua();
                                                         controller
                                                             .editModeCheckedItemColorFill(
-                                                            controller
-                                                                .colorValue
-                                                                .value);
+                                                                controller
+                                                                    .colorValue
+                                                                    .value);
                                                       },
                                                       color: Color(
                                                           controller.aquaValue),
@@ -506,9 +510,9 @@ class HomeView extends GetView<HomeController> {
                                                             .getGreen();
                                                         controller
                                                             .editModeCheckedItemColorFill(
-                                                            controller
-                                                                .colorValue
-                                                                .value);
+                                                                controller
+                                                                    .colorValue
+                                                                    .value);
                                                       },
                                                       color: Color(controller
                                                           .greenValue),
@@ -544,9 +548,9 @@ class HomeView extends GetView<HomeController> {
                                                             .getPink();
                                                         controller
                                                             .editModeCheckedItemColorFill(
-                                                            controller
-                                                                .colorValue
-                                                                .value);
+                                                                controller
+                                                                    .colorValue
+                                                                    .value);
                                                       },
                                                       color: Color(
                                                           controller.pinkValue),
@@ -579,9 +583,9 @@ class HomeView extends GetView<HomeController> {
                                                             .getOrange();
                                                         controller
                                                             .editModeCheckedItemColorFill(
-                                                            controller
-                                                                .colorValue
-                                                                .value);
+                                                                controller
+                                                                    .colorValue
+                                                                    .value);
                                                       },
                                                       color: Color(controller
                                                           .orangeValue),
@@ -614,9 +618,9 @@ class HomeView extends GetView<HomeController> {
                                                             .getPurple();
                                                         controller
                                                             .editModeCheckedItemColorFill(
-                                                            controller
-                                                                .colorValue
-                                                                .value);
+                                                                controller
+                                                                    .colorValue
+                                                                    .value);
                                                       },
                                                       color: Color(controller
                                                           .purpleValue),
@@ -649,9 +653,9 @@ class HomeView extends GetView<HomeController> {
                                                             .getMustard();
                                                         controller
                                                             .editModeCheckedItemColorFill(
-                                                            controller
-                                                                .colorValue
-                                                                .value);
+                                                                controller
+                                                                    .colorValue
+                                                                    .value);
                                                       },
                                                       color: Color(controller
                                                           .mustardValue),
@@ -717,25 +721,30 @@ class HomeView extends GetView<HomeController> {
                                       //->TextField 의 Text, 현재 시간, colorValue 의 값을 db 에 insert
                                       onPressed: () async {
                                         //dateTime 데이터는 원래 '' 이므로 해당 값을 가져와주는 메소드를 먼저 실행.
-                                        await controller.getDefaultColor();
-                                        await controller.getCurrentDay();
-                                        await controller.getCurrentMonthMM();
-                                        await controller.getCurrentYear();
-                                        await controller.getCurrentDayDetail();
-                                        await controller.getCurrentDate();
-                                        await controller.firstCheckByDate();
-                                        controller.addItem();
-                                        //스크롤 아래로 내리기.
-                                        controller.goToDown();
-                                        //TextField 초기화.
-                                        controller.memoController.clear();
-                                        //defaultModeOn
-                                        controller.defaultModeOn();
-                                        //debug.
-                                        print(controller.colorValue.value
-                                            .toString());
-                                        print(controller.CurrentDayDetail.value
-                                            .toString());
+                                        //공백 입력 방지.
+                                        if (controller.memoController.text.toString() != '') {
+                                          await controller.getDefaultColor();
+                                          await controller.getCurrentDay();
+                                          await controller.getCurrentMonthMM();
+                                          await controller.getCurrentYear();
+                                          await controller
+                                              .getCurrentDayDetail();
+                                          await controller.getCurrentDate();
+                                          await controller.firstCheckByDate();
+                                          controller.addItem();
+                                          //스크롤 아래로 내리기.
+                                          controller.goToDown();
+                                          //TextField 초기화.
+                                          controller.memoController.clear();
+                                          //defaultModeOn
+                                          controller.defaultModeOn();
+                                          //debug.
+                                          print(controller.colorValue.value
+                                              .toString());
+                                          print(controller
+                                              .CurrentDayDetail.value
+                                              .toString());
+                                        }
                                       },
                                       icon: Icon(Icons.send_rounded),
                                     ),
@@ -1313,7 +1322,7 @@ class HomeView extends GetView<HomeController> {
                   children: [
                     Icon(
                       Icons.style,
-                      color: Colors.grey[700],
+                      color: Get.isDarkMode ? Colors.white : Colors.grey[700],
                     ),
                     SizedBox(
                       width: 15,
@@ -1321,7 +1330,7 @@ class HomeView extends GetView<HomeController> {
                     Text(
                       'Themes and Fonts',
                       style: TextStyle(
-                        color: Colors.grey[700],
+                        color: Get.isDarkMode ? Colors.white : Colors.grey[700],
                       ),
                     ),
                   ],
@@ -1341,7 +1350,7 @@ class HomeView extends GetView<HomeController> {
                   children: [
                     Icon(
                       Icons.info_outline,
-                      color: Colors.grey[700],
+                      color: Get.isDarkMode ? Colors.white : Colors.grey[700],
                     ),
                     SizedBox(
                       width: 15,
@@ -1349,7 +1358,7 @@ class HomeView extends GetView<HomeController> {
                     Text(
                       'Infomation and Connect',
                       style: TextStyle(
-                        color: Colors.grey[700],
+                        color: Get.isDarkMode ? Colors.white : Colors.grey[700],
                       ),
                     ),
                   ],

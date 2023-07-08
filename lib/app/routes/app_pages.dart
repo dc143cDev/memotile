@@ -4,6 +4,8 @@ import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/home/views/memo_detail_view.dart';
 import '../modules/home/views/tags_customize_view.dart';
+import '../modules/notification/bindings/notification_binding.dart';
+import '../modules/notification/views/notification_view.dart';
 import '../modules/theme/bindings/theme_binding.dart';
 import '../modules/theme/views/theme_view.dart';
 
@@ -36,6 +38,11 @@ class AppPages {
       name: _Paths.THEME,
       page: () => const ThemeView(),
       binding: ThemeBinding(),
+    ),
+    GetPage(
+      name: _Paths.NOTIFICATION,
+      page: () => const NotificationView(),
+      binding: NotificationBinding(),
     ),
   ];
 }

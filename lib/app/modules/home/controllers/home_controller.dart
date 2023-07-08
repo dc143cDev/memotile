@@ -8,7 +8,7 @@ import '../../../global/memo.dart';
 class HomeController extends GetxController {
   //set up part.
 
-  //가장 중요한 변수. 여기에 모든 db 의 data 가 담김.2
+  //가장 중요한 변수.
   //실질적 데이터인 MemoHelper 에서 내려온 data 변수가 ui 에 표시되기 위해 여기에 담김.
   RxList memo = [].obs;
 
@@ -862,12 +862,4 @@ class HomeController extends GetxController {
   void onClose() {
     super.onClose();
   }
-}
-
-class Event {
-  String title;
-
-  Event({
-    required this.title,
-  });
 }
