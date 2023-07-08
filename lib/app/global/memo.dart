@@ -23,7 +23,7 @@ class MemoHelper {
 
   static Future<sql.Database> db() async {
     //debug
-    print('create tables');
+    // print('create tables');
     return sql.openDatabase('memo_test24.db', version: 1,
         onCreate: (sql.Database database, int version) async {
       await createTables(database);

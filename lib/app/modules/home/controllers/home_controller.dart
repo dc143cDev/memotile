@@ -251,6 +251,7 @@ class HomeController extends GetxController {
     editedMemo.forEach((element) {
       updateItemForEditCheckControll(element['id'], 0);
     });
+    editedMemo.value = [];
     // refreshMemo();
     print('edit mode done');
   }
@@ -262,19 +263,21 @@ class HomeController extends GetxController {
     editedMemo.forEach((element) {
       deleteItem(element['id']);
     });
+    editedMemo.value = [];
     // refreshMemo();
     print('edit mode done');
   }
 
   editModeCheckedItemColorFill(color) async{
     final data = await MemoHelper.getItemsByEditModeCheck();
-    print('edited: ${data}');
+    print('edited cf: ${data}');
     editedMemo.addAll(data);
     editedMemo.forEach((element) {
-      updateItemForEditCheckItemColorControll(element['id'], color, );
+      updateItemForEditCheckItemColorControll(element['id'], color,);
     });
+    editedMemo.value = [];
     // refreshMemo();
-    print('edit mode done');
+    print('edit color fill');
   }
 
   //앱 시작시 초기 컬러 가져오기.
