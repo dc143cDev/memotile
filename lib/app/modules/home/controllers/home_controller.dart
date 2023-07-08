@@ -106,12 +106,10 @@ class HomeController extends GetxController {
     }
   }
 
-  // goToDetail2() async{
-  //   final data = await MemoHelper.getItem(id);
-  // }
-
   //date PART
   //날짜 정보를 받아오기 위한 RxString.
+  RxString CurrentMinutes = ''.obs;
+  RxString CurrentHour = ''.obs;
   RxString CurrentDate = ''.obs;
   RxString CurrentDayOf = ''.obs;
   RxString CurrentDay = ''.obs;
@@ -121,6 +119,8 @@ class HomeController extends GetxController {
   RxString CurrentMonthForTile = ''.obs;
   RxString CurrentYear = ''.obs;
 
+  RxInt CurrentMinutesInt = 0.obs;
+  RxInt CurrentHourInt = 0.obs;
   RxInt CurrentYyyy = 0.obs;
   RxInt CurrentMM = 0.obs;
   RxInt CurrentDD = 0.obs;
@@ -147,6 +147,16 @@ class HomeController extends GetxController {
   //메모 왼쪽에 표시될 작성 시간을 가져옵니다.
   getCurrentDate() {
     CurrentDate.value = DateFormat("hh:mm a").format(DateTime.now());
+  }
+
+  getCurrentMinute(){
+    CurrentMinutes.value = DateFormat("mm").format(DateTime.now());
+    CurrentMinutesInt.value = int.parse(CurrentMinutes.value);
+  }
+
+  getCurrentHour(){
+    CurrentHour.value = DateFormat("hh").format(DateTime.now());
+    CurrentHourInt.value = int.parse(CurrentHour.value);
   }
 
   //앱바 상단에 위치할 날짜를 가져옵니다.
@@ -212,21 +222,6 @@ class HomeController extends GetxController {
   int purpleValue = Color(0xffbb9beb).value;
   int mustardValue = Color(0xfff0dc7a).value;
 
-  final colors = [
-    // Color(0xffffffff), // classic white
-    // Color(0xfff28b81), // light pink
-    // Color(0xfff7bd02), // yellow
-    // Color(0xfffbf476), // light yellow
-    // Color(0xffcdff90), // light green
-    // Color(0xffa7feeb), // turquoise
-    // Color(0xffcbf0f8), // light cyan
-    // Color(0xffafcbfa), // light blue
-    // Color(0xffd7aefc), // plum
-    // Color(0xfffbcfe9), // misty rose
-    // Color(0xffe6c9a9), // light brown
-    // Color(0xffe9eaee) // light gray
-  ];
-
   //color part 다크모드.
   var isDarkModeOn = false.obs;
   RxInt darkModeDateIndicatorColor = Colors.grey.value.obs;
@@ -256,7 +251,7 @@ class HomeController extends GetxController {
     print('edit mode done');
   }
 
-  editModeCheckedItemDelete() async{
+  editModeCheckedItemDelete() async {
     final data = await MemoHelper.getItemsByEditModeCheck();
     print('edited: ${data}');
     editedMemo.addAll(data);
@@ -268,12 +263,15 @@ class HomeController extends GetxController {
     print('edit mode done');
   }
 
-  editModeCheckedItemColorFill(color) async{
+  editModeCheckedItemColorFill(color) async {
     final data = await MemoHelper.getItemsByEditModeCheck();
     print('edited cf: ${data}');
     editedMemo.addAll(data);
     editedMemo.forEach((element) {
-      updateItemForEditCheckItemColorControll(element['id'], color,);
+      updateItemForEditCheckItemColorControll(
+        element['id'],
+        color,
+      );
     });
     editedMemo.value = [];
     // refreshMemo();
@@ -373,7 +371,6 @@ class HomeController extends GetxController {
   TextEditingController purpleTagController = TextEditingController();
   TextEditingController mustardTagController = TextEditingController();
 
-
   //DB PART
   //새로고침.
   //MemoHelper 에서 아이템을 추가하거나 업데이트하면 실행됨.
@@ -403,9 +400,9 @@ class HomeController extends GetxController {
     memo.value = [];
     memo.addAll(data);
     memo.forEach((element) {
-      if(currentKeyList.contains(element['createdAt'])){
+      if (currentKeyList.contains(element['createdAt'])) {
         null;
-      }else{
+      } else {
         currentKeyList.add(element['createdAt']);
       }
     });
@@ -527,7 +524,8 @@ class HomeController extends GetxController {
     refreshMemo();
   }
 
-  Future<void> updateItemForEditCheckItemColorControll(int id, int color) async {
+  Future<void> updateItemForEditCheckItemColorControll(
+      int id, int color) async {
     await MemoHelper.updateItemForEditItemColor(id, color);
     refreshMemo();
   }

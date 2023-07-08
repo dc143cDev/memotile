@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:memotile/app/global/notification.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../../global/horizontal_line.dart';
@@ -122,8 +123,13 @@ class HomeView extends GetView<HomeController> {
               ),
             ),
             IconButton(
-              onPressed: () {
+              onPressed: () async {
                 // openSearchSheet();
+                await controller.getCurrentMinute();
+                await controller.getCurrentHour();
+                NotificationHelper().selectedDateAlarm(
+                    controller.CurrentHourInt.value,
+                    controller.CurrentMinutesInt.value + 1);
               },
               icon: Icon(
                 Icons.alarm,
@@ -324,7 +330,9 @@ class HomeView extends GetView<HomeController> {
                                 onPressed: () async {
                                   //dateTime 데이터는 원래 '' 이므로 해당 값을 가져와주는 메소드를 먼저 실행.
                                   //공백 입력 방지.
-                                  if (controller.memoController.text.toString() != '') {
+                                  if (controller.memoController.text
+                                          .toString() !=
+                                      '') {
                                     await controller.getDefaultColor();
                                     await controller.getCurrentDay();
                                     await controller.getCurrentDayDetail();
@@ -427,7 +435,7 @@ class HomeView extends GetView<HomeController> {
                                                 ],
                                               ),
                                               SizedBox(
-                                                width: 35,
+                                                width: 38,
                                               ),
                                               Column(
                                                 children: [
@@ -462,7 +470,7 @@ class HomeView extends GetView<HomeController> {
                                                 ],
                                               ),
                                               SizedBox(
-                                                width: 35,
+                                                width: 38,
                                               ),
                                               Column(
                                                 children: [
@@ -497,7 +505,7 @@ class HomeView extends GetView<HomeController> {
                                                 ],
                                               ),
                                               SizedBox(
-                                                width: 35,
+                                                width: 38,
                                               ),
                                               Column(
                                                 children: [
@@ -570,7 +578,7 @@ class HomeView extends GetView<HomeController> {
                                                 ],
                                               ),
                                               SizedBox(
-                                                width: 35,
+                                                width: 38,
                                               ),
                                               Column(
                                                 children: [
@@ -605,7 +613,7 @@ class HomeView extends GetView<HomeController> {
                                                 ],
                                               ),
                                               SizedBox(
-                                                width: 35,
+                                                width: 38,
                                               ),
                                               Column(
                                                 children: [
@@ -640,7 +648,7 @@ class HomeView extends GetView<HomeController> {
                                                 ],
                                               ),
                                               SizedBox(
-                                                width: 35,
+                                                width: 32,
                                               ),
                                               Column(
                                                 children: [
@@ -722,7 +730,9 @@ class HomeView extends GetView<HomeController> {
                                       onPressed: () async {
                                         //dateTime 데이터는 원래 '' 이므로 해당 값을 가져와주는 메소드를 먼저 실행.
                                         //공백 입력 방지.
-                                        if (controller.memoController.text.toString() != '') {
+                                        if (controller.memoController.text
+                                                .toString() !=
+                                            '') {
                                           await controller.getDefaultColor();
                                           await controller.getCurrentDay();
                                           await controller.getCurrentMonthMM();

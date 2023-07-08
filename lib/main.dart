@@ -8,7 +8,7 @@ import 'app/routes/app_pages.dart';
 
 void main() async{
   await GetStorage.init();
-  await notification().setup();
+  await NotificationHelper().setup();
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
     GetMaterialApp(
