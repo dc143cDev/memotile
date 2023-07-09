@@ -8,6 +8,8 @@ abstract class Routes {
   static const TAGS = _Paths.TAGS;
   static const THEME = _Paths.THEME;
   static const NOTIFICATION = _Paths.NOTIFICATION;
+  static const CONTROLL = _Paths.CONTROLL;
+  static const CONTROL = _Paths.CONTROL;
 }
 
 abstract class _Paths {
@@ -17,4 +19,6 @@ abstract class _Paths {
   static const TAGS = '/tags';
   static const THEME = '/theme';
   static const NOTIFICATION = '/notification';
+  static const CONTROLL = '/controll';
+  static const CONTROL = '/control';
 }

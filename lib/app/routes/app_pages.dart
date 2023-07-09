@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/home/views/memo_detail_view.dart';
@@ -20,7 +19,7 @@ class AppPages {
     GetPage(
       name: _Paths.HOME,
       page: () => const HomeView(),
-      transition: Transition.noTransition,
+      transition: Transition.leftToRight,
       binding: HomeBinding(),
     ),
     GetPage(

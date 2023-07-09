@@ -44,7 +44,7 @@ class MemoTile extends GetView<HomeController> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         SizedBox(
-                          width: 25,
+                          width: 15,
                         ),
                         Container(
                           width: 200,
@@ -53,7 +53,7 @@ class MemoTile extends GetView<HomeController> {
                             color: controller.isDarkModeOn.value == true
                                 ? Colors.grey[800]
                                 : Colors.grey[200],
-                            borderRadius: BorderRadius.circular(20),
+                            borderRadius: BorderRadius.circular(8),
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -75,57 +75,12 @@ class MemoTile extends GetView<HomeController> {
             //       )
             //     : Container(),
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(
-                      left: 15, top: 20, right: 7, bottom: 12),
-                  child: Text(
-                    date!,
-                    style: TextStyle(color: Colors.grey),
-                  ),
-                ),
-                Flexible(
-                  child: InkWell(
-                    onLongPress: () {
-                      controller.colorValue.value = colorValue!;
-                      //홈 화면의 메모 타일의 데이터가 상세 페이지로 옮겨지는 과정 - 1.
-                      //이 파트에서 goToDetail 로 네가지 arguments 를 전달.
-                      print(createdAt);
-                      controller.goToDetail(id!, text!, date!, colorValue!);
-                    },
-                    child: Stack(
-                      alignment: Alignment.topRight,
-                      children: [
-                        Container(
-                          padding: EdgeInsets.all(14),
-                          decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                blurRadius: 0.1,
-                                spreadRadius: 0.0,
-                                offset: Offset(0, 1),
-                              )
-                            ],
-                            borderRadius: BorderRadius.circular(8),
-                            color: Color(colorValue!),
-                          ),
-                          child: Text(
-                            text!,
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              color: Colors.grey[900],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
                 controller.isEditMode.value == true
                     ? Padding(
                         padding:
-                            const EdgeInsets.only(left: 10, bottom: 8, top: 8),
+                            const EdgeInsets.only(left: 0, bottom: 8, top: 8, right: 10),
                         child: Align(
                           child: InkWell(
                             onTap: () async {
@@ -163,6 +118,47 @@ class MemoTile extends GetView<HomeController> {
                         ),
                       )
                     : Container(),
+                Flexible(
+                  child: InkWell(
+                    onLongPress: () {
+                      controller.isEditMode.value = true;
+                      // controller.colorValue.value = colorValue!;
+                      // //홈 화면의 메모 타일의 데이터가 상세 페이지로 옮겨지는 과정 - 1.
+                      // //이 파트에서 goToDetail 로 네가지 arguments 를 전달.
+                      // print(createdAt);
+                      // controller.goToDetail(id!, text!, date!, colorValue!);
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(14),
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            blurRadius: 0.1,
+                            spreadRadius: 0.0,
+                            offset: Offset(0, 1),
+                          )
+                        ],
+                        borderRadius: BorderRadius.circular(8),
+                        color: Color(colorValue!),
+                      ),
+                      child: Text(
+                        text!,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          color: Colors.grey[900],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                      left: 15, top: 20, right: 7, bottom: 12),
+                  child: Text(
+                    date!,
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                ),
               ],
             ),
           ],
@@ -171,7 +167,7 @@ class MemoTile extends GetView<HomeController> {
     );
     return Form(
       child: Padding(
-        padding: EdgeInsets.only(right: 18, left: 0, top: 5, bottom: 5),
+        padding: EdgeInsets.only(right: 32, left: 18, top: 5, bottom: 5),
         child: Column(
           children: [
             Row(

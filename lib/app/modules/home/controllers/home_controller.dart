@@ -15,7 +15,10 @@ class HomeController extends GetxController {
   RxList currentKeyList = [].obs;
 
   //클릭 감지.
-  RxBool memoLongClicked = false.obs;
+  RxBool memoLongClicked = true.obs;
+
+  //page
+  PageController pageController = PageController();
 
   //focus node.
   FocusNode textFocus = FocusNode();
@@ -600,6 +603,8 @@ class HomeController extends GetxController {
     tagModeOn.value = false;
     searchModeOn.value = false;
     dateModeOn.value = false;
+    isEditMode.value = false;
+    refreshMemo();
   }
 
   RxString nowTag = ''.obs;
