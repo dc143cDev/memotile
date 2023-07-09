@@ -25,6 +25,7 @@ class HomeView extends GetView<HomeController> {
       child: Stack(
         children: [
           Scaffold(
+            backgroundColor: Colors.grey[50],
             floatingActionButton: Obx(
               () => Padding(
                 padding: controller.isEditMode.value == true
@@ -87,141 +88,15 @@ class HomeView extends GetView<HomeController> {
             appBar: AppBar(
               elevation: 0,
               centerTitle: false,
+              scrolledUnderElevation: 0,
+              // backgroundColor: Colors.white.withOpacity(0.9),
               backgroundColor: Colors.transparent,
-              // actions: [
-              //   //앱바 검색모드로 변경.
-              //   IconButton(
-              //     onPressed: () {
-              //       openSearchSheet();
-              //     },
-              //     icon: Icon(
-              //       Icons.search_rounded,
-              //       // size: 18,
-              //     ),
-              //   ),
-              //   // 타일 탭 오픈.
-              //   Obx(
-              //     () => controller.dateModeOn.value == true
-              //         ? Container()
-              //         : IconButton(
-              //             onPressed: () {
-              //               openTileSheet();
-              //             },
-              //             icon: Icon(
-              //               Icons.calendar_month_sharp,
-              //               // size: 18,
-              //             ),
-              //           ),
-              //   ),
-              //   IconButton(
-              //     onPressed: () async {
-              //       // openSearchSheet();
-              //       await controller.getCurrentMinute();
-              //       await controller.getCurrentHour();
-              //       NotificationHelper().selectedDateAlarm(
-              //           controller.CurrentHourInt.value,
-              //           controller.CurrentMinutesInt.value + 1);
-              //     },
-              //     icon: Icon(
-              //       Icons.alarm,
-              //       // size: 18,
-              //     ),
-              //   ),
-              //   //메뉴 탭 오픈.
-              //   IconButton(
-              //     onPressed: () {
-              //       openMenuSheet();
-              //     },
-              //     icon: Icon(
-              //       Icons.menu_rounded,
-              //       // size: 18,
-              //     ),
-              //   ),
-              // ],
-              // leadingWidth:
-              //     controller.searchModeOn == true || controller.tagModeOn == true
-              //         ? null
-              //         : 90,
-              //appBar 왼쪽 상단의 리딩 버튼, 처음부터 되돌아가기 모양, 월 정보 표시.
-              // leading: Obx(
-              //   //모드에 따라 바뀌는 ui.
-              //   //서치 모드일 경우 아이콘이, 태그 모드일 경우 색상 팔레트가 출력.
-              //   () => controller.searchModeOn == true ||
-              //           controller.tagModeOn == true
-              //       ? MaterialButton(
-              //           onPressed: () {
-              //             controller.goToDown();
-              //             controller.searchModeOn.value = false;
-              //             controller.tagModeOn.value = false;
-              //             controller.refreshMemo();
-              //           },
-              //           child: Row(
-              //             children: [
-              //               Icon(
-              //                 Icons.close,
-              //               ),
-              //               //서치모드.
-              //               Expanded(
-              //                 child: controller.searchModeOn.value == true
-              //                     ? Icon(
-              //                         Icons.search_rounded,
-              //                       )
-              //                     //태그모드.
-              //                     : Container(
-              //                         height: 20,
-              //                         width: 60,
-              //                         decoration: BoxDecoration(
-              //                           color: Color(controller.colorValue.value),
-              //                           borderRadius: BorderRadius.circular(20),
-              //                         ),
-              //                       ),
-              //               ),
-              //             ],
-              //           ),
-              //         )
-              //       : Container(
-              //           child: controller.dateModeOn.value == true
-              //               //dateMode.
-              //               ? MaterialButton(
-              //                   onPressed: () {
-              //                     controller.defaultModeOn();
-              //                     controller.refreshMemo();
-              //                     controller.goToDown();
-              //                   },
-              //                   child: Expanded(
-              //                     child: Row(
-              //                       children: [
-              //                         Icon(
-              //                           Icons.close,
-              //                         ),
-              //                         SizedBox(
-              //                           width: 10,
-              //                         ),
-              //                         Icon(
-              //                           Icons.calendar_month,
-              //                         ),
-              //                       ],
-              //                     ),
-              //                   ),
-              //                 )
-              //               //디폴트 모드.
-              //               : null,
-              //         ),
-              // ),
-
               //타이틀도 leading 과 같이 모드 가변형 ui.
               title: Obx(
                 () => controller.tagModeOn == true ||
                         controller.searchModeOn == true
                     ? Row(
                         children: [
-                          // Text(
-                          //   //일
-                          //   controller.CurrentDay.value,
-                          //   style: TextStyle(
-                          //       fontSize: 16, fontWeight: FontWeight.bold),
-                          // ),
-
                           controller.searchModeOn.value == true
                               ? Text(
                                   //서치모드
@@ -289,6 +164,7 @@ class HomeView extends GetView<HomeController> {
                           ),
               ),
             ),
+            extendBodyBehindAppBar: true,
             body: Obx(
               () => SafeArea(
                 child: controller.memo.toString() == '[]'
@@ -804,6 +680,39 @@ class HomeView extends GetView<HomeController> {
           Stack(
             children: [
               Align(
+                alignment: Alignment(1.0, -0.9),
+                child: Container(
+                  width: 25,
+                  height: 150,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                ),
+              ),
+              Align(
+                alignment: Alignment(0.9999, -0.939),
+                child: Container(
+                  width: 40,
+                  height: 45,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[50],
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                ),
+              ),
+              Align(
+                alignment: Alignment(0.9999, -0.67),
+                child: Container(
+                  width: 40,
+                  height: 45,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[50],
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                ),
+              ),
+              Align(
                 alignment: Alignment(1.1, -0.83),
                 child: Container(
                   width: 95,
@@ -824,6 +733,7 @@ class HomeView extends GetView<HomeController> {
                     borderRadius: BorderRadius.circular(15),
                     boxShadow: [
                       BoxShadow(
+                        color: Colors.grey,
                         blurRadius: 1.0,
                         spreadRadius: 0.1,
                         offset: Offset(0, 1),

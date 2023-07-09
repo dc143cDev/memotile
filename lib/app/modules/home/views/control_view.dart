@@ -9,11 +9,6 @@ class ControlView extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[200],
-      appBar: AppBar(
-        backgroundColor: Colors.grey[200],
-        title: const Text('ControlView'),
-        centerTitle: true,
-      ),
       body: const Center(
         child: Text(
           'ControlView is working',
