@@ -27,7 +27,7 @@ class MemoDetailView extends GetView<HomeController> {
           actions: [
             IconButton(
               onPressed: () {
-                controller.deleteItem(Get.arguments['id']);
+                controller.itemToTrash(Get.arguments['id']);
                 Get.back();
               },
               icon: Icon(
