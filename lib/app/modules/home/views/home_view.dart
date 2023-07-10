@@ -22,8 +22,17 @@ class HomeView extends GetView<HomeController> {
       onPanUpdate: (i) {
         //왼쪽에서 오른쪽으로 스와이프시 에딧모드.
         if (i.delta.dx > 30) {
-          controller.isEditMode.value = true;
-          controller.isMemoTileShake.value = true;
+          controller.memoTileAnimationController.forward();
+          Future.delayed(Duration(milliseconds: 700), (){
+            controller.memoTileAnimationController.reverse();
+          },);
+          Future.delayed(
+            Duration(milliseconds: 700),
+            () {
+              controller.isEditMode.value = true;
+              controller.isMemoTileShake.value = true;
+            },
+          );
         }
       },
       onTap: () {
@@ -261,23 +270,19 @@ class HomeView extends GetView<HomeController> {
                                 reverse: false,
                                 //아이템이 몇개 없어도 스크롤되도록 함.
                                 physics: AlwaysScrollableScrollPhysics(),
-                                controller:
-                                    controller.scrollController.value,
+                                controller: controller.scrollController.value,
                                 itemCount: controller.memo.length,
                                 itemBuilder: (context, index) {
                                   return MemoTile(
                                     //memo_tile ui 에 들어갈 각 객체를 index 와 column 값을 넣어 구성.
                                     id: controller.memo[index]['id'],
-                                    text: controller.memo[index]
-                                        ['content'],
+                                    text: controller.memo[index]['content'],
                                     createdAt: controller.memo[index]
                                         ['createdAt'],
                                     isEditChecked: controller.memo[index]
                                         ['isEditChecked'],
-                                    date: controller.memo[index]
-                                        ['dateData'],
-                                    isFirst: controller.memo[index]
-                                        ['isFirst'],
+                                    date: controller.memo[index]['dateData'],
+                                    isFirst: controller.memo[index]['isFirst'],
                                     isDeleted: controller.memo[index]
                                         ['isDeleted'],
                                     colorValue: controller.memo[index]
@@ -781,6 +786,11 @@ class HomeView extends GetView<HomeController> {
                         controller.pageController.animateToPage(1,
                             duration: Duration(milliseconds: 200),
                             curve: Curves.easeIn);
+                        //컨트롤 페이지로 넘어갈때 에딧모드 해제. 자연스러운 해제를 위해 딜레이 주기.
+                        Future.delayed(Duration(milliseconds: 200), () {
+                          controller.isEditMode.value = false;
+                          controller.editModeDone();
+                        });
                       },
                       icon: Icon(Icons.arrow_back_ios_new_outlined),
                     ),

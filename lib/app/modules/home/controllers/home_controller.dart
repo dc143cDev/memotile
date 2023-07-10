@@ -5,7 +5,8 @@ import 'package:get_storage/get_storage.dart';
 
 import '../../../global/memo.dart';
 
-class HomeController extends GetxController with GetSingleTickerProviderStateMixin {
+class HomeController extends GetxController
+    with GetSingleTickerProviderStateMixin {
   //set up part.
 
   //가장 중요한 변수.
@@ -537,13 +538,13 @@ class HomeController extends GetxController with GetSingleTickerProviderStateMix
   //D
   //쓰레기통으로 보내기.
   void itemToTrash(int id) async {
-      await MemoHelper.itemToTrashDB(id);
-      refreshMemo();
+    await MemoHelper.itemToTrashDB(id);
+    refreshMemo();
   }
 
   //그 날의 첫번째 메모는 위에 날짜표시줄이 표기되는데, 그런 날짜표시줄이 표기된 아이템을 지우면 표시줄도 같이 지워짐.
   //이러한 문제를 해결하기 위한 과정이 필요함.
-  void deletItem(int id) async{
+  void deletItem(int id) async {
     //item 삭제 전 삭제할 item의 데이터를 가져옴.
     //가져온 데이터의 isFirst가 false라면, 바로 삭제하고.
     //ifFirst가 true라면, 삭제와 동시에 다음 순번의 메모의 isFirst를 true로 만듦.
@@ -819,7 +820,11 @@ class HomeController extends GetxController with GetSingleTickerProviderStateMix
   RxDouble memoTilePosition = 0.0.obs;
   var isMemoTileShake = false.obs;
 
-  late final memoTileAnimationController = AnimationController(vsync: this);
+  late final memoTileAnimationController = AnimationController(
+    vsync: this,
+    duration: Duration(seconds: 1),
+    animationBehavior: AnimationBehavior.normal
+  );
 
   //여기서 db 를 init 하고 고정적으로 불러와야 할 값들을 가져옴.
   //초기에 불러와야 할 값들 : ui 에 표시될 날짜들, 메모 기본 색상 등.
