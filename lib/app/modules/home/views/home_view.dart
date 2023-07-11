@@ -23,14 +23,21 @@ class HomeView extends GetView<HomeController> {
         //왼쪽에서 오른쪽으로 스와이프시 에딧모드.
         if (i.delta.dx > 30) {
           controller.memoTileAnimationController.forward();
-          Future.delayed(Duration(milliseconds: 700), (){
+
+          Future.delayed(Duration(milliseconds: 400), (){
             controller.memoTileAnimationController.reverse();
+
           },);
           Future.delayed(
-            Duration(milliseconds: 700),
+            Duration(milliseconds: 400),
             () {
               controller.isEditMode.value = true;
               controller.isMemoTileShake.value = true;
+              Future.delayed(Duration(milliseconds: 100), (){
+                controller.editModeCheckBoxX.value =  30.toDouble();
+                controller.editModeCheckBoxY.value = 30.toDouble();
+              });
+
             },
           );
         }

@@ -78,7 +78,7 @@ class MemoTile extends GetView<HomeController> {
             //       )
             //     : Container(),
             SlideTransition(
-              position: Tween<Offset>(begin: Offset.zero, end: Offset(1.5, 0.0))
+              position: Tween<Offset>(begin: Offset.zero, end: Offset(2.0, 0.0))
                   .animate(
                 CurvedAnimation(
                   parent: controller.memoTileAnimationController,
@@ -95,7 +95,6 @@ class MemoTile extends GetView<HomeController> {
                           child: Align(
                             child: InkWell(
                               onTap: () async {
-
                                 if (isEditChecked == 1) {
                                   print('iseidt: ${isEditChecked}');
                                   await MemoHelper.updateItemForEdit(id!, 0);
@@ -106,26 +105,44 @@ class MemoTile extends GetView<HomeController> {
                                   controller.refreshMemo();
                                 }
                               },
-                              child: SizedBox(
-                                height: 30,
-                                child: CircleAvatar(
-                                  backgroundColor: Colors.grey[400],
-                                  child: SizedBox(
-                                    height: 22,
-                                    child: isEditChecked == 1
-                                        ? CircleAvatar(
-                                            backgroundColor: Colors.grey[400],
-                                            child: Icon(
-                                              Icons.check,
-                                              color: Colors.white,
-                                            ),
-                                          )
-                                        : CircleAvatar(
-                                            backgroundColor: Colors.grey[400],
-                                          ),
+                              child: Obx(
+                                () => AnimatedContainer(
+                                  curve: Curves.fastOutSlowIn,
+                                  duration: Duration(seconds: 1),
+                                  width: controller.editModeCheckBoxX.value,
+                                  height: controller.editModeCheckBoxY.value,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(30),
+                                    color: Colors.grey[400],
                                   ),
+                                  child: isEditChecked == 1
+                                      ? Icon(
+                                          Icons.check,
+                                          color: Colors.white,
+                                        )
+                                      : Container(),
                                 ),
                               ),
+                              // child: SizedBox(
+                              //   height: 30,
+                              //   child: CircleAvatar(
+                              //     backgroundColor: Colors.grey[400],
+                              //     child: SizedBox(
+                              //       height: 22,
+                              //       child: isEditChecked == 1
+                              //           ? CircleAvatar(
+                              //               backgroundColor: Colors.grey[400],
+                              //               child: Icon(
+                              //                 Icons.check,
+                              //                 color: Colors.white,
+                              //               ),
+                              //             )
+                              //           : CircleAvatar(
+                              //               backgroundColor: Colors.grey[400],
+                              //             ),
+                              //     ),
+                              //   ),
+                              // ),
                             ),
                           ),
                         )
@@ -133,8 +150,6 @@ class MemoTile extends GetView<HomeController> {
                   Flexible(
                     child: InkWell(
                       onLongPress: () {
-
-
                         // controller.isEditMode.value = true;
                         // controller.isMemoTileShake.value = true;
                         // controller.colorValue.value = colorValue!;
@@ -143,11 +158,14 @@ class MemoTile extends GetView<HomeController> {
                         // print(createdAt);
                         // controller.goToDetail(id!, text!, date!, colorValue!);
                       },
-                      onTap: (){
+                      onTap: () {
                         controller.memoTileAnimationController.forward();
-                        Future.delayed(Duration(milliseconds: 700), (){
-                          controller.memoTileAnimationController.reverse();
-                          },);
+                        Future.delayed(
+                          Duration(milliseconds: 700),
+                          () {
+                            controller.memoTileAnimationController.reverse();
+                          },
+                        );
                       },
                       child: ShakeWidget(
                         //에딧모드 진입시 흔들리는 애니메이션.

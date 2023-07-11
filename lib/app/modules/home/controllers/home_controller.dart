@@ -818,11 +818,18 @@ class HomeController extends GetxController
 
   //애니메이션 파트.
   RxDouble memoTilePosition = 0.0.obs;
+  RxDouble editModeCheckBoxX = 1.0.obs;
+  RxDouble editModeCheckBoxY = 1.0.obs;
+
+  RxInt editModeCheckBoxXInt = 1.obs;
+  RxInt editModeCheckBoxYInt = 1.obs;
+
   var isMemoTileShake = false.obs;
+
 
   late final memoTileAnimationController = AnimationController(
     vsync: this,
-    duration: Duration(seconds: 1),
+    duration: Duration(milliseconds: 500),
     animationBehavior: AnimationBehavior.normal
   );
 

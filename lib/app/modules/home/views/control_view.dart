@@ -184,7 +184,7 @@ class ControlView extends GetView<HomeController> {
                         flex: 5,
                         child: Container(
                           height: 150,
-                          child: Text('alarm'),
+                          child: Text('태그설정'),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(25),
                             color: Colors.white,
