@@ -22,24 +22,7 @@ class HomeView extends GetView<HomeController> {
       onPanUpdate: (i) {
         //왼쪽에서 오른쪽으로 스와이프시 에딧모드.
         if (i.delta.dx > 30) {
-          controller.memoTileAnimationController.forward();
-
-          Future.delayed(Duration(milliseconds: 400), (){
-            controller.memoTileAnimationController.reverse();
-
-          },);
-          Future.delayed(
-            Duration(milliseconds: 400),
-            () {
-              controller.isEditMode.value = true;
-              controller.isMemoTileShake.value = true;
-              Future.delayed(Duration(milliseconds: 100), (){
-                controller.editModeCheckBoxX.value =  30.toDouble();
-                controller.editModeCheckBoxY.value = 30.toDouble();
-              });
-
-            },
-          );
+          controller.editModeInitAnimation();
         }
       },
       onTap: () {
@@ -73,13 +56,15 @@ class HomeView extends GetView<HomeController> {
                               Icons.search_rounded,
                               color: Colors.black,
                             ),
-                      onPressed: () {
+                      onPressed: () async{
                         if (controller.isEditMode.value == true ||
                             controller.searchModeOn.value == true ||
                             controller.tagModeOn.value == true) {
-                          controller.defaultModeOn();
                           //에딧모드 종료시 실행되는 메소드.
-                          controller.editModeDone();
+                          await controller.editModeDone();
+                          Future.delayed(Duration(milliseconds: 400), (){
+                            controller.defaultModeOn();
+                          });
                         } else {
                           // controller.isEditMode.value = true;
                           openSearchSheet();
@@ -259,7 +244,7 @@ class HomeView extends GetView<HomeController> {
                                             .toString());
                                       }
                                     },
-                                    icon: Icon(Icons.send_rounded),
+                                    icon: Icon(Icons.arrow_upward),
                                   ),
                                 ),
                               ],
@@ -794,9 +779,9 @@ class HomeView extends GetView<HomeController> {
                             duration: Duration(milliseconds: 200),
                             curve: Curves.easeIn);
                         //컨트롤 페이지로 넘어갈때 에딧모드 해제. 자연스러운 해제를 위해 딜레이 주기.
+                        controller.editModeDone();
                         Future.delayed(Duration(milliseconds: 200), () {
                           controller.isEditMode.value = false;
-                          controller.editModeDone();
                         });
                       },
                       icon: Icon(Icons.arrow_back_ios_new_outlined),

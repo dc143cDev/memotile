@@ -78,13 +78,34 @@ class MemoTile extends GetView<HomeController> {
             //       )
             //     : Container(),
             SlideTransition(
-              position: Tween<Offset>(begin: Offset.zero, end: Offset(2.0, 0.0))
-                  .animate(
-                CurvedAnimation(
-                  parent: controller.memoTileAnimationController,
-                  curve: Curves.elasticIn,
-                ),
-              ),
+              position: Tween<Offset>(
+                      begin: Offset.zero,
+                      end: Offset(0.2, 0.0),
+                    ).animate(
+                      CurvedAnimation(
+                        parent: controller.memoTileAnimationController,
+                        curve: Curves.easeIn,
+                      ),
+                    ),
+              // position: controller.isMemoTileShake.value == true
+              //     ? Tween<Offset>(
+              //         begin: Offset.zero,
+              //         end: Offset(2.0, 0.0),
+              //       ).animate(
+              //         CurvedAnimation(
+              //           parent: controller.memoTileAnimationController,
+              //           curve: Curves.elasticIn,
+              //         ),
+              //       )
+              //     : Tween<Offset>(
+              //         begin: Offset.zero,
+              //         end: Offset(2.0, 0.0),
+              //       ).animate(
+              //         CurvedAnimation(
+              //           parent: controller.memoTileAnimationController,
+              //           curve: Curves.easeIn,
+              //         ),
+              //       ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -170,10 +191,12 @@ class MemoTile extends GetView<HomeController> {
                       child: ShakeWidget(
                         //에딧모드 진입시 흔들리는 애니메이션.
                         //패키지가 구형이므로 미지원 상정해야함.
-                        autoPlay: controller.isMemoTileShake.value,
+                        //흔들리는 애니메이션은 에딧모드에서 선택됐을때만.
+                        autoPlay: isEditChecked == 1 ? true : false,
                         duration: Duration(seconds: 4),
                         shakeConstant: ShakeLittleConstant1(),
-                        child: Container(
+                        child: AnimatedContainer(
+                          duration: Duration(milliseconds: 200),
                           padding: EdgeInsets.all(14),
                           decoration: BoxDecoration(
                             boxShadow: [

@@ -245,12 +245,15 @@ class HomeController extends GetxController
 
   editModeDone() async {
     final data = await MemoHelper.getItemsByEditModeCheck();
+    await editModeDoneAnimation();
     print('edited: ${data}');
     editedMemo.addAll(data);
     editedMemo.forEach((element) {
       updateItemForEditCheckControll(element['id'], 0);
     });
-    isMemoTileShake.value = false;
+    // isMemoTileShake.value = false;
+    // editModeCheckBoxX.value = 1.0;
+    // editModeCheckBoxY.value = 1.0;
     editedMemo.value = [];
     // refreshMemo();
     print('edit mode done');
@@ -510,7 +513,7 @@ class HomeController extends GetxController
       refreshMemo();
       print('first check false');
     }
-
+    // memoTileAnimationController.forward();
     // goToDown();
   }
 
@@ -672,7 +675,8 @@ class HomeController extends GetxController
       (element) {
         // print('element: ${element}');
         //white 타일은 존재하지 않기 때문에 colorValue 가 white 면 eventsHash 에 추가하지 않도록 함.
-        if (element['colorValue'] == 4294967295) {
+        //deleted 된 메모도 마찬가지로 보이지 않게끔 함.
+        if (element['colorValue'] == 4294967295 || element['isDeleted'] == 1) {
           null;
         } else {
           print('now element: ${element}');
@@ -825,13 +829,63 @@ class HomeController extends GetxController
   RxInt editModeCheckBoxYInt = 1.obs;
 
   var isMemoTileShake = false.obs;
+  var isMemoCreated = false.obs;
 
+  var memoCreatedTween = Tween<Offset>(
+    begin: Offset(0.0, 1.0),
+    end: Offset.zero,
+  );
+
+  //왼쪽 스와이프, 에딧모드 진입시 애니메이션.
+  editModeInitAnimation() {
+    memoTileAnimationController.forward();
+
+    Future.delayed(
+      Duration(milliseconds: 300),
+      () {
+        memoTileAnimationController.reverse();
+      },
+    );
+    Future.delayed(
+      Duration(milliseconds: 300),
+      () {
+        isEditMode.value = true;
+        isMemoTileShake.value = true;
+        Future.delayed(Duration(milliseconds: 100), () {
+          editModeCheckBoxX.value = 30.toDouble();
+          editModeCheckBoxY.value = 30.toDouble();
+        });
+      },
+    );
+  }
+
+  //editModeDone에 포함될, 에딧모드 종료시 애니메이션.
+  editModeDoneAnimation() {
+    memoTileAnimationController.forward();
+
+    Future.delayed(
+      Duration(milliseconds: 200),
+          () {
+        memoTileAnimationController.reverse();
+      },
+    );
+    Future.delayed(
+      Duration(milliseconds: 1),
+          () {
+        isEditMode.value = false;
+        isMemoTileShake.value = false;
+        Future.delayed(Duration(milliseconds: 1), () {
+          editModeCheckBoxX.value = 1.toDouble();
+          editModeCheckBoxY.value = 1.toDouble();
+        });
+      },
+    );
+  }
 
   late final memoTileAnimationController = AnimationController(
-    vsync: this,
-    duration: Duration(milliseconds: 500),
-    animationBehavior: AnimationBehavior.normal
-  );
+      vsync: this,
+      duration: Duration(milliseconds: 500),
+      animationBehavior: AnimationBehavior.normal);
 
   //여기서 db 를 init 하고 고정적으로 불러와야 할 값들을 가져옴.
   //초기에 불러와야 할 값들 : ui 에 표시될 날짜들, 메모 기본 색상 등.

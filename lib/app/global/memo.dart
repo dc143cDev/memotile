@@ -123,7 +123,7 @@ class MemoHelper {
       'memo_test25',
       orderBy: "mm",
       //event 필요한 columns 들만 가져오기.
-      columns: ['createdAt', 'colorValue'],
+      columns: ['createdAt', 'colorValue', 'isDeleted'],
     );
   }
 
