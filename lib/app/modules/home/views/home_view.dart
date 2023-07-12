@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -18,6 +19,34 @@ class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     Get.put(HomeController());
+
+    const colorizeTextStyle = TextStyle(
+      color: Colors.black,
+      fontSize: 27,
+      fontWeight: FontWeight.w700,
+    );
+
+    final appBarTitle = SizedBox(
+      width: 250,
+      child: AnimatedTextKit(
+        animatedTexts: [
+          ColorizeAnimatedText(
+            'MOTOMEE',
+            textStyle: colorizeTextStyle,
+            colors: [Colors.black, Colors.red],
+          ),
+          ColorizeAnimatedText(
+            controller.redredTagController.text,
+            textStyle: colorizeTextStyle,
+            colors: [
+              Color(controller.redredValue),
+              Color(controller.colorValue.value)
+            ],
+          ),
+        ],
+      ),
+    );
+
     final home = GestureDetector(
       onPanUpdate: (i) {
         //왼쪽에서 오른쪽으로 스와이프시 에딧모드.
@@ -56,13 +85,13 @@ class HomeView extends GetView<HomeController> {
                               Icons.search_rounded,
                               color: Colors.black,
                             ),
-                      onPressed: () async{
+                      onPressed: () async {
                         if (controller.isEditMode.value == true ||
                             controller.searchModeOn.value == true ||
                             controller.tagModeOn.value == true) {
                           //에딧모드 종료시 실행되는 메소드.
                           await controller.editModeDone();
-                          Future.delayed(Duration(milliseconds: 400), (){
+                          Future.delayed(Duration(milliseconds: 400), () {
                             controller.defaultModeOn();
                           });
                         } else {
@@ -101,6 +130,7 @@ class HomeView extends GetView<HomeController> {
               // backgroundColor: Colors.white.withOpacity(0.9),
               backgroundColor: Colors.transparent,
               //타이틀도 leading 과 같이 모드 가변형 ui.
+              // title: appBarTitle,
               title: Obx(
                 () => controller.tagModeOn == true ||
                         controller.searchModeOn == true
@@ -741,8 +771,8 @@ class HomeView extends GetView<HomeController> {
               Align(
                 alignment: Alignment(1.1, -0.83),
                 child: Container(
-                  width: 95,
-                  height: 75,
+                  width: controller.height * 0.1,
+                  height: controller.height * 0.082,
                   decoration: BoxDecoration(
                     color: Colors.grey[200],
                     borderRadius: BorderRadius.only(
@@ -767,19 +797,29 @@ class HomeView extends GetView<HomeController> {
                     ],
                   ),
                   child: Container(
-                    width: 47,
-                    height: 45,
+                    width: controller.width.value * 0.1 + 3,
+                    height: controller.width.value * 0.1,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: IconButton(
-                      onPressed: () {
+                      onPressed: () async {
                         controller.pageController.animateToPage(1,
-                            duration: Duration(milliseconds: 200),
+                            duration: Duration(milliseconds: 300),
                             curve: Curves.easeIn);
                         //컨트롤 페이지로 넘어갈때 에딧모드 해제. 자연스러운 해제를 위해 딜레이 주기.
                         controller.editModeDone();
+
+                        // if (controller.controllPageContainerAnimationOn.value ==
+                        //     false) {
+                        //   await controller.controllPageContainerInitAnimation();
+                        // } else if (controller
+                        //         .controllPageContainerAnimationOn.value ==
+                        //     true) {
+                        //   controller.getControllPageContainer();
+                        // }
+
                         Future.delayed(Duration(milliseconds: 200), () {
                           controller.isEditMode.value = false;
                         });
@@ -799,6 +839,11 @@ class HomeView extends GetView<HomeController> {
     return PageView(
       onPageChanged: (int) async {
         await controller.getTiles();
+        if (controller.controllPageContainerAnimationOn.value == false) {
+          await controller.controllPageContainerInitAnimation();
+        } else if (controller.controllPageContainerAnimationOn.value == true) {
+          controller.getControllPageContainer();
+        }
         controller.CurrentMonthForTile.value = controller.CurrentMonthMMM.value;
       },
       physics: ClampingScrollPhysics(),

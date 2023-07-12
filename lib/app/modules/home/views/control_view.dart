@@ -14,6 +14,12 @@ class ControlView extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
+    final verticalLine = Container(
+      width: 2,
+      height: controller.controllPageLongContainerVerticalLine.value,
+      color: Colors.grey[200],
+    );
+
     return Scaffold(
       backgroundColor: Colors.grey[200],
       floatingActionButton: FloatingActionButton(
@@ -23,8 +29,9 @@ class ControlView extends GetView<HomeController> {
         ),
         backgroundColor: Colors.grey[400],
         onPressed: () {
+          // controller.getControllPageContainer();
           controller.pageController.animateToPage(0,
-              duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+              duration: Duration(milliseconds: 300), curve: Curves.easeIn);
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -37,12 +44,13 @@ class ControlView extends GetView<HomeController> {
               children: [
                 //tile.
                 SafeArea(
-                  child: Padding(
-                    padding: const EdgeInsets.all(30.0),
-                    child: SizedBox(
-                      height: 430,
-                      width: double.infinity,
-                      child: Container(
+                  child: SizedBox(
+                    child: Padding(
+                      padding: const EdgeInsets.all(30.0),
+                      child: AnimatedContainer(
+                        duration: Duration(seconds: 1),
+                        height: controller.width.value * 1,
+                        width: double.infinity,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(25),
                           color: Colors.white,
@@ -150,24 +158,132 @@ class ControlView extends GetView<HomeController> {
                   ),
                 ),
                 //알람 센터.
-                SafeArea(
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(30, 0, 30, 30),
-                    child: SizedBox(
-                      height: 140,
-                      width: double.infinity,
-                      child: Container(
-                        child: Text('alarm'),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(25),
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              spreadRadius: 2,
-                              blurRadius: 7,
-                              offset:
-                                  Offset(0, 10), // changes position of shadow
+                Padding(
+                  padding: EdgeInsets.fromLTRB(30, 0, 30, 30),
+                  child: Obx(
+                    () => AnimatedContainer(
+                      curve: Curves.easeIn,
+                      duration: Duration(milliseconds: 100),
+                      width: controller.controllPageLongContainerX.value,
+                      height: controller.controllPageLongContainerY.value,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(25),
+                        color: Colors.white.withOpacity(
+                            controller.controllPageContainerOpacity.value),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 2,
+                            blurRadius: 7,
+                            offset: Offset(0, 10), // changes position of shadow
+                          ),
+                        ],
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 35),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                AnimatedContainer(
+                                  duration: Duration(milliseconds: 300),
+                                  width: controller.controllPageLongContainerSubBox.value,
+                                  height: controller.controllPageLongContainerSubBox.value,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    color: Colors.grey[300],
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.7),
+                                        spreadRadius: 2,
+                                        blurRadius: 4,
+                                        offset: Offset(
+                                            0, 7), // changes position of shadow
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Text(
+                                  '1',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.grey[900],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            verticalLine,
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                AnimatedContainer(
+                                  duration: Duration(milliseconds: 300),
+                                  width: controller.controllPageLongContainerSubBox.value,
+                                  height: controller.controllPageLongContainerSubBox.value,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    color: Colors.grey[300],
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.7),
+                                        spreadRadius: 2,
+                                        blurRadius: 4,
+                                        offset: Offset(
+                                            0, 7), // changes position of shadow
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Text(
+                                  '1',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.grey[900],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            verticalLine,
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                AnimatedContainer(
+                                  duration: Duration(milliseconds: 300),
+                                  width: controller.controllPageLongContainerSubBox.value,
+                                  height: controller.controllPageLongContainerSubBox.value,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    color: Colors.grey[300],
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.7),
+                                        spreadRadius: 2,
+                                        blurRadius: 4,
+                                        offset: Offset(
+                                            0, 7), // changes position of shadow
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Text(
+                                  '1',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.grey[900],
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
@@ -179,51 +295,64 @@ class ControlView extends GetView<HomeController> {
                 Padding(
                   padding: EdgeInsets.fromLTRB(30, 0, 30, 30),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Expanded(
-                        flex: 5,
-                        child: Container(
-                          height: 150,
-                          child: Text('태그설정'),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(25),
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.5),
-                                spreadRadius: 2,
-                                blurRadius: 7,
-                                offset:
-                                    Offset(0, 10), // changes position of shadow
-                              ),
-                            ],
+                      Obx(
+                        () => Center(
+                          child: AnimatedContainer(
+                            curve: Curves.easeIn,
+                            duration: Duration(milliseconds: 240),
+                            width: controller.controllPageShortContainerX.value,
+                            height:
+                                controller.controllPageShortContainerY.value,
+                            child: Text('태그설정'),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(25),
+                              color: Colors.white.withOpacity(controller
+                                  .controllPageContainerOpacity.value),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  spreadRadius: 2,
+                                  blurRadius: 7,
+                                  offset: Offset(
+                                      0, 10), // changes position of shadow
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
                       SizedBox(
                         width: 30,
                       ),
-                      Expanded(
-                        flex: 5,
-                        child: InkWell(
-                          onTap: (){
-
-                          },
-                          child: Container(
-                            height: 150,
-                            child: Text('쓰레기통'),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(25),
-                              color: Colors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.5),
-                                  spreadRadius: 2,
-                                  blurRadius: 7,
-                                  offset:
-                                      Offset(0, 10), // changes position of shadow
-                                ),
-                              ],
+                      InkWell(
+                        onTap: () {},
+                        child: Obx(
+                          () => Center(
+                            child: AnimatedContainer(
+                              curve: Curves.easeIn,
+                              duration: Duration(milliseconds: 300),
+                              width:
+                                  controller.controllPageShortContainerX.value,
+                              height:
+                                  controller.controllPageShortContainerY.value,
+                              child: Text('쓰레기통'),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(25),
+                                color: Colors.white.withOpacity(controller
+                                    .controllPageContainerOpacity.value),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.5),
+                                    spreadRadius: 2,
+                                    blurRadius: 7,
+                                    offset: Offset(
+                                        0, 10), // changes position of shadow
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),

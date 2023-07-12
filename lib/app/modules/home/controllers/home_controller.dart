@@ -21,6 +21,10 @@ class HomeController extends GetxController
   //page
   PageController pageController = PageController();
 
+  //Screen Size.
+  RxDouble width = 0.0.obs;
+  RxDouble height = 0.0.obs;
+
   //focus node.
   FocusNode textFocus = FocusNode();
 
@@ -590,11 +594,15 @@ class HomeController extends GetxController
   //날짜 모드 전환시 bool.
   RxBool dateModeOn = false.obs;
 
+  RxBool defaultModeValueOn = true.obs;
+
   searchButtonClicked() {
     if (searchBarController.text != '') {
       searchModeOn.value = true;
       tagModeOn.value = false;
       dateModeOn.value = false;
+
+      // defaultModeOn.value = true;
     }
   }
 
@@ -602,12 +610,16 @@ class HomeController extends GetxController
     tagModeOn.value = true;
     searchModeOn.value = false;
     dateModeOn.value = false;
+    //
+    // defaultModeOn.value = true;
   }
 
   dateButtonClicked() {
     tagModeOn.value = false;
     searchModeOn.value = false;
     dateModeOn.value = true;
+    //
+    // defaultModeOn.value = true;
   }
 
   defaultModeOn() {
@@ -615,6 +627,8 @@ class HomeController extends GetxController
     searchModeOn.value = false;
     dateModeOn.value = false;
     isEditMode.value = false;
+    //
+    // defaultModeOn.value = true;
     refreshMemo();
   }
 
@@ -865,13 +879,13 @@ class HomeController extends GetxController
 
     Future.delayed(
       Duration(milliseconds: 200),
-          () {
+      () {
         memoTileAnimationController.reverse();
       },
     );
     Future.delayed(
       Duration(milliseconds: 1),
-          () {
+      () {
         isEditMode.value = false;
         isMemoTileShake.value = false;
         Future.delayed(Duration(milliseconds: 1), () {
@@ -882,10 +896,66 @@ class HomeController extends GetxController
     );
   }
 
+  //컨트롤 페이지 넘어간 후 컨테이너들 사이즈 커지는 애니메이션.
+  RxBool controllPageContainerAnimationOn = false.obs;
+
+  RxDouble controllPageLongContainerX = 34.0.obs;
+  RxDouble controllPageLongContainerY = 34.0.obs;
+
+  RxDouble controllPageLongContainerVerticalLine = 10.0.obs;
+
+  RxDouble controllPageLongContainerSubBox = 10.0.obs;
+
+  RxDouble controllPageShortContainerX = 0.0.obs;
+  RxDouble controllPageShortContainerY = 0.0.obs;
+
+  RxDouble controllPageContainerOpacity = 0.6.obs;
+
+
+
+  getControllPageContainer() {
+    controllPageContainerAnimationOn.value = false;
+
+    controllPageLongContainerX.value = Get.width * 0.7;
+    controllPageLongContainerY.value = Get.height * 0.10;
+
+    controllPageShortContainerX.value = Get.width * 0.2;
+    controllPageShortContainerY.value = Get.height * 0.07;
+  }
+
+  //너무 정신사납지 않게 실행당 한번만 애니메이션 작동.
+  controllPageContainerInitAnimation() {
+    controllPageContainerAnimationOn.value = true;
+
+    Future.delayed(
+      Duration(milliseconds: 100),
+      () {
+        controllPageContainerOpacity.value = 1.0;
+        controllPageLongContainerX.value = Get.width * 0.92;
+        controllPageLongContainerY.value = Get.height * 0.15;
+
+        controllPageLongContainerSubBox.value = 55;
+
+        controllPageShortContainerX.value = Get.width * 0.394;
+        controllPageShortContainerY.value = Get.height * 0.15;
+      },
+    );
+  }
+
   late final memoTileAnimationController = AnimationController(
-      vsync: this,
-      duration: Duration(milliseconds: 500),
-      animationBehavior: AnimationBehavior.normal);
+    vsync: this,
+    duration: Duration(milliseconds: 500),
+    animationBehavior: AnimationBehavior.normal,
+  );
+
+  //스크린 사이즈 가져오기.
+  getScreenSize() {
+    width.value = Get.width;
+    height.value = Get.height;
+
+    print('Screen width: ${width.value}');
+    print('Screen height: ${height.value}');
+  }
 
   //여기서 db 를 init 하고 고정적으로 불러와야 할 값들을 가져옴.
   //초기에 불러와야 할 값들 : ui 에 표시될 날짜들, 메모 기본 색상 등.
@@ -893,6 +963,8 @@ class HomeController extends GetxController
   void onInit() async {
     super.onInit();
 
+    await getScreenSize();
+    await getControllPageContainer();
     await MemoHelper.db();
     await getDefaultColor();
     await getCurrentYear();
