@@ -132,21 +132,24 @@ class HomeView extends GetView<HomeController> {
                       controller.goToDownButtonDontShow.value == true
                           ? Container()
                           : Padding(
-                              padding: const EdgeInsets.only(top: 5),
-                              child: FloatingActionButton(
-                                backgroundColor:
-                                    controller.isDarkModeOn.value == true
-                                        ? subDark
-                                        : subLight,
-                                child: Icon(
-                                  Icons.arrow_downward_sharp,
-                                  color: controller.isDarkModeOn.value == true
-                                      ? iconDark
-                                      : iconLight,
+                              padding: const EdgeInsets.only(top: 7),
+                              child: Align(
+                                alignment: Alignment(1, 1),
+                                child: FloatingActionButton(
+                                  backgroundColor:
+                                      controller.isDarkModeOn.value == true
+                                          ? subDark
+                                          : subLight,
+                                  child: Icon(
+                                    Icons.arrow_downward_sharp,
+                                    color: controller.isDarkModeOn.value == true
+                                        ? iconDark
+                                        : iconLight,
+                                  ),
+                                  onPressed: () {
+                                    controller.goToDown();
+                                  },
                                 ),
-                                onPressed: () {
-                                  controller.goToDown();
-                                },
                               ),
                             ),
                       SizedBox(
