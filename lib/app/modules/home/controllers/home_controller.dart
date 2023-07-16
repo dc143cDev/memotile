@@ -55,6 +55,7 @@ class HomeController extends GetxController
   var isLoading = true.obs;
   var hasMore = false.obs;
   var goToDownButtonDontShow = true.obs;
+  var isScrollMax = false.obs;
 
   //스크롤 아래로 내리기.
   //아이템 추가, 처음 ui 진입 시 호출됨.
@@ -233,10 +234,18 @@ class HomeController extends GetxController
   int purpleValue = Color(0xffbb9beb).value;
   int mustardValue = Color(0xfff0dc7a).value;
 
-  //color part 다크모드.
+  //theme part.
+  var themeData = Get.isDarkMode ? ThemeData.dark() : ThemeData.light();
+
   var isDarkModeOn = false.obs;
   RxInt darkModeDateIndicatorColor = Colors.grey.value.obs;
   RxInt lightModeDateIndicatorColor = Colors.white.value.obs;
+
+  var backgoundColorValue = 0.obs;
+  var subColorValue = 0.obs;
+  var iconColorValue = 0.obs;
+  var textColorValue = 0.obs;
+  var shadowColorValue = 0.obs;
 
   darkModeOn() {
     // print('ddI: ${darkModeDateIndicatorColor.value}');
@@ -988,6 +997,9 @@ class HomeController extends GetxController
     await tagInit();
     await firstInitGetDataKey();
 
+    //테마 리스너
+
+    //스크롤 리스너
     try {
       scrollController.value.addListener(() async {
         //아래로 내리기 버튼 활성화 감지를 위한 조건문.
@@ -1004,6 +1016,12 @@ class HomeController extends GetxController
           await firstInitGetDataKey();
           addPatchData();
           // print('sc');
+        }
+        if (scrollController.value.offset >=
+            scrollController.value.position.maxScrollExtent) {
+          isScrollMax.value = true;
+        } else {
+          isScrollMax.value = false;
         }
       });
     } catch (e, s) {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_shake_animated/flutter_shake_animated.dart';
 import 'package:get/get.dart';
 import 'package:memotile/app/global/memo.dart';
+import 'package:memotile/app/global/palette.dart';
 
 import 'package:memotile/app/modules/home/controllers/home_controller.dart';
 
@@ -54,8 +55,8 @@ class MemoTile extends GetView<HomeController> {
                           height: 30,
                           decoration: BoxDecoration(
                             color: controller.isDarkModeOn.value == true
-                                ? Colors.grey[800]
-                                : Colors.grey[200],
+                                ? subDark
+                                : subLight,
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Row(
@@ -162,11 +163,13 @@ class MemoTile extends GetView<HomeController> {
                           decoration: BoxDecoration(
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.grey.withOpacity(0.5),
+                                color: controller.isDarkModeOn.value == true
+                                    ? shadowDark
+                                    : shadowLight,
                                 spreadRadius: 1,
                                 blurRadius: 1,
                                 offset:
-                                    Offset(0, 3), // changes position of shadow
+                                Offset(0, 3), // changes position of shadow
                               ),
                             ],
                             borderRadius: BorderRadius.circular(8),

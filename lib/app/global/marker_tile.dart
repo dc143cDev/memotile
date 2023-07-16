@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:memotile/app/global/palette.dart';
 import 'package:memotile/app/modules/home/controllers/home_controller.dart';
 
 class MarKerTile extends GetView<HomeController> {
@@ -18,6 +19,17 @@ class MarKerTile extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
+    final markerTileBoxShadow = BoxShadow(
+      color: controller.isDarkModeOn.value == true
+          ? shadowDark
+          : shadowLight,
+      spreadRadius: 1,
+      blurRadius: 1,
+      offset:
+      Offset(0, 3), // changes position of shadow
+    );
+
+
     print('date: ${event}');
     print('colorList: ${colorList}');
     if (colorList.length == 1) {
@@ -31,12 +43,7 @@ class MarKerTile extends GetView<HomeController> {
               width: 12,
               decoration: BoxDecoration(
                 boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.7),
-                    blurRadius: 5.0,
-                    spreadRadius: 0.0,
-                    offset: Offset(0, 4),
-                  )
+                  markerTileBoxShadow,
                 ],
                   color: Color(colorList[0]),
                   borderRadius: BorderRadius.circular(10),),
@@ -55,12 +62,7 @@ class MarKerTile extends GetView<HomeController> {
               width: 12,
               decoration: BoxDecoration(
                 boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.7),
-                    blurRadius: 5.0,
-                    spreadRadius: 0.0,
-                    offset: Offset(0, 4),
-                  )
+                  markerTileBoxShadow,
                 ],
                 color: Color(colorList[0]),
                 borderRadius: BorderRadius.circular(10),),
@@ -70,12 +72,7 @@ class MarKerTile extends GetView<HomeController> {
               width: 12,
               decoration: BoxDecoration(
                 boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.7),
-                    blurRadius: 5.0,
-                    spreadRadius: 0.0,
-                    offset: Offset(0, 4),
-                  )
+                  markerTileBoxShadow,
                 ],
                 color: Color(colorList[1]),
                 borderRadius: BorderRadius.circular(10),),
@@ -94,12 +91,7 @@ class MarKerTile extends GetView<HomeController> {
               width: 12,
               decoration: BoxDecoration(
                 boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.7),
-                    blurRadius: 5.0,
-                    spreadRadius: 0.0,
-                    offset: Offset(0, 4),
-                  )
+                  markerTileBoxShadow,
                 ],
                 color: Color(colorList[0]),
                 borderRadius: BorderRadius.circular(10),),
@@ -109,12 +101,7 @@ class MarKerTile extends GetView<HomeController> {
               width: 12,
               decoration: BoxDecoration(
                 boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.7),
-                    blurRadius: 5.0,
-                    spreadRadius: 0.0,
-                    offset: Offset(0, 4),
-                  )
+                  markerTileBoxShadow,
                 ],
                 color: Color(colorList[1]),
                 borderRadius: BorderRadius.circular(10),),
@@ -124,12 +111,7 @@ class MarKerTile extends GetView<HomeController> {
               width: 12,
               decoration: BoxDecoration(
                 boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.7),
-                    blurRadius: 5.0,
-                    spreadRadius: 0.0,
-                    offset: Offset(0, 4),
-                  )
+                  markerTileBoxShadow,
                 ],
                 color: Color(colorList[2]),
                 borderRadius: BorderRadius.circular(10),),
@@ -148,12 +130,7 @@ class MarKerTile extends GetView<HomeController> {
               width: 12,
               decoration: BoxDecoration(
                 boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.7),
-                    blurRadius: 5.0,
-                    spreadRadius: 0.0,
-                    offset: Offset(0, 4),
-                  )
+                  markerTileBoxShadow,
                 ],
                 color: Color(colorList[0]),
                 borderRadius: BorderRadius.circular(10),),
@@ -163,12 +140,7 @@ class MarKerTile extends GetView<HomeController> {
               width: 12,
               decoration: BoxDecoration(
                 boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.7),
-                    blurRadius: 5.0,
-                    spreadRadius: 0.0,
-                    offset: Offset(0, 4),
-                  )
+                  markerTileBoxShadow,
                 ],
                 color: Color(colorList[1]),
                 borderRadius: BorderRadius.circular(10),),
@@ -178,12 +150,7 @@ class MarKerTile extends GetView<HomeController> {
               width: 12,
               decoration: BoxDecoration(
                 boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.7),
-                    blurRadius: 5.0,
-                    spreadRadius: 0.0,
-                    offset: Offset(0, 4),
-                  )
+                  markerTileBoxShadow,
                 ],
                 color: Color(colorList[2]),
                 borderRadius: BorderRadius.circular(10),),
@@ -193,12 +160,7 @@ class MarKerTile extends GetView<HomeController> {
               width: 12,
               decoration: BoxDecoration(
                 boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.7),
-                    blurRadius: 5.0,
-                    spreadRadius: 0.0,
-                    offset: Offset(0, 4),
-                  )
+                  markerTileBoxShadow,
                 ],
                 color: Color(colorList[3]),
                 borderRadius: BorderRadius.circular(10),),
