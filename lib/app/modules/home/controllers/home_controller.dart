@@ -13,6 +13,9 @@ class HomeController extends GetxController
   //실질적 데이터인 MemoHelper 에서 내려온 data 변수가 ui 에 표시되기 위해 여기에 담김.
   RxList memo = [].obs;
 
+  //삭제된 메모 조회를 위한 변수.
+  RxList deletedMemo = [].obs;
+
   RxList currentKeyList = [].obs;
 
   //클릭 감지.
@@ -425,6 +428,13 @@ class HomeController extends GetxController
     print('memo refreshed');
   }
 
+  //삭제된 아이템 가져오기.
+  refreshDeletedMemo() async {
+    final data = await MemoHelper.getDeletedItem();
+    deletedMemo.value = data;
+    print('deleted item: ${deletedMemo}');
+  }
+
   //colorValue 에 따라 아이템 가져오기.
   //색상 태그별 정리 기능에 사용됨.
   refreshMemoByColor(int color) async {
@@ -682,7 +692,7 @@ class HomeController extends GetxController
 
     //tile 구현 스텝 2. Raw 데이터 넣어주기.
     eventRaw.value = data;
-    print('data: ${data}');
+    print('tile data: ${data}');
     //tile 구현 스텝 3. forEach 사용해서 map 형태인 eventHash 에 eventRaw 의 알맞은 key value 넣기.
 
     eventRaw.forEach(
@@ -690,10 +700,13 @@ class HomeController extends GetxController
         // print('element: ${element}');
         //white 타일은 존재하지 않기 때문에 colorValue 가 white 면 eventsHash 에 추가하지 않도록 함.
         //deleted 된 메모도 마찬가지로 보이지 않게끔 함.
-        if (element['colorValue'] == 4294967295 || element['isDeleted'] == 1) {
+        if (element['isDeleted'] == 1) {
+          null;
+        } else if (element['colorValue'] == 4294967295) {
           null;
         } else {
           print('now element: ${element}');
+          print('now element: ${element['isDeleted']}');
           //키를 만들어야 하기 때문에 우선 데이터 삽입.
           eventsHashRaw['${element['createdAt'].toString()}'] = [
             '${element['colorValue'].toString()}'
@@ -718,8 +731,10 @@ class HomeController extends GetxController
         print(dateData['createdAt']);
         print(dateData['colorValue']);
         print('eventHashRaw: ${eventsHash}');
-        //이쪽에서도 white 걸러주기.
+        //이쪽에서도 white, deletedItem 걸러주기.
         if (dateData['colorValue'] == 4294967295) {
+          null;
+        } else if (dateData['isDeleted'] == 1) {
           null;
         } else if (eventsHash.containsKey(dateData['createdAt']) == true) {
           //같은 key 의 데이터가 존재하면 map 을 생성하는게 아니라 이미 있던 맵에 colorValue add.
@@ -756,13 +771,7 @@ class HomeController extends GetxController
   //월별로 가져온 메모 데이터. 이벤트 표시를 위해 사용됨.
 
   // late List<Map<DateTime, List<Event>>> events;
-  final Map<String, List<dynamic>> eventsHash = {
-    // '20230613': [4294198070],
-    // '20230614': [4278228616],
-    // '20230615': [4278228616],
-    // '20230616': [4294085505],
-    //data
-  };
+  final Map<String, List<dynamic>> eventsHash = {};
 
   final Map<String, List<dynamic>> eventsHashRaw = {};
 
@@ -911,13 +920,14 @@ class HomeController extends GetxController
 
   RxDouble controllPageContainerOpacity = 0.6.obs;
 
-
-
   getControllPageContainer() {
     controllPageContainerAnimationOn.value = false;
 
     controllPageLongContainerX.value = Get.width * 0.7;
     controllPageLongContainerY.value = Get.height * 0.10;
+
+    controllPageLongContainerVerticalLine.value = 10;
+    controllPageLongContainerSubBox.value = 10;
 
     controllPageShortContainerX.value = Get.width * 0.2;
     controllPageShortContainerY.value = Get.height * 0.07;
@@ -934,6 +944,7 @@ class HomeController extends GetxController
         controllPageLongContainerX.value = Get.width * 0.92;
         controllPageLongContainerY.value = Get.height * 0.15;
 
+        controllPageLongContainerVerticalLine.value = 80;
         controllPageLongContainerSubBox.value = 55;
 
         controllPageShortContainerX.value = Get.width * 0.394;

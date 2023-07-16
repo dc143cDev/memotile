@@ -21,243 +21,194 @@ class MarKerTile extends GetView<HomeController> {
     print('date: ${event}');
     print('colorList: ${colorList}');
     if (colorList.length == 1) {
-      return Container(
-        height: 40,
-        width: 40,
-        decoration: BoxDecoration(
-            // boxShadow: [
-            //   BoxShadow(
-            //     color: Colors.grey.withOpacity(0.7),
-            //     blurRadius: 5.0,
-            //     spreadRadius: 0.0,
-            //     offset: Offset(0, 4),
-            //   )
-            // ],
-            color: Color(colorList.first),
-            borderRadius: BorderRadius.circular(50)),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(event),
-            ],
-          ),
+      return Align(
+        alignment: Alignment.bottomCenter,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Container(
+              height: 7,
+              width: 12,
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.7),
+                    blurRadius: 5.0,
+                    spreadRadius: 0.0,
+                    offset: Offset(0, 4),
+                  )
+                ],
+                  color: Color(colorList[0]),
+                  borderRadius: BorderRadius.circular(10),),
+            ),
+          ],
         ),
       );
     } else if (colorList.length == 2) {
-      return Stack(
-        children: [
-          Positioned(
-            top: 15,
-            left: 20,
-            child: Container(
-              height: 35,
-              width: 35,
+      return Align(
+        alignment: Alignment.bottomCenter,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Container(
+              height: 7,
+              width: 12,
               decoration: BoxDecoration(
-                  // boxShadow: [
-                  //   BoxShadow(
-                  //     color: Colors.grey.withOpacity(0.7),
-                  //     blurRadius: 5.0,
-                  //     spreadRadius: 0.0,
-                  //     offset: Offset(0, 4),
-                  //   )
-                  // ],
-                  color: Color(colorList[0]),
-                  borderRadius: BorderRadius.circular(50)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.7),
+                    blurRadius: 5.0,
+                    spreadRadius: 0.0,
+                    offset: Offset(0, 4),
+                  )
+                ],
+                color: Color(colorList[0]),
+                borderRadius: BorderRadius.circular(10),),
             ),
-          ),
-          Positioned(
-            right: 20,
-            child: Container(
-              height: 35,
-              width: 35,
+            Container(
+              height: 7,
+              width: 12,
               decoration: BoxDecoration(
-                  // boxShadow: [
-                  //   BoxShadow(
-                  //     color: Colors.grey.withOpacity(0.7),
-                  //     blurRadius: 5.0,
-                  //     spreadRadius: 0.0,
-                  //     offset: Offset(0, 4),
-                  //   )
-                  // ],
-                  color: Color(colorList[1]),
-                  borderRadius: BorderRadius.circular(50)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.7),
+                    blurRadius: 5.0,
+                    spreadRadius: 0.0,
+                    offset: Offset(0, 4),
+                  )
+                ],
+                color: Color(colorList[1]),
+                borderRadius: BorderRadius.circular(10),),
             ),
-          ),
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(event),
-              ],
-            ),
-          ),
-        ],
+          ],
+        ),
       );
-    } else if(colorList.length == 3){
-      return Stack(
-        children: [
-          Positioned(
-            top: 17,
-            left: 16,
-            child: Container(
-              height: 30,
-              width: 30,
+    } else if (colorList.length == 3) {
+      return Align(
+        alignment: Alignment.bottomCenter,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Container(
+              height: 7,
+              width: 12,
               decoration: BoxDecoration(
-                  // boxShadow: [
-                  //   BoxShadow(
-                  //     color: Colors.grey.withOpacity(0.7),
-                  //     blurRadius: 5.0,
-                  //     spreadRadius: 0.0,
-                  //     offset: Offset(0, 4),
-                  //   )
-                  // ],
-                  color: Color(colorList[0]),
-                  borderRadius: BorderRadius.circular(50)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.7),
+                    blurRadius: 5.0,
+                    spreadRadius: 0.0,
+                    offset: Offset(0, 4),
+                  )
+                ],
+                color: Color(colorList[0]),
+                borderRadius: BorderRadius.circular(10),),
             ),
-          ),
-          Positioned(
-            right: 23,
-            child: Container(
-              height: 30,
-              width: 30,
+            Container(
+              height: 7,
+              width: 12,
               decoration: BoxDecoration(
-                  // boxShadow: [
-                  //   BoxShadow(
-                  //     color: Colors.grey.withOpacity(0.7),
-                  //     blurRadius: 5.0,
-                  //     spreadRadius: 0.0,
-                  //     offset: Offset(0, 4),
-                  //   )
-                  // ],
-                  color: Color(colorList[1]),
-                  borderRadius: BorderRadius.circular(50)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.7),
+                    blurRadius: 5.0,
+                    spreadRadius: 0.0,
+                    offset: Offset(0, 4),
+                  )
+                ],
+                color: Color(colorList[1]),
+                borderRadius: BorderRadius.circular(10),),
             ),
-          ),
-          Positioned(
-            left: 25,
-            child: Container(
-              height: 30,
-              width: 30,
+            Container(
+              height: 7,
+              width: 12,
               decoration: BoxDecoration(
-                  // boxShadow: [
-                  //   BoxShadow(
-                  //     color: Colors.grey.withOpacity(0.7),
-                  //     blurRadius: 5.0,
-                  //     spreadRadius: 0.0,
-                  //     offset: Offset(0, 4),
-                  //   )
-                  // ],
-                  color: Color(colorList[2]),
-                  borderRadius: BorderRadius.circular(50)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.7),
+                    blurRadius: 5.0,
+                    spreadRadius: 0.0,
+                    offset: Offset(0, 4),
+                  )
+                ],
+                color: Color(colorList[2]),
+                borderRadius: BorderRadius.circular(10),),
             ),
-          ),
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(event),
-              ],
-            ),
-          ),
-        ],
+          ],
+        ),
       );
-    }else if(colorList.length >= 4){
-      return Stack(
-        children: [
-          Positioned(
-            top: 23,
-            left: 27,
-            child: Container(
-              height: 25,
-              width: 25,
+    } else if (colorList.length >= 4) {
+      return Align(
+        alignment: Alignment.bottomCenter,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Container(
+              height: 7,
+              width: 12,
               decoration: BoxDecoration(
-                  // boxShadow: [
-                  //   BoxShadow(
-                  //     color: Colors.grey.withOpacity(0.7),
-                  //     blurRadius: 5.0,
-                  //     spreadRadius: 0.0,
-                  //     offset: Offset(0, 4),
-                  //   )
-                  // ],
-                  color: Color(colorList[0]),
-                  borderRadius: BorderRadius.circular(50)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.7),
+                    blurRadius: 5.0,
+                    spreadRadius: 0.0,
+                    offset: Offset(0, 4),
+                  )
+                ],
+                color: Color(colorList[0]),
+                borderRadius: BorderRadius.circular(10),),
             ),
-          ),
-          Positioned(
-            top: 23,
-            right: 27,
-            child: Container(
-              height: 25,
-              width: 25,
+            Container(
+              height: 7,
+              width: 12,
               decoration: BoxDecoration(
-                  // boxShadow: [
-                  //   BoxShadow(
-                  //     color: Colors.grey.withOpacity(0.7),
-                  //     blurRadius: 5.0,
-                  //     spreadRadius: 0.0,
-                  //     offset: Offset(0, 4),
-                  //   )
-                  // ],
-                  color: Color(colorList[1]),
-                  borderRadius: BorderRadius.circular(50)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.7),
+                    blurRadius: 5.0,
+                    spreadRadius: 0.0,
+                    offset: Offset(0, 4),
+                  )
+                ],
+                color: Color(colorList[1]),
+                borderRadius: BorderRadius.circular(10),),
             ),
-          ),
-          Positioned(
-            top: 2,
-            left: 28,
-            child: Container(
-              height: 25,
-              width: 25,
+            Container(
+              height: 7,
+              width: 12,
               decoration: BoxDecoration(
-                  // boxShadow: [
-                  //   BoxShadow(
-                  //     color: Colors.grey.withOpacity(0.7),
-                  //     blurRadius: 5.0,
-                  //     spreadRadius: 0.0,
-                  //     offset: Offset(0, 4),
-                  //   )
-                  // ],
-                  color: Color(colorList[2]),
-                  borderRadius: BorderRadius.circular(50)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.7),
+                    blurRadius: 5.0,
+                    spreadRadius: 0.0,
+                    offset: Offset(0, 4),
+                  )
+                ],
+                color: Color(colorList[2]),
+                borderRadius: BorderRadius.circular(10),),
             ),
-          ),
-          Positioned(
-            top: 2,
-            right: 28,
-            child: Container(
-              height: 25,
-              width: 25,
+            Container(
+              height: 7,
+              width: 12,
               decoration: BoxDecoration(
-                  // boxShadow: [
-                  //   BoxShadow(
-                  //     color: Colors.grey.withOpacity(0.7),
-                  //     blurRadius: 5.0,
-                  //     spreadRadius: 0.0,
-                  //     offset: Offset(0, 4),
-                  //   )
-                  // ],
-                  color: Color(colorList[3]),
-                  borderRadius: BorderRadius.circular(50)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.7),
+                    blurRadius: 5.0,
+                    spreadRadius: 0.0,
+                    offset: Offset(0, 4),
+                  )
+                ],
+                color: Color(colorList[3]),
+                borderRadius: BorderRadius.circular(10),),
             ),
-          ),
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(event),
-              ],
-            ),
-          ),
-        ],
+          ],
+        ),
       );
-    }else if(1 >= colorList.length){
+    } else if (1 >= colorList.length) {
       return Container();
-    } else{
+    } else {
       return Container();
     }
   }

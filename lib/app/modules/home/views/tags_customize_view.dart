@@ -14,7 +14,7 @@ class TagsCustomizeView extends GetView<HomeController> {
         leading: IconButton(
           //Get.back 으로 나가면 바텀시트에는 태그 이름이 바로 반영되지 않기에 홈으로 이동.
           onPressed: () {
-            Get.toNamed('/home');
+            Get.back();
           },
           icon: Icon(Icons.close),
         ),

@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:memotile/app/modules/home/views/trash_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/home/views/memo_detail_view.dart';
@@ -30,6 +31,12 @@ class AppPages {
     GetPage(
       name: _Paths.TAGS,
       page: () => const TagsCustomizeView(),
+      transition: Transition.downToUp,
+      binding: HomeBinding(),
+    ),
+    GetPage(
+      name: _Paths.TRASH,
+      page: () => TrashView(),
       transition: Transition.downToUp,
       binding: HomeBinding(),
     ),

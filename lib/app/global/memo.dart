@@ -61,6 +61,7 @@ class MemoHelper {
     return db.query('memo_test25', orderBy: "id");
   }
 
+  //단일 아이템 조회
   static Future<List<Map<String, dynamic>>> getItem(int id) async {
     final db = await MemoHelper.db();
     return db.query('memo_test25', where: "id = ?", whereArgs: [id], limit: 1);
@@ -70,6 +71,17 @@ class MemoHelper {
   static Future<List<Map<String, dynamic>>> getItemsCreatedAt() async {
     final db = await MemoHelper.db();
     return db.query('memo_test25', orderBy: "id", columns: ['id', 'createdAt']);
+  }
+
+  //삭제된 아이템 조회.
+  static Future<List<Map<String, dynamic>>> getDeletedItem() async {
+    final db = await MemoHelper.db();
+    return db.query(
+      'memo_test25',
+      orderBy: "isDeleted",
+      where: "isDeleted = 1",
+      // columns: ['id', 'contents', 'isEditChecked'],
+    );
   }
 
   static Future<List<Map<String, dynamic>>> getItemsByDate(String date) async {
