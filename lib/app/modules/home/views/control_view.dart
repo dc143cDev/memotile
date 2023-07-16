@@ -69,7 +69,7 @@ class ControlView extends GetView<HomeController> {
                                 spreadRadius: 2,
                                 blurRadius: 7,
                                 offset:
-                                    Offset(0, 10), // changes position of shadow
+                                    Offset(0, 7), // changes position of shadow
                               ),
                             ],
                           ),
@@ -227,7 +227,7 @@ class ControlView extends GetView<HomeController> {
                               spreadRadius: 2,
                               blurRadius: 7,
                               offset:
-                                  Offset(0, 10), // changes position of shadow
+                                  Offset(0, 7), // changes position of shadow
                             ),
                           ],
                         ),
@@ -407,7 +407,7 @@ class ControlView extends GetView<HomeController> {
                                       spreadRadius: 2,
                                       blurRadius: 7,
                                       offset: Offset(
-                                          0, 10), // changes position of shadow
+                                          0, 7), // changes position of shadow
                                     ),
                                   ],
                                 ),
@@ -449,7 +449,7 @@ class ControlView extends GetView<HomeController> {
                                       spreadRadius: 2,
                                       blurRadius: 7,
                                       offset: Offset(
-                                          0, 10), // changes position of shadow
+                                          0, 7), // changes position of shadow
                                     ),
                                   ],
                                 ),

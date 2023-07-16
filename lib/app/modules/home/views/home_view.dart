@@ -58,67 +58,101 @@ class HomeView extends GetView<HomeController> {
           Scaffold(
             // backgroundColor: Get.isDarkMode ? backgroundDark : backgroundLight,
             floatingActionButton: Obx(
-              () => Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.end,
+              () => Stack(
                 children: [
-                  FloatingActionButton(
-                    heroTag: true,
-                    backgroundColor: Get.isDarkMode ? subDark : subLight,
-                    child: controller.isEditMode.value == true ||
-                            controller.searchModeOn.value == true ||
-                            controller.tagModeOn.value == true
-                        ? Icon(
-                            Icons.close,
-                            color: controller.isDarkModeOn.value == true
-                                ? iconDark
-                                : iconLight,
-                          )
-                        : Icon(
-                            Icons.search_rounded,
-                            color: controller.isDarkModeOn.value == true
-                                ? iconDark
-                                : iconLight,
-                          ),
-                    onPressed: () async {
-                      if (controller.isEditMode.value == true ||
-                          controller.searchModeOn.value == true ||
-                          controller.tagModeOn.value == true) {
-                        //에딧모드 종료시 실행되는 메소드.
-                        await controller.editModeDone();
-                        Future.delayed(Duration(milliseconds: 400), () {
-                          controller.defaultModeOn();
-                        });
-                      } else {
-                        // controller.isEditMode.value = true;
-                        openSearchSheet();
-                      }
-                    },
-                  ),
-
-                  //스크롤 컨트롤러 offset이 맨 아래가 아니라면 아래로 내리기 버튼을 활성화함.
-                  controller.goToDownButtonDontShow.value == true
-                      ? Container()
-                      : Padding(
-                          padding: const EdgeInsets.only(top: 5),
-                          child: FloatingActionButton(
-                            backgroundColor:
-                                controller.isDarkModeOn.value == true
-                                    ? subDark
-                                    : subLight,
-                            child: Icon(
-                              Icons.arrow_downward_sharp,
-                              color: controller.isDarkModeOn.value == true
-                                  ? iconDark
-                                  : iconLight,
-                            ),
-                            onPressed: () {
-                              controller.goToDown();
-                            },
-                          ),
+                  Align(
+                    alignment: Alignment(1.09, 1.05),
+                    child: Obx(
+                      () => Container(
+                        width: 25,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: controller.isDarkModeOn.value == true
+                              ? subDark
+                              : subLight,
+                          borderRadius: BorderRadius.circular(15),
                         ),
-                  SizedBox(
-                    height: 0,
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment(1.089, 1.0369),
+                    child: Obx(
+                      () => Container(
+                        width: 40,
+                        height: 70,
+                        decoration: BoxDecoration(
+                          color: controller.isDarkModeOn.value == true
+                              ? backgroundDark
+                              : backgroundLight,
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      FloatingActionButton(
+                        heroTag: true,
+                        backgroundColor: Get.isDarkMode ? subDark : subLight,
+                        child: controller.isEditMode.value == true ||
+                                controller.searchModeOn.value == true ||
+                                controller.tagModeOn.value == true
+                            ? Icon(
+                                Icons.close,
+                                color: controller.isDarkModeOn.value == true
+                                    ? iconDark
+                                    : iconLight,
+                              )
+                            : Icon(
+                                Icons.search_rounded,
+                                color: controller.isDarkModeOn.value == true
+                                    ? iconDark
+                                    : iconLight,
+                              ),
+                        onPressed: () async {
+                          if (controller.isEditMode.value == true ||
+                              controller.searchModeOn.value == true ||
+                              controller.tagModeOn.value == true) {
+                            //에딧모드 종료시 실행되는 메소드.
+                            await controller.editModeDone();
+                            Future.delayed(Duration(milliseconds: 400), () {
+                              controller.defaultModeOn();
+                            });
+                          } else {
+                            // controller.isEditMode.value = true;
+                            openSearchSheet();
+                          }
+                        },
+                      ),
+
+                      //스크롤 컨트롤러 offset이 맨 아래가 아니라면 아래로 내리기 버튼을 활성화함.
+                      controller.goToDownButtonDontShow.value == true
+                          ? Container()
+                          : Padding(
+                              padding: const EdgeInsets.only(top: 5),
+                              child: FloatingActionButton(
+                                backgroundColor:
+                                    controller.isDarkModeOn.value == true
+                                        ? subDark
+                                        : subLight,
+                                child: Icon(
+                                  Icons.arrow_downward_sharp,
+                                  color: controller.isDarkModeOn.value == true
+                                      ? iconDark
+                                      : iconLight,
+                                ),
+                                onPressed: () {
+                                  controller.goToDown();
+                                },
+                              ),
+                            ),
+                      SizedBox(
+                        height: 0,
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -675,7 +709,7 @@ class HomeView extends GetView<HomeController> {
           ),
           Stack(
             children: [
-              //새로로 긴 컨테이너.
+              //새로로 긴 컨테이너 위에거.
               Align(
                 alignment: Alignment(1.0, -0.9),
                 child: Obx(
@@ -707,6 +741,21 @@ class HomeView extends GetView<HomeController> {
                   ),
                 ),
               ),
+              // Align(
+              //   alignment: Alignment(1.0, 0.748),
+              //   child: Obx(
+              //         () => Container(
+              //       width: 5,
+              //       height: 25,
+              //       decoration: BoxDecoration(
+              //         color: controller.isDarkModeOn.value == true
+              //             ? backgroundDark
+              //             : backgroundLight,
+              //         borderRadius: BorderRadius.circular(15),
+              //       ),
+              //     ),
+              //   ),
+              // ),
               //아래 배경색 덧대기.
               Align(
                 alignment: Alignment(0.9999, -0.67),
