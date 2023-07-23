@@ -28,16 +28,19 @@ class ControlView extends GetView<HomeController> {
       () => Scaffold(
         backgroundColor:
             controller.isDarkModeOn.value == true ? subDark : subLight,
-        floatingActionButton: FloatingActionButton(
-          child: Icon(
-            Icons.close,
-            color: controller.isDarkModeOn.value == true ? iconDark : iconLight,
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.only(bottom: 15),
+          child: FloatingActionButton(
+            child: Icon(
+              Icons.close,
+              color: controller.isDarkModeOn.value == true ? iconDark : iconLight,
+            ),
+            backgroundColor: controller.isDarkModeOn.value == true ? subDark : subLight,
+            onPressed: () {
+              controller.pageController.animateToPage(0,
+                  duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+            },
           ),
-          backgroundColor: controller.isDarkModeOn.value == true ? subDark : subLight,
-          onPressed: () {
-            controller.pageController.animateToPage(0,
-                duration: Duration(milliseconds: 300), curve: Curves.easeIn);
-          },
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         body: ListView(
@@ -48,158 +51,158 @@ class ControlView extends GetView<HomeController> {
               child: Column(
                 children: [
                   //tile.
-                  SafeArea(
-                    child: SizedBox(
-                      child: Padding(
-                        padding: const EdgeInsets.all(30.0),
-                        child: AnimatedContainer(
-                          duration: Duration(seconds: 1),
-                          height: controller.width.value * 1,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(25),
+                  Padding(
+                    padding: const EdgeInsets.all(30.0),
+                    child: AnimatedContainer(
+                      duration: Duration(milliseconds: 400),
+                      // height: controller.height.value * 0.55,
+                      // width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(25),
+                        color: controller.isDarkModeOn.value == true
+                            ? backgroundDark
+                            : backgroundLight,
+                        boxShadow: [
+                          BoxShadow(
                             color: controller.isDarkModeOn.value == true
-                                ? backgroundDark
-                                : backgroundLight,
-                            boxShadow: [
-                              BoxShadow(
-                                color: controller.isDarkModeOn.value == true
-                                    ? shadowDark
-                                    : shadowLight,
-                                spreadRadius: 2,
-                                blurRadius: 7,
-                                offset:
-                                    Offset(0, 7), // changes position of shadow
-                              ),
-                            ],
+                                ? shadowDark
+                                : shadowLight,
+                            spreadRadius: 2,
+                            blurRadius: 7,
+                            offset:
+                                Offset(0, 7), // changes position of shadow
                           ),
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                height: 16,
-                              ),
-                              Expanded(
-                                flex: 1,
-                                child: Obx(
-                                  () => Text(
-                                    controller.CurrentMonthForTile.value,
-                                    style: TextStyle(
-                                        color: controller.isDarkModeOn.value ==
-                                                true
-                                            ? Colors.white
-                                            : Colors.black,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20),
-                                  ),
+                        ],
+                      ),
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 16,
+                          ),
+                          Obx(
+                            () => Text(
+                              controller.CurrentMonthForTile.value,
+                              style: TextStyle(
+                                  color: controller.isDarkModeOn.value ==
+                                          true
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 16,
+                          ),
+                          Padding(
+                            padding:
+                                EdgeInsets.symmetric(horizontal: 8),
+                            child: TableCalendar(
+                              headerVisible: false,
+                              calendarBuilders: CalendarBuilders(
+                                  //마커 타일 빌더.
+                                  //context 와 날짜(년월일시분초까지 다 표시되는 버전), event(List)를 넘겨줄수 있음.
+                                  markerBuilder: (context, day, events) {
+                                //events 의 원형은 [ 단일객체 ] (length == 1) 이기때문에 두번 걸러 리스트화 해야함.
+                                //to String,
+                                String eventToString = events.toString();
+                                //jsonDecode from String to List.
+                                List stringEventToList =
+                                    jsonDecode(eventToString);
+                                if (events.isNotEmpty == true) {
+                                  return Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      MarKerTile(
+                                        date: '',
+                                        event: DateFormat('dd').format(day),
+                                        //그렇게 리스트화된 colorValue 객체 중 하나를 ui에 넣어주기.
+                                        colorList: stringEventToList,
+                                        color: stringEventToList.last,
+                                      ),
+                                    ],
+                                  );
+                                }
+                                return null;
+                              },),
+                              calendarStyle: CalendarStyle(
+                                todayTextStyle: TextStyle(
+                                  color: controller.isDarkModeOn.value ==
+                                      true
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                todayDecoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color:
+                                          controller.isDarkModeOn.value ==
+                                                  true
+                                              ? shadowDark
+                                              : shadowLight,
+                                      spreadRadius: 1,
+                                      blurRadius: 1,
+                                      offset: Offset(0,
+                                          3), // changes position of shadow
+                                    ),
+                                  ],
+                                  //오늘 컨테이너 컬러.
+                                  color: controller.isDarkModeOn.value ==
+                                          true
+                                      ? subDark
+                                      : subLight,
+                                ),
+                                markerDecoration: BoxDecoration(
+                                  color: Colors.red,
                                 ),
                               ),
-                              Expanded(
-                                flex: 9,
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 8),
-                                  child: TableCalendar(
-                                    calendarBuilders: CalendarBuilders(
-
-                                        //마커 타일 빌더.
-                                        //context 와 날짜(년월일시분초까지 다 표시되는 버전), event(List)를 넘겨줄수 있음.
-                                        markerBuilder: (context, day, events) {
-                                      //events 의 원형은 [ 단일객체 ] (length == 1) 이기때문에 두번 걸러 리스트화 해야함.
-                                      //to String,
-                                      String eventToString = events.toString();
-                                      //jsonDecode from String to List.
-                                      List stringEventToList =
-                                          jsonDecode(eventToString);
-                                      if (events.isNotEmpty == true) {
-                                        return Center(
-                                          child: MarKerTile(
-                                            date: '',
-                                            event: DateFormat('dd').format(day),
-                                            //그렇게 리스트화된 colorValue 객체 중 하나를 ui에 넣어주기.
-                                            colorList: stringEventToList,
-                                            color: stringEventToList.last,
-                                          ),
-                                        );
-                                      }
-                                      return null;
-                                    },),
-                                    calendarStyle: CalendarStyle(
-                                      todayTextStyle: TextStyle(
-                                        color: controller.isDarkModeOn.value ==
-                                            true
-                                            ? Colors.white
-                                            : Colors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                      todayDecoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(15),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color:
-                                                controller.isDarkModeOn.value ==
-                                                        true
-                                                    ? shadowDark
-                                                    : shadowLight,
-                                            spreadRadius: 1,
-                                            blurRadius: 1,
-                                            offset: Offset(0,
-                                                3), // changes position of shadow
-                                          ),
-                                        ],
-                                        //오늘 컨테이너 컬러.
-                                        color: controller.isDarkModeOn.value ==
-                                                true
-                                            ? subDark
-                                            : subLight,
-                                      ),
-                                      markerDecoration: BoxDecoration(
-                                        color: Colors.red,
-                                      ),
-                                    ),
-                                    headerStyle: HeaderStyle(
-                                      titleTextStyle:
-                                          TextStyle(color: Colors.white),
-                                      titleCentered: true,
-                                      leftChevronVisible: false,
-                                      rightChevronVisible: false,
-                                      formatButtonVisible: false,
-                                    ),
-                                    eventLoader: (day) {
-                                      return controller.getEvents(day);
-                                    },
-                                    focusedDay: DateTime.now(),
-                                    firstDay: DateTime(2010, 5, 1),
-                                    lastDay: DateTime(2033, 12, 31),
-                                    onDaySelected: (DateTime selectedDay,
-                                        DateTime focusedDay) async {
-                                      //DB 검색 용이성을 위해 미리 지정된 포맷으로 selectedDay 반환.
-                                      // await controller.goToTop();
-                                      controller.selectedDay.value =
-                                          DateFormat("yyyyMMdd")
-                                              .format(selectedDay);
-                                      print('$selectedDay is selected');
-                                      print('$focusedDay is focused');
-                                      print(controller.selectedDay);
-                                      controller.refreshMemoByDateTile(
-                                          controller.selectedDay);
-                                      controller.dateButtonClicked();
-                                      controller.pageController.animateToPage(0,
-                                          duration: Duration(milliseconds: 200),
-                                          curve: Curves.easeIn);
-                                      // controller.goToDown();
-                                    },
-                                    onPageChanged: (day) {
-                                      //페이지 전환할때마다 값을 지금이 몇월인지 값 넘겨주기.
-                                      controller.CurrentMonthForTile.value =
-                                          DateFormat('MMM').format(day);
-                                    },
-                                  ),
-                                ),
+                              headerStyle: HeaderStyle(
+                                titleTextStyle:
+                                    TextStyle(color: Colors.white),
+                                titleCentered: true,
+                                leftChevronVisible: false,
+                                rightChevronVisible: false,
+                                formatButtonVisible: false,
                               ),
-                            ],
+                              eventLoader: (day) {
+                                return controller.getEvents(day);
+                              },
+                              focusedDay: DateTime.now(),
+                              firstDay: DateTime(2010, 5, 1),
+                              lastDay: DateTime(2033, 12, 31),
+                              onDaySelected: (DateTime selectedDay,
+                                  DateTime focusedDay) async {
+                                //DB 검색 용이성을 위해 미리 지정된 포맷으로 selectedDay 반환.
+                                // await controller.goToTop();
+                                controller.selectedDay.value =
+                                    DateFormat("yyyyMMdd")
+                                        .format(selectedDay);
+                                print('$selectedDay is selected');
+                                print('$focusedDay is focused');
+                                print(controller.selectedDay);
+                                controller.refreshMemoByDateTile(
+                                    controller.selectedDay);
+                                controller.dateButtonClicked();
+                                controller.pageController.animateToPage(0,
+                                    duration: Duration(milliseconds: 200),
+                                    curve: Curves.easeIn);
+                                // controller.goToDown();
+                              },
+                              onPageChanged: (day) {
+                                //페이지 전환할때마다 값을 지금이 몇월인지 값 넘겨주기.
+                                controller.CurrentMonthForTile.value =
+                                    DateFormat('MMM').format(day);
+                              },
+                            ),
                           ),
-                        ),
+                          SizedBox(
+                            height: 16,
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -416,7 +419,7 @@ class ControlView extends GetView<HomeController> {
                           ),
                         ),
                         SizedBox(
-                          width: 30,
+                          width: controller.width.value * 0.05,
                         ),
                         InkWell(
                           onTap: () async {

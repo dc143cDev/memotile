@@ -45,7 +45,7 @@ class HomeView extends GetView<HomeController> {
     final home = GestureDetector(
       onPanUpdate: (i) {
         //왼쪽에서 오른쪽으로 스와이프시 에딧모드.
-        if (i.delta.dx > 30) {
+        if (i.delta.dx > 20) {
           controller.editModeInitAnimation();
         }
       },
@@ -60,36 +60,36 @@ class HomeView extends GetView<HomeController> {
             floatingActionButton: Obx(
               () => Stack(
                 children: [
-                  Align(
-                    alignment: Alignment(1.09, 1.05),
-                    child: Obx(
-                      () => Container(
-                        width: 25,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          color: controller.isDarkModeOn.value == true
-                              ? subDark
-                              : subLight,
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment(1.089, 1.0369),
-                    child: Obx(
-                      () => Container(
-                        width: 40,
-                        height: 70,
-                        decoration: BoxDecoration(
-                          color: controller.isDarkModeOn.value == true
-                              ? backgroundDark
-                              : backgroundLight,
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                      ),
-                    ),
-                  ),
+
+                  //FAB 우측하단 바텀앱바와 옆 페이지 연결하는 부위.
+                  //포지션드 사용하면 FAB 범위 안에 갇혀서 align 사용.
+                  // Align(
+                  //   alignment: Alignment(1.093, 1.1),
+                  //   child: Container(
+                  //     width: controller.width * 0.09,
+                  //     height: controller.height * 0.082,
+                  //     color: controller.isDarkModeOn.value == true
+                  //         ? subDark
+                  //         : subLight,
+                  //   ),
+                  // ),
+                  //
+                  // //최신 비율 1.04 / 옛날 비율 1.05
+                  // Align(
+                  //   alignment: Alignment(1.093, 1.04),
+                  //   child: Container(
+                  //     decoration: BoxDecoration(
+                  //       borderRadius: BorderRadius.only(
+                  //         bottomRight: Radius.circular(30),
+                  //       ),
+                  //       color: controller.isDarkModeOn.value == true
+                  //           ? backgroundDark
+                  //           : backgroundLight,
+                  //     ),
+                  //     width: controller.width * 0.09,
+                  //     height: controller.height * 0.082,
+                  //   ),
+                  // ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -179,7 +179,7 @@ class HomeView extends GetView<HomeController> {
                                   //서치모드
                                   controller.searchBarController.text,
                                   style: TextStyle(
-                                    color: Colors.black,
+                                    // color: Colors.black,
                                     fontSize: 27,
                                     fontWeight: FontWeight.w700,
                                   ),
@@ -216,7 +216,7 @@ class HomeView extends GetView<HomeController> {
                                 //요일
                                 controller.selectedDay.value,
                                 style: TextStyle(
-                                  color: Colors.black,
+                                  // color: Colors.black,
                                   fontSize: 27,
                                   fontWeight: FontWeight.w700,
                                 ),
@@ -249,389 +249,438 @@ class HomeView extends GetView<HomeController> {
             ),
             extendBodyBehindAppBar: true,
             bottomNavigationBar: Obx(
-              () => BottomAppBar(
-                height: controller.isEditMode.value == true ? 200 : 80,
-                elevation: 0,
-                shadowColor: controller.isDarkModeOn.value == true
-                    ? shadowDark
-                    : shadowLight,
-                surfaceTintColor: null,
-                color:
-                    controller.isDarkModeOn.value == true ? subDark : subLight,
-                child: controller.isEditMode.value == true
-                    ? Row(
-                        children: [
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: controller.isDarkModeOn.value == true
-                                      ? subDark
-                                      : subLight,
-                                  borderRadius: BorderRadius.circular(15),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.5),
-                                      spreadRadius: 1,
-                                      blurRadius: 1,
-                                      offset: Offset(0, 3),
-                                    ),
-                                  ],
-                                ),
+              () => Stack(
+                children: [
+                  // Container(
+                  //   decoration: BoxDecoration(
+                  //     borderRadius: BorderRadius.only(
+                  //       bottomRight: Radius.circular(30),
+                  //     ),
+                  //     color: Colors.red
+                  //     // color: controller.isDarkModeOn.value == true
+                  //     //     ? backgroundDark
+                  //     //     : backgroundLight,
+                  //   ),
+                  //   width: 500,
+                  //   height: 500,
+                  //   // width: controller.width * 0.09,
+                  //   // height: controller.height * 0.082,
+                  // ),
+                  BottomAppBar(
+                    height: controller.isEditMode.value == true
+                        ? controller.height.value * 0.2
+                        : controller.height.value * 0.12,
+                    elevation: 0,
+                    shadowColor: controller.isDarkModeOn.value == true
+                        ? shadowDark
+                        : shadowLight,
+                    surfaceTintColor: null,
+                    color: controller.isDarkModeOn.value == true
+                        ? subDark
+                        : subLight,
+                    child: controller.isEditMode.value == true
+                        ? Row(
+                            children: [
+                              Expanded(
                                 child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Column(
-                                            children: [
-                                              SizedBox(
-                                                height: 38,
-                                                width: 38,
-                                                child: MaterialButton(
-                                                  onPressed: () async {
-                                                    await controller
-                                                        .getRedRed();
-                                                    controller
-                                                        .editModeCheckedItemColorFill(
-                                                            controller
-                                                                .colorValue
-                                                                .value);
-                                                  },
-                                                  color: Color(
-                                                      controller.redredValue),
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            50),
-                                                  ),
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 5,
-                                              ),
-                                              Text(controller.tag.read('red')),
-                                            ],
-                                          ),
-                                          Column(
-                                            children: [
-                                              SizedBox(
-                                                height: 38,
-                                                width: 38,
-                                                child: MaterialButton(
-                                                  onPressed: () async {
-                                                    await controller.getBlue();
-                                                    controller
-                                                        .editModeCheckedItemColorFill(
-                                                            controller
-                                                                .colorValue
-                                                                .value);
-                                                  },
-                                                  color: Color(
-                                                      controller.blueValue),
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            50),
-                                                  ),
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 5,
-                                              ),
-                                              Text(controller.tag.read('blue')),
-                                            ],
-                                          ),
-                                          Column(
-                                            children: [
-                                              SizedBox(
-                                                height: 38,
-                                                width: 38,
-                                                child: MaterialButton(
-                                                  onPressed: () async {
-                                                    await controller.getAqua();
-                                                    controller
-                                                        .editModeCheckedItemColorFill(
-                                                            controller
-                                                                .colorValue
-                                                                .value);
-                                                  },
-                                                  color: Color(
-                                                      controller.aquaValue),
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            50),
-                                                  ),
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 5,
-                                              ),
-                                              Text(controller.tag.read('aqua')),
-                                            ],
-                                          ),
-                                          Column(
-                                            children: [
-                                              SizedBox(
-                                                height: 38,
-                                                width: 38,
-                                                child: MaterialButton(
-                                                  onPressed: () async {
-                                                    await controller.getGreen();
-                                                    controller
-                                                        .editModeCheckedItemColorFill(
-                                                            controller
-                                                                .colorValue
-                                                                .value);
-                                                  },
-                                                  color: Color(
-                                                      controller.greenValue),
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            50),
-                                                  ),
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 5,
-                                              ),
-                                              Text(
-                                                  controller.tag.read('green')),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Column(
-                                            children: [
-                                              SizedBox(
-                                                height: 38,
-                                                width: 38,
-                                                child: MaterialButton(
-                                                  onPressed: () async {
-                                                    await controller.getPink();
-                                                    controller
-                                                        .editModeCheckedItemColorFill(
-                                                            controller
-                                                                .colorValue
-                                                                .value);
-                                                  },
-                                                  color: Color(
-                                                      controller.pinkValue),
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            50),
-                                                  ),
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 5,
-                                              ),
-                                              Text(controller.tag.read('pink')),
-                                            ],
-                                          ),
-                                          Column(
-                                            children: [
-                                              SizedBox(
-                                                height: 38,
-                                                width: 38,
-                                                child: MaterialButton(
-                                                  onPressed: () async {
-                                                    await controller
-                                                        .getOrange();
-                                                    controller
-                                                        .editModeCheckedItemColorFill(
-                                                            controller
-                                                                .colorValue
-                                                                .value);
-                                                  },
-                                                  color: Color(
-                                                      controller.orangeValue),
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            50),
-                                                  ),
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 5,
-                                              ),
-                                              Text(controller.tag
-                                                  .read('orange')),
-                                            ],
-                                          ),
-                                          Column(
-                                            children: [
-                                              SizedBox(
-                                                height: 38,
-                                                width: 38,
-                                                child: MaterialButton(
-                                                  onPressed: () async {
-                                                    await controller
-                                                        .getPurple();
-                                                    controller
-                                                        .editModeCheckedItemColorFill(
-                                                            controller
-                                                                .colorValue
-                                                                .value);
-                                                  },
-                                                  color: Color(
-                                                      controller.purpleValue),
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            50),
-                                                  ),
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 5,
-                                              ),
-                                              Text(controller.tag
-                                                  .read('purple')),
-                                            ],
-                                          ),
-                                          Column(
-                                            children: [
-                                              SizedBox(
-                                                height: 38,
-                                                width: 38,
-                                                child: MaterialButton(
-                                                  onPressed: () async {
-                                                    await controller
-                                                        .getMustard();
-                                                    controller
-                                                        .editModeCheckedItemColorFill(
-                                                            controller
-                                                                .colorValue
-                                                                .value);
-                                                  },
-                                                  color: Color(
-                                                      controller.mustardValue),
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            50),
-                                                  ),
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 5,
-                                              ),
-                                              Text(controller.tag
-                                                  .read('mustard')),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                left: 0, top: 5, right: 14, bottom: 5),
-                            child: IconButton(
-                              icon: Icon(
-                                Icons.delete,
-                                color: Colors.red,
-                              ),
-                              onPressed: () {
-                                controller.editModeCheckedItemDelete();
-                              },
-                            ),
-                          ),
-                        ],
-                      )
-                    : Row(
-                        //디폴트모드 인서트.
-                        children: [
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.all(14.0),
-                              child: Container(
-                                child: Obx(
-                                  () => TextFormField(
-                                    focusNode: controller.textFocus,
-                                    controller: controller.memoController,
-                                    cursorColor:
-                                        controller.isDarkModeOn.value == true
-                                            ? iconDark
-                                            : iconLight,
-                                    decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      focusColor:
+                                  padding:
+                                      const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color:
                                           controller.isDarkModeOn.value == true
                                               ? subDark
                                               : subLight,
-                                      hintText: ' Insert here',
-                                      hintStyle: TextStyle(
-                                        color: controller.isDarkModeOn.value ==
-                                                true
-                                            ? iconDark
-                                            : iconLight,
+                                      borderRadius: BorderRadius.circular(15),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color:
+                                              controller.isDarkModeOn.value ==
+                                                      true
+                                                  ? shadowDark
+                                                  : shadowLight,
+                                          spreadRadius: 1,
+                                          blurRadius: 1,
+                                          offset: Offset(0, 3),
+                                        ),
+                                      ],
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(04.0),
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Column(
+                                                children: [
+                                                  SizedBox(
+                                                    height: 38,
+                                                    width: 38,
+                                                    child: MaterialButton(
+                                                      onPressed: () async {
+                                                        await controller
+                                                            .getRedRed();
+                                                        controller
+                                                            .editModeCheckedItemColorFill(
+                                                                controller
+                                                                    .colorValue
+                                                                    .value);
+                                                      },
+                                                      color: Color(controller
+                                                          .redredValue),
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(50),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 5,
+                                                  ),
+                                                  Text(controller.tag
+                                                      .read('red')),
+                                                ],
+                                              ),
+                                              Column(
+                                                children: [
+                                                  SizedBox(
+                                                    height: 38,
+                                                    width: 38,
+                                                    child: MaterialButton(
+                                                      onPressed: () async {
+                                                        await controller
+                                                            .getBlue();
+                                                        controller
+                                                            .editModeCheckedItemColorFill(
+                                                                controller
+                                                                    .colorValue
+                                                                    .value);
+                                                      },
+                                                      color: Color(
+                                                          controller.blueValue),
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(50),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 5,
+                                                  ),
+                                                  Text(controller.tag
+                                                      .read('blue')),
+                                                ],
+                                              ),
+                                              Column(
+                                                children: [
+                                                  SizedBox(
+                                                    height: 38,
+                                                    width: 38,
+                                                    child: MaterialButton(
+                                                      onPressed: () async {
+                                                        await controller
+                                                            .getAqua();
+                                                        controller
+                                                            .editModeCheckedItemColorFill(
+                                                                controller
+                                                                    .colorValue
+                                                                    .value);
+                                                      },
+                                                      color: Color(
+                                                          controller.aquaValue),
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(50),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 5,
+                                                  ),
+                                                  Text(controller.tag
+                                                      .read('aqua')),
+                                                ],
+                                              ),
+                                              Column(
+                                                children: [
+                                                  SizedBox(
+                                                    height: 38,
+                                                    width: 38,
+                                                    child: MaterialButton(
+                                                      onPressed: () async {
+                                                        await controller
+                                                            .getGreen();
+                                                        controller
+                                                            .editModeCheckedItemColorFill(
+                                                                controller
+                                                                    .colorValue
+                                                                    .value);
+                                                      },
+                                                      color: Color(controller
+                                                          .greenValue),
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(50),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 5,
+                                                  ),
+                                                  Text(controller.tag
+                                                      .read('green')),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Column(
+                                                children: [
+                                                  SizedBox(
+                                                    height: 38,
+                                                    width: 38,
+                                                    child: MaterialButton(
+                                                      onPressed: () async {
+                                                        await controller
+                                                            .getPink();
+                                                        controller
+                                                            .editModeCheckedItemColorFill(
+                                                                controller
+                                                                    .colorValue
+                                                                    .value);
+                                                      },
+                                                      color: Color(
+                                                          controller.pinkValue),
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(50),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 5,
+                                                  ),
+                                                  Text(controller.tag
+                                                      .read('pink')),
+                                                ],
+                                              ),
+                                              Column(
+                                                children: [
+                                                  SizedBox(
+                                                    height: 38,
+                                                    width: 38,
+                                                    child: MaterialButton(
+                                                      onPressed: () async {
+                                                        await controller
+                                                            .getOrange();
+                                                        controller
+                                                            .editModeCheckedItemColorFill(
+                                                                controller
+                                                                    .colorValue
+                                                                    .value);
+                                                      },
+                                                      color: Color(controller
+                                                          .orangeValue),
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(50),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 5,
+                                                  ),
+                                                  Text(controller.tag
+                                                      .read('orange')),
+                                                ],
+                                              ),
+                                              Column(
+                                                children: [
+                                                  SizedBox(
+                                                    height: 38,
+                                                    width: 38,
+                                                    child: MaterialButton(
+                                                      onPressed: () async {
+                                                        await controller
+                                                            .getPurple();
+                                                        controller
+                                                            .editModeCheckedItemColorFill(
+                                                                controller
+                                                                    .colorValue
+                                                                    .value);
+                                                      },
+                                                      color: Color(controller
+                                                          .purpleValue),
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(50),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 5,
+                                                  ),
+                                                  Text(controller.tag
+                                                      .read('purple')),
+                                                ],
+                                              ),
+                                              Column(
+                                                children: [
+                                                  SizedBox(
+                                                    height: 38,
+                                                    width: 38,
+                                                    child: MaterialButton(
+                                                      onPressed: () async {
+                                                        await controller
+                                                            .getMustard();
+                                                        controller
+                                                            .editModeCheckedItemColorFill(
+                                                                controller
+                                                                    .colorValue
+                                                                    .value);
+                                                      },
+                                                      color: Color(controller
+                                                          .mustardValue),
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(50),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 5,
+                                                  ),
+                                                  Text(controller.tag
+                                                      .read('mustard')),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                left: 0, top: 5, right: 14, bottom: 5),
-                            child: IconButton(
-                              //+ 버튼
-                              //눌렀을 때 addItem 메소드 실행
-                              //->TextField 의 Text, 현재 시간, colorValue 의 값을 db 에 insert
-                              onPressed: () async {
-                                //dateTime 데이터는 원래 '' 이므로 해당 값을 가져와주는 메소드를 먼저 실행.
-                                //공백 입력 방지.
-                                if (controller.memoController.text.toString() !=
-                                    '') {
-                                  await controller.getDefaultColor();
-                                  await controller.getCurrentDay();
-                                  await controller.getCurrentMonthMM();
-                                  await controller.getCurrentYear();
-                                  await controller.getCurrentDayDetail();
-                                  await controller.getCurrentDate();
-                                  await controller.firstCheckByDate();
-                                  controller.addItem();
-                                  //스크롤 아래로 내리기.
-                                  controller.goToDown();
-                                  //TextField 초기화.
-                                  controller.memoController.clear();
-                                  //defaultModeOn
-                                  controller.defaultModeOn();
-                                  //debug.
-                                  print(controller.colorValue.value.toString());
-                                  print(controller.CurrentDayDetail.value
-                                      .toString());
-                                }
-                              },
-                              icon: Icon(
-                                Icons.send_rounded,
-                                color: controller.isDarkModeOn.value == true
-                                    ? iconDark
-                                    : iconLight,
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 0, top: 5, right: 14, bottom: 5),
+                                child: IconButton(
+                                  icon: Icon(
+                                    Icons.delete,
+                                    color: Colors.red,
+                                  ),
+                                  onPressed: () {
+                                    controller.editModeCheckedItemDelete();
+                                  },
+                                ),
                               ),
-                            ),
+                            ],
+                          )
+                        : Row(
+                            //디폴트모드 인서트.
+                            children: [
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(14.0),
+                                  child: Container(
+                                    child: Obx(
+                                      () => TextFormField(
+                                        focusNode: controller.textFocus,
+                                        controller: controller.memoController,
+                                        cursorColor:
+                                            controller.isDarkModeOn.value ==
+                                                    true
+                                                ? iconDark
+                                                : iconLight,
+                                        decoration: InputDecoration(
+                                          border: InputBorder.none,
+                                          focusColor:
+                                              controller.isDarkModeOn.value ==
+                                                      true
+                                                  ? subDark
+                                                  : subLight,
+                                          hintText: ' Insert here',
+                                          hintStyle: TextStyle(
+                                            color:
+                                                controller.isDarkModeOn.value ==
+                                                        true
+                                                    ? iconDark
+                                                    : iconLight,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 0, top: 5, right: 14, bottom: 5),
+                                child: IconButton(
+                                  //+ 버튼
+                                  //눌렀을 때 addItem 메소드 실행
+                                  //->TextField 의 Text, 현재 시간, colorValue 의 값을 db 에 insert
+                                  onPressed: () async {
+                                    //dateTime 데이터는 원래 '' 이므로 해당 값을 가져와주는 메소드를 먼저 실행.
+                                    //공백 입력 방지.
+                                    if (controller.memoController.text
+                                            .toString() !=
+                                        '') {
+                                      await controller.getDefaultColor();
+                                      await controller.getCurrentDay();
+                                      await controller.getCurrentMonthMM();
+                                      await controller.getCurrentYear();
+                                      await controller.getCurrentDayDetail();
+                                      await controller.getCurrentDate();
+                                      await controller.firstCheckByDate();
+                                      controller.addItem();
+                                      //스크롤 아래로 내리기.
+                                      controller.goToDown();
+                                      //TextField 초기화.
+                                      controller.memoController.clear();
+                                      //defaultModeOn
+                                      controller.defaultModeOn();
+                                      //debug.
+                                      print(controller.colorValue.value
+                                          .toString());
+                                      print(controller.CurrentDayDetail.value
+                                          .toString());
+                                    }
+                                  },
+                                  icon: Icon(
+                                    Icons.send_rounded,
+                                    color: controller.isDarkModeOn.value == true
+                                        ? iconDark
+                                        : iconLight,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                  ),
+                ],
               ),
             ),
             body: Obx(
@@ -710,147 +759,143 @@ class HomeView extends GetView<HomeController> {
               ),
             ),
           ),
-          Stack(
-            children: [
-              //새로로 긴 컨테이너 위에거.
-              Align(
-                alignment: Alignment(1.0, -0.9),
-                child: Obx(
-                  () => Container(
-                    width: 25,
-                    height: 150,
-                    decoration: BoxDecoration(
-                      color: controller.isDarkModeOn.value == true
-                          ? subDark
-                          : subLight,
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                  ),
-                ),
-              ),
-              //위에 배경색 덧대기.
-              Align(
-                alignment: Alignment(0.9999, -0.939),
-                child: Obx(
-                  () => Container(
-                    width: 40,
-                    height: 45,
-                    decoration: BoxDecoration(
-                      color: controller.isDarkModeOn.value == true
-                          ? backgroundDark
-                          : backgroundLight,
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                  ),
-                ),
-              ),
-              // Align(
-              //   alignment: Alignment(1.0, 0.748),
-              //   child: Obx(
-              //         () => Container(
-              //       width: 5,
-              //       height: 25,
-              //       decoration: BoxDecoration(
-              //         color: controller.isDarkModeOn.value == true
-              //             ? backgroundDark
-              //             : backgroundLight,
-              //         borderRadius: BorderRadius.circular(15),
-              //       ),
-              //     ),
-              //   ),
-              // ),
-              //아래 배경색 덧대기.
-              Align(
-                alignment: Alignment(0.9999, -0.67),
-                child: Obx(
-                  () => Container(
-                    width: 40,
-                    height: 45,
-                    decoration: BoxDecoration(
-                      color: controller.isDarkModeOn.value == true
-                          ? backgroundDark
-                          : backgroundLight,
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                  ),
-                ),
-              ),
-              Align(
-                //넘어가기 버튼 뒤에 컨테이너.
-                alignment: Alignment(1.1, -0.83),
-                child: Obx(
-                  () => Container(
-                    width: controller.height * 0.1,
+          //넘어가기 버튼과 그를 감싸는 ui들.
+          Obx(
+            () => Stack(
+              children: [
+                //위에 장식
+                Positioned(
+                  bottom: controller.height * 0.87,
+                  left: controller.width * 0.91,
+                  child: Container(
+                    width: controller.width * 0.09,
                     height: controller.height * 0.082,
-                    decoration: BoxDecoration(
-                      color: controller.isDarkModeOn.value == true
-                          ? subDark
-                          : subLight,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(15),
-                        bottomLeft: Radius.circular(15),
-                      ),
-                    ),
+                    color: controller.isDarkModeOn.value == true
+                        ? subDark
+                        : subLight,
                   ),
                 ),
-              ),
-              Obx(
-                () => Align(
-                  //넘어가기 버튼.
-                  alignment: Alignment(0.93, -0.805),
+                Positioned(
+                  bottom: controller.height * 0.88,
+                  left: controller.width * 0.91,
                   child: Container(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      boxShadow: [
-                        BoxShadow(
-                          color: controller.isDarkModeOn.value == true
-                              ? shadowDark
-                              : shadowLight,
-                          spreadRadius: 1,
-                          blurRadius: 7,
-                          offset: Offset(0, 5),
-                        )
-                      ],
+                      borderRadius: BorderRadius.only(
+                        bottomRight: Radius.circular(30),
+                      ),
+                      color: controller.isDarkModeOn.value == true
+                          ? backgroundDark
+                          : backgroundLight,
                     ),
-                    child: Container(
-                      width: controller.width.value * 0.1 + 3,
-                      height: controller.width.value * 0.1,
+                    width: controller.width * 0.09,
+                    height: controller.height * 0.082,
+                  ),
+                ),
+                //아래 장식
+                Positioned(
+                  bottom: controller.height * 0.72,
+                  left: controller.width * 0.91,
+                  child: Container(
+                    width: controller.width * 0.09,
+                    height: controller.height * 0.082,
+                    color: controller.isDarkModeOn.value == true
+                        ? subDark
+                        : subLight,
+                  ),
+                ),
+                Positioned(
+                  bottom: controller.height * 0.72,
+                  left: controller.width * 0.91,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(30),
+                      ),
+                      color: controller.isDarkModeOn.value == true
+                          ? backgroundDark
+                          : backgroundLight,
+                    ),
+                    width: controller.width * 0.09,
+                    height: controller.height * 0.082,
+                  ),
+                ),
+                Positioned(
+                  //넘어가기 버튼 뒤에 컨테이너.
+                  bottom: controller.height * 0.8,
+                  left: controller.width * 0.83,
+                  child: Obx(
+                    () => Container(
+                      width: controller.height * 0.1,
+                      height: controller.height * 0.08,
                       decoration: BoxDecoration(
                         color: controller.isDarkModeOn.value == true
-                            ? backgroundDark
-                            : backgroundLight,
-                        borderRadius: BorderRadius.circular(15),
+                            ? subDark
+                            : subLight,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(15),
+                          bottomLeft: Radius.circular(15),
+                        ),
                       ),
-                      child: Material(
-                        borderRadius: BorderRadius.circular(15),
-                        child: IconButton(
-                          onPressed: () async {
-                            controller.pageController.animateToPage(1,
-                                duration: Duration(milliseconds: 300),
-                                curve: Curves.easeIn);
-                            //컨트롤 페이지로 넘어갈때 에딧모드 해제. 자연스러운 해제를 위해 딜레이 주기.
-                            controller.editModeDone();
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: controller.isDarkModeOn.value == true
+                                      ? shadowDark
+                                      : shadowLight,
+                                  spreadRadius: 1,
+                                  blurRadius: 7,
+                                  offset: Offset(0, 5),
+                                )
+                              ],
+                            ),
+                            child: Container(
+                              width: controller.width.value * 0.1 + 3,
+                              height: controller.width.value * 0.1,
+                              decoration: BoxDecoration(
+                                color: controller.isDarkModeOn.value == true
+                                    ? backgroundDark
+                                    : backgroundLight,
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: Material(
+                                borderRadius: BorderRadius.circular(15),
+                                child: IconButton(
+                                  onPressed: () async {
+                                    controller.pageController.animateToPage(1,
+                                        duration: Duration(milliseconds: 300),
+                                        curve: Curves.easeIn);
+                                    //컨트롤 페이지로 넘어갈때 에딧모드 해제. 자연스러운 해제를 위해 딜레이 주기.
+                                    controller.editModeDone();
 
-                            Future.delayed(
-                              Duration(milliseconds: 200),
-                              () {
-                                controller.isEditMode.value = false;
-                              },
-                            );
-                          },
-                          icon: Icon(
-                            Icons.arrow_back_ios_new_outlined,
-                            color: controller.isDarkModeOn.value == true
-                                ? iconDark
-                                : iconLight,
+                                    Future.delayed(
+                                      Duration(milliseconds: 200),
+                                      () {
+                                        controller.isEditMode.value = false;
+                                      },
+                                    );
+                                  },
+                                  icon: Icon(
+                                    Icons.arrow_back_ios_new_outlined,
+                                    color: controller.isDarkModeOn.value == true
+                                        ? iconDark
+                                        : iconLight,
+                                  ),
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),
@@ -1022,7 +1067,7 @@ class HomeView extends GetView<HomeController> {
           : backgroundLight,
       elevation: 0,
       SizedBox(
-        height: 340,
+        height: controller.height * 0.45,
         width: double.infinity,
         child: Column(
           children: [
@@ -1358,13 +1403,15 @@ class HomeView extends GetView<HomeController> {
                                 await controller.refreshMemoByContent(
                                   controller.searchBarController.text,
                                 );
+                                controller.memoController.clear();
+                                controller.searchBarController.clear();
                                 //여기에 클리어를 두면 앱바 ui 수정에 반영되지 않음.
                                 // controller.searchBarController.clear();
                                 Get.back();
                               },
                               icon: Icon(Icons.search_rounded),
                             ),
-                            hintText: ' Insert here',
+                            hintText: ' Search here',
                             hintStyle: TextStyle(
                               fontWeight: FontWeight.w400,
                               fontSize: 15,
@@ -1385,6 +1432,7 @@ class HomeView extends GetView<HomeController> {
                             if (controller.tagModeOn.value == false) {
                               controller.refreshMemo();
                             }
+                            controller.memoController.clear();
                             controller.searchBarController.clear();
                           },
                         ),

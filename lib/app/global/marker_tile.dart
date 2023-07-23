@@ -40,7 +40,7 @@ class MarKerTile extends GetView<HomeController> {
           children: [
             Container(
               height: 7,
-              width: 12,
+              width: 10,
               decoration: BoxDecoration(
                 boxShadow: [
                   markerTileBoxShadow,
@@ -59,7 +59,7 @@ class MarKerTile extends GetView<HomeController> {
           children: [
             Container(
               height: 7,
-              width: 12,
+              width: 10,
               decoration: BoxDecoration(
                 boxShadow: [
                   markerTileBoxShadow,
@@ -69,7 +69,7 @@ class MarKerTile extends GetView<HomeController> {
             ),
             Container(
               height: 7,
-              width: 12,
+              width: 10,
               decoration: BoxDecoration(
                 boxShadow: [
                   markerTileBoxShadow,
@@ -88,7 +88,7 @@ class MarKerTile extends GetView<HomeController> {
           children: [
             Container(
               height: 7,
-              width: 12,
+              width: 10,
               decoration: BoxDecoration(
                 boxShadow: [
                   markerTileBoxShadow,
@@ -98,7 +98,7 @@ class MarKerTile extends GetView<HomeController> {
             ),
             Container(
               height: 7,
-              width: 12,
+              width: 10,
               decoration: BoxDecoration(
                 boxShadow: [
                   markerTileBoxShadow,
@@ -108,7 +108,7 @@ class MarKerTile extends GetView<HomeController> {
             ),
             Container(
               height: 7,
-              width: 12,
+              width: 10,
               decoration: BoxDecoration(
                 boxShadow: [
                   markerTileBoxShadow,
@@ -127,7 +127,7 @@ class MarKerTile extends GetView<HomeController> {
           children: [
             Container(
               height: 7,
-              width: 12,
+              width: 10,
               decoration: BoxDecoration(
                 boxShadow: [
                   markerTileBoxShadow,
@@ -137,7 +137,7 @@ class MarKerTile extends GetView<HomeController> {
             ),
             Container(
               height: 7,
-              width: 12,
+              width: 10,
               decoration: BoxDecoration(
                 boxShadow: [
                   markerTileBoxShadow,
@@ -147,7 +147,7 @@ class MarKerTile extends GetView<HomeController> {
             ),
             Container(
               height: 7,
-              width: 12,
+              width: 10,
               decoration: BoxDecoration(
                 boxShadow: [
                   markerTileBoxShadow,
@@ -157,7 +157,7 @@ class MarKerTile extends GetView<HomeController> {
             ),
             Container(
               height: 7,
-              width: 12,
+              width: 10,
               decoration: BoxDecoration(
                 boxShadow: [
                   markerTileBoxShadow,

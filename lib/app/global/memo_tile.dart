@@ -80,21 +80,25 @@ class MemoTile extends GetView<HomeController> {
             //     : Container(),
             SlideTransition(
               position: Tween<Offset>(
-                      begin: Offset.zero,
-                      end: Offset(0.2, 0.0),
-                    ).animate(
-                      CurvedAnimation(
-                        parent: controller.memoTileAnimationController,
-                        curve: Curves.easeIn,
-                      ),
-                    ),
+                begin: Offset.zero,
+                end: Offset(0.2, 0.0),
+              ).animate(
+                CurvedAnimation(
+                  parent: controller.memoTileAnimationController,
+                  curve: Curves.easeIn,
+                ),
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   controller.isEditMode.value == true
                       ? Padding(
                           padding: const EdgeInsets.only(
-                              left: 0, bottom: 8, top: 8, right: 10),
+                            left: 0,
+                            bottom: 8,
+                            top: 8,
+                            right: 10,
+                          ),
                           child: Align(
                             child: InkWell(
                               onTap: () async {
@@ -109,6 +113,7 @@ class MemoTile extends GetView<HomeController> {
                                 }
                               },
                               child: Obx(
+                                //체크박스
                                 () => AnimatedContainer(
                                   curve: Curves.fastOutSlowIn,
                                   duration: Duration(seconds: 1),
@@ -116,12 +121,18 @@ class MemoTile extends GetView<HomeController> {
                                   height: controller.editModeCheckBoxY.value,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(30),
-                                    color: Colors.grey[400],
+                                    color: controller.isDarkModeOn.value == true
+                                        ? subDark
+                                        : subLight,
                                   ),
                                   child: isEditChecked == 1
                                       ? Icon(
                                           Icons.check,
-                                          color: Colors.white,
+                                          color:
+                                              controller.isDarkModeOn.value ==
+                                                      true
+                                                  ? iconDark
+                                                  : iconLight,
                                         )
                                       : Container(),
                                 ),
@@ -169,7 +180,7 @@ class MemoTile extends GetView<HomeController> {
                                 spreadRadius: 1,
                                 blurRadius: 1,
                                 offset:
-                                Offset(0, 3), // changes position of shadow
+                                    Offset(0, 3), // changes position of shadow
                               ),
                             ],
                             borderRadius: BorderRadius.circular(8),
