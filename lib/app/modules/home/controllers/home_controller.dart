@@ -915,6 +915,7 @@ class HomeController extends GetxController
   }
 
   //컨트롤 페이지 넘어간 후 컨테이너들 사이즈 커지는 애니메이션.
+  //container size
   RxBool controllPageContainerAnimationOn = false.obs;
 
   RxDouble controllPageLongContainerX = 34.0.obs;
@@ -924,10 +925,13 @@ class HomeController extends GetxController
 
   RxDouble controllPageLongContainerSubBox = 10.0.obs;
 
-  RxDouble controllPageShortContainerX = 0.0.obs;
-  RxDouble controllPageShortContainerY = 0.0.obs;
+  RxDouble controllPageShortContainerX = 40.0.obs;
+  RxDouble controllPageShortContainerY = 40.0.obs;
 
   RxDouble controllPageContainerOpacity = 0.6.obs;
+
+  //text size.
+  RxDouble controlViewTextSize = 0.0.obs;
 
   getControllPageContainer() {
     controllPageContainerAnimationOn.value = false;
@@ -936,10 +940,9 @@ class HomeController extends GetxController
     controllPageLongContainerY.value = Get.height * 0.10;
 
     controllPageLongContainerVerticalLine.value = 10;
-    controllPageLongContainerSubBox.value = 10;
 
     controllPageShortContainerX.value = Get.width * 0.2;
-    controllPageShortContainerY.value = Get.height * 0.07;
+    controllPageShortContainerY.value = Get.height * 0.09;
   }
 
   //너무 정신사납지 않게 실행당 한번만 애니메이션 작동.
@@ -960,6 +963,12 @@ class HomeController extends GetxController
         controllPageShortContainerY.value = Get.height * 0.15;
       },
     );
+
+    //tags, trash view 로 넘어가는 버튼 컨테이너의 텍스트.
+    //딜레이를 크게 줘서 오버플로우 방지.
+    Future.delayed(Duration(milliseconds: 500), () {
+      controlViewTextSize.value = 15;
+    });
   }
 
   late final memoTileAnimationController = AnimationController(

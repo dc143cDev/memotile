@@ -33,9 +33,11 @@ class ControlView extends GetView<HomeController> {
           child: FloatingActionButton(
             child: Icon(
               Icons.close,
-              color: controller.isDarkModeOn.value == true ? iconDark : iconLight,
+              color:
+                  controller.isDarkModeOn.value == true ? iconDark : iconLight,
             ),
-            backgroundColor: controller.isDarkModeOn.value == true ? subDark : subLight,
+            backgroundColor:
+                controller.isDarkModeOn.value == true ? subDark : subLight,
             onPressed: () {
               controller.pageController.animateToPage(0,
                   duration: Duration(milliseconds: 300), curve: Curves.easeIn);
@@ -69,8 +71,7 @@ class ControlView extends GetView<HomeController> {
                                 : shadowLight,
                             spreadRadius: 2,
                             blurRadius: 7,
-                            offset:
-                                Offset(0, 7), // changes position of shadow
+                            offset: Offset(0, 7), // changes position of shadow
                           ),
                         ],
                       ),
@@ -83,8 +84,7 @@ class ControlView extends GetView<HomeController> {
                             () => Text(
                               controller.CurrentMonthForTile.value,
                               style: TextStyle(
-                                  color: controller.isDarkModeOn.value ==
-                                          true
+                                  color: controller.isDarkModeOn.value == true
                                       ? Colors.white
                                       : Colors.black,
                                   fontWeight: FontWeight.bold,
@@ -95,41 +95,42 @@ class ControlView extends GetView<HomeController> {
                             height: 16,
                           ),
                           Padding(
-                            padding:
-                                EdgeInsets.symmetric(horizontal: 8),
+                            padding: EdgeInsets.symmetric(horizontal: 8),
                             child: TableCalendar(
                               headerVisible: false,
                               calendarBuilders: CalendarBuilders(
-                                  //마커 타일 빌더.
-                                  //context 와 날짜(년월일시분초까지 다 표시되는 버전), event(List)를 넘겨줄수 있음.
-                                  markerBuilder: (context, day, events) {
-                                //events 의 원형은 [ 단일객체 ] (length == 1) 이기때문에 두번 걸러 리스트화 해야함.
-                                //to String,
-                                String eventToString = events.toString();
-                                //jsonDecode from String to List.
-                                List stringEventToList =
-                                    jsonDecode(eventToString);
-                                if (events.isNotEmpty == true) {
-                                  return Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      MarKerTile(
-                                        date: '',
-                                        event: DateFormat('dd').format(day),
-                                        //그렇게 리스트화된 colorValue 객체 중 하나를 ui에 넣어주기.
-                                        colorList: stringEventToList,
-                                        color: stringEventToList.last,
-                                      ),
-                                    ],
-                                  );
-                                }
-                                return null;
-                              },),
+                                //마커 타일 빌더.
+                                //context 와 날짜(년월일시분초까지 다 표시되는 버전), event(List)를 넘겨줄수 있음.
+                                markerBuilder: (context, day, events) {
+                                  //events 의 원형은 [ 단일객체 ] (length == 1) 이기때문에 두번 걸러 리스트화 해야함.
+                                  //to String,
+                                  String eventToString = events.toString();
+                                  //jsonDecode from String to List.
+                                  List stringEventToList =
+                                      jsonDecode(eventToString);
+                                  if (events.isNotEmpty == true) {
+                                    return Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        MarKerTile(
+                                          date: '',
+                                          event: DateFormat('dd').format(day),
+                                          //그렇게 리스트화된 colorValue 객체 중 하나를 ui에 넣어주기.
+                                          colorList: stringEventToList,
+                                          color: stringEventToList.last,
+                                        ),
+                                      ],
+                                    );
+                                  }
+                                  return null;
+                                },
+                              ),
                               calendarStyle: CalendarStyle(
                                 todayTextStyle: TextStyle(
-                                  color: controller.isDarkModeOn.value ==
-                                      true
+                                  color: controller.isDarkModeOn.value == true
                                       ? Colors.white
                                       : Colors.black,
                                   fontSize: 16,
@@ -140,19 +141,17 @@ class ControlView extends GetView<HomeController> {
                                   boxShadow: [
                                     BoxShadow(
                                       color:
-                                          controller.isDarkModeOn.value ==
-                                                  true
+                                          controller.isDarkModeOn.value == true
                                               ? shadowDark
                                               : shadowLight,
                                       spreadRadius: 1,
                                       blurRadius: 1,
-                                      offset: Offset(0,
-                                          3), // changes position of shadow
+                                      offset: Offset(
+                                          0, 3), // changes position of shadow
                                     ),
                                   ],
                                   //오늘 컨테이너 컬러.
-                                  color: controller.isDarkModeOn.value ==
-                                          true
+                                  color: controller.isDarkModeOn.value == true
                                       ? subDark
                                       : subLight,
                                 ),
@@ -161,8 +160,7 @@ class ControlView extends GetView<HomeController> {
                                 ),
                               ),
                               headerStyle: HeaderStyle(
-                                titleTextStyle:
-                                    TextStyle(color: Colors.white),
+                                titleTextStyle: TextStyle(color: Colors.white),
                                 titleCentered: true,
                                 leftChevronVisible: false,
                                 rightChevronVisible: false,
@@ -179,8 +177,7 @@ class ControlView extends GetView<HomeController> {
                                 //DB 검색 용이성을 위해 미리 지정된 포맷으로 selectedDay 반환.
                                 // await controller.goToTop();
                                 controller.selectedDay.value =
-                                    DateFormat("yyyyMMdd")
-                                        .format(selectedDay);
+                                    DateFormat("yyyyMMdd").format(selectedDay);
                                 print('$selectedDay is selected');
                                 print('$focusedDay is focused');
                                 print(controller.selectedDay);
@@ -393,7 +390,50 @@ class ControlView extends GetView<HomeController> {
                                     .controllPageShortContainerX.value,
                                 height: controller
                                     .controllPageShortContainerY.value,
-                                child: Text('태그설정'),
+                                child: Center(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      AnimatedContainer(
+                                        curve: Curves.easeIn,
+                                        duration: Duration(milliseconds: 100),
+                                        width: controller
+                                                .controllPageShortContainerX
+                                                .value *
+                                            0.46,
+                                        height: controller
+                                                .controllPageShortContainerX
+                                                .value *
+                                            0.46,
+                                        decoration: BoxDecoration(
+                                          color:
+                                              controller.isDarkModeOn.value ==
+                                                      true
+                                                  ? subDark
+                                                  : subLight,
+                                          borderRadius:
+                                              BorderRadius.circular(25),
+                                        ),
+                                        child: Icon(Icons.tag),
+                                      ),
+                                      Obx(
+                                        () => AnimatedContainer(
+                                          curve: Curves.easeIn,
+                                          duration: Duration(milliseconds: 50),
+                                          child: Text(
+                                            'Tags',
+                                            style: TextStyle(
+                                              fontSize: controller
+                                                  .controlViewTextSize.value,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(25),
                                   color: controller.isDarkModeOn.value == true
@@ -430,12 +470,55 @@ class ControlView extends GetView<HomeController> {
                             () => Center(
                               child: AnimatedContainer(
                                 curve: Curves.easeIn,
-                                duration: Duration(milliseconds: 300),
+                                duration: Duration(milliseconds: 100),
                                 width: controller
                                     .controllPageShortContainerX.value,
                                 height: controller
                                     .controllPageShortContainerY.value,
-                                child: Text('쓰레기통'),
+                                child: Center(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      AnimatedContainer(
+                                        curve: Curves.easeIn,
+                                        duration: Duration(milliseconds: 100),
+                                        width: controller
+                                                .controllPageShortContainerX
+                                                .value *
+                                            0.46,
+                                        height: controller
+                                                .controllPageShortContainerX
+                                                .value *
+                                            0.46,
+                                        decoration: BoxDecoration(
+                                          color:
+                                              controller.isDarkModeOn.value ==
+                                                      true
+                                                  ? subDark
+                                                  : subLight,
+                                          borderRadius:
+                                              BorderRadius.circular(25),
+                                        ),
+                                        child: Icon(Icons.delete_outline),
+                                      ),
+                                      Obx(
+                                        () => AnimatedContainer(
+                                          curve: Curves.easeIn,
+                                          duration: Duration(milliseconds: 50),
+                                          child: Text(
+                                            'Deleted Memo',
+                                            style: TextStyle(
+                                              fontSize: controller
+                                                  .controlViewTextSize.value,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(25),
                                   color: controller.isDarkModeOn.value == true
