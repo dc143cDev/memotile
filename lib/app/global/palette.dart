@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 //공통
 var memoTileText = Colors.grey[900];
+var seletedThemeIcon = Color(0xffF6BE00);
 
 //라이트모드
 var backgroundLight = Color(0xfffffbff);

@@ -239,32 +239,8 @@ class ControlView extends GetView<HomeController> {
                             children: [
                               //시스템 테마.
                               InkWell(
-                                onTap: () {},
-                                child: AnimatedContainer(
-                                  curve: Curves.easeIn,
-                                  duration: Duration(milliseconds: 100),
-                                  width: controller
-                                          .controllPageShortContainerX.value *
-                                      0.46,
-                                  height: controller
-                                          .controllPageShortContainerX.value *
-                                      0.6,
-                                  decoration: BoxDecoration(
-                                    color: controller.isDarkModeOn.value == true
-                                        ? subDark
-                                        : subLight,
-                                    borderRadius: BorderRadius.circular(25),
-                                  ),
-                                ),
-                              ),
-                              verticalLine,
-                              //라이트 테마.
-                              InkWell(
                                 onTap: () {
-                                  controller.isDarkModeOn.value = false;
-                                  Get.changeTheme(
-                                    ThemeData.light(useMaterial3: true),
-                                  );
+                                  controller.deviceThemeOn();
                                 },
                                 child: AnimatedContainer(
                                   curve: Curves.easeIn,
@@ -282,20 +258,42 @@ class ControlView extends GetView<HomeController> {
                                     borderRadius: BorderRadius.circular(25),
                                   ),
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [],
+                                    children: [
+                                      //디바이스 테마 활성화시에는 항상 노란불.
+                                      controller.useDeviceTheme.value == true ? Icon(
+                                        Icons.perm_device_info,
+                                        color: seletedThemeIcon,
+                                      ) :
+                                      Icon(
+                                        //아니라면 테마에 맞는 비활성화 아이콘 색깔로.
+                                        Icons.perm_device_info,
+                                        color: controller.isDarkModeOn.value ==
+                                                true
+                                            ? iconDark
+                                            : iconLight,
+                                      ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      Text(
+                                        'Device',
+                                        style: TextStyle(
+                                          fontSize: controller
+                                              .controlViewTextSize.value,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
                               verticalLine,
-                              //다크 테마.
+                              //라이트 테마.
                               InkWell(
                                 onTap: () {
-                                  controller.isDarkModeOn.value = true;
-                                  Get.changeTheme(
-                                    ThemeData.dark(useMaterial3: true),
-                                  );
+                                  controller.lightModeOn();
                                 },
                                 child: AnimatedContainer(
                                   curve: Curves.easeIn,
@@ -312,9 +310,95 @@ class ControlView extends GetView<HomeController> {
                                         : subLight,
                                     borderRadius: BorderRadius.circular(25),
                                   ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      controller.useDeviceTheme.value == true ? Icon(
+                                        Icons.light_mode,
+                                        color: controller.isDarkModeOn.value ==
+                                            true
+                                            ? iconDark
+                                            : iconLight,
+                                      ) :
+                                      Icon(
+                                        Icons.light_mode,
+                                        color: controller.isDarkModeOn.value ==
+                                                true
+                                            ? iconDark
+                                            : seletedThemeIcon,
+                                      ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      Text(
+                                        'Light',
+                                        style: TextStyle(
+                                          fontSize: controller
+                                              .controlViewTextSize.value,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              verticalLine,
+                              //다크 테마.
+                              InkWell(
+                                onTap: () {
+                                  controller.darkModeOn();
+                                },
+                                child: AnimatedContainer(
+                                  curve: Curves.easeIn,
+                                  duration: Duration(milliseconds: 100),
+                                  width: controller
+                                          .controllPageShortContainerX.value *
+                                      0.46,
+                                  height: controller
+                                          .controllPageShortContainerX.value *
+                                      0.6,
+                                  decoration: BoxDecoration(
+                                    color: controller.isDarkModeOn.value == true
+                                        ? subDark
+                                        : subLight,
+                                    borderRadius: BorderRadius.circular(25),
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      controller.useDeviceTheme.value == true ? Icon(
+                                        Icons.dark_mode,
+                                        color: controller.isDarkModeOn.value ==
+                                            true
+                                            ? iconDark
+                                            : iconLight,
+                                      ) :
+                                      Icon(
+                                        Icons.dark_mode,
+                                        color: controller.isDarkModeOn.value ==
+                                                false
+                                            ? iconLight
+                                            : seletedThemeIcon,
+                                      ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      Text(
+                                        'Dark',
+                                        style: TextStyle(
+                                          fontSize: controller
+                                              .controlViewTextSize.value,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
 
+                              //구 알람센터. 추후 업데이트로 구현할수도 있으니 남겨두기.
                               // Column(
                               //   mainAxisAlignment: MainAxisAlignment.center,
                               //   children: [

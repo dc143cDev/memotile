@@ -2,12 +2,48 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:flutter/scheduler.dart';
 
 import '../../../global/memo.dart';
 
 class HomeController extends GetxController
     with GetSingleTickerProviderStateMixin {
+  //home Controller part 분류.
+  //각 파트는 변수의 타입과 상관없이 기능, 혹은 페이지의 단위로 분류되었음.
+  //1.set up
+  var setUpBookMark;
+
+  //2.scroll control
+  var scrollBookMark;
+
+  //3.date
+  var dateBookMark;
+
+  //4.color
+  var colorBookMark;
+
+  //5.tags
+  var tagsBookMark;
+
+  //6.theme
+  var themeBookMark;
+
+  //7.mode
+  var modeBookMark;
+
+  //8.db
+  var dbBookMark;
+
+  //9.bottomSheet
+  var bottomSheetBookMark;
+
+  //10.animation
+  var animationBookMark;
+
   //set up part.
+  setUpPartHere() {
+    setUpBookMark = '1';
+  }
 
   //가장 중요한 변수.
   //실질적 데이터인 MemoHelper 에서 내려온 data 변수가 ui 에 표시되기 위해 여기에 담김.
@@ -27,6 +63,15 @@ class HomeController extends GetxController
   //Screen Size.
   RxDouble width = 0.0.obs;
   RxDouble height = 0.0.obs;
+
+  //스크린 사이즈 가져오기.
+  getScreenSize() {
+    width.value = Get.width;
+    height.value = Get.height;
+
+    print('Screen width: ${width.value}');
+    print('Screen height: ${height.value}');
+  }
 
   //focus node.
   FocusNode textFocus = FocusNode();
@@ -50,7 +95,11 @@ class HomeController extends GetxController
     memoDetailController.text = detailContent.value;
   }
 
-  //scroll control.
+  //scroll control part.
+  scrollPartHere() {
+    scrollBookMark = '2';
+  }
+
   var scrollController = ScrollController().obs;
   var isLoading = true.obs;
   var hasMore = false.obs;
@@ -119,6 +168,10 @@ class HomeController extends GetxController
   }
 
   //date PART
+  datePartHere() {
+    dateBookMark = '3';
+  }
+
   //날짜 정보를 받아오기 위한 RxString.
   RxString CurrentMinutes = ''.obs;
   RxString CurrentHour = ''.obs;
@@ -201,6 +254,10 @@ class HomeController extends GetxController
   }
 
   //color PART
+  colorPartHere() {
+    colorBookMark = '4';
+  }
+
   //가변적으로 변하는 RxInt 변수와, flutter ui 의 Color 를 int 로 저장할 수 있는 변수들.
   RxInt colorValue = 0.obs;
 
@@ -233,74 +290,6 @@ class HomeController extends GetxController
   int orangeValue = Color(0xfffca772).value;
   int purpleValue = Color(0xffbb9beb).value;
   int mustardValue = Color(0xfff0dc7a).value;
-
-  //theme part.
-  var themeData = Get.isDarkMode ? ThemeData.dark() : ThemeData.light();
-
-  var isDarkModeOn = false.obs;
-  RxInt darkModeDateIndicatorColor = Colors.grey.value.obs;
-  RxInt lightModeDateIndicatorColor = Colors.white.value.obs;
-
-  var backgoundColorValue = 0.obs;
-  var subColorValue = 0.obs;
-  var iconColorValue = 0.obs;
-  var textColorValue = 0.obs;
-  var shadowColorValue = 0.obs;
-
-  darkModeOn() {
-    // print('ddI: ${darkModeDateIndicatorColor.value}');
-    Get.changeTheme(ThemeData.dark());
-    isDarkModeOn.value = true;
-    // darkModeDateIndicatorColor.value = Colors.grey.value;
-    // print('ddI: ${darkModeDateIndicatorColor.value}');
-  }
-
-  //에딧모드 체크된 메모들을 가져와 for Each로 에딧 체크 콜롬에 0(false)을 넣어줌.
-  //홈뷰의 X FAB를 누를때 실행되며, 다시 메모 에딧 모드로 넘어갈때 이미 체크되어있는 상황을 방지하기 위함.
-  RxList editedMemo = [].obs;
-
-  editModeDone() async {
-    final data = await MemoHelper.getItemsByEditModeCheck();
-    await editModeDoneAnimation();
-    print('edited: ${data}');
-    editedMemo.addAll(data);
-    editedMemo.forEach((element) {
-      updateItemForEditCheckControll(element['id'], 0);
-    });
-    // isMemoTileShake.value = false;
-    // editModeCheckBoxX.value = 1.0;
-    // editModeCheckBoxY.value = 1.0;
-    editedMemo.value = [];
-    // refreshMemo();
-    print('edit mode done');
-  }
-
-  editModeCheckedItemDelete() async {
-    final data = await MemoHelper.getItemsByEditModeCheck();
-    print('edited: ${data}');
-    editedMemo.addAll(data);
-    editedMemo.forEach((element) {
-      itemToTrash(element['id']);
-    });
-    editedMemo.value = [];
-    // refreshMemo();
-    print('edit mode done');
-  }
-
-  editModeCheckedItemColorFill(color) async {
-    final data = await MemoHelper.getItemsByEditModeCheck();
-    print('edited cf: ${data}');
-    editedMemo.addAll(data);
-    editedMemo.forEach((element) {
-      updateItemForEditCheckItemColorControll(
-        element['id'],
-        color,
-      );
-    });
-    editedMemo.value = [];
-    // refreshMemo();
-    print('edit color fill');
-  }
 
   //앱 시작시 초기 컬러 가져오기.
   getDefaultColor() {
@@ -375,6 +364,14 @@ class HomeController extends GetxController
     colorValue.value = mustardValue;
   }
 
+  //tag part.
+  tagsPartHere() {
+    tagsBookMark = '5';
+  }
+
+  RxString nowTag = ''.obs;
+  final tag = GetStorage();
+
   //tags customize 시 사용될 TextField controllers
   TextEditingController redTagController = TextEditingController();
   TextEditingController tealTagController = TextEditingController();
@@ -395,7 +392,182 @@ class HomeController extends GetxController
   TextEditingController purpleTagController = TextEditingController();
   TextEditingController mustardTagController = TextEditingController();
 
+  //최초 실행시 태그 밸류 null 방지를 위한(동시에 색상 이름 표시) 메소드.
+  tagInit() {
+    tag.writeIfNull('red', 'red');
+    tag.writeIfNull('blue', 'blue');
+    tag.writeIfNull('aqua', 'aqua');
+    tag.writeIfNull('green', 'green');
+    tag.writeIfNull('pink', 'pink');
+    tag.writeIfNull('orange', 'orange');
+    tag.writeIfNull('purple', 'purple');
+    tag.writeIfNull('mustard', 'mustard');
+  }
+
+  //theme part.
+  themePartHere() {
+    themeBookMark = '6';
+  }
+
+  //현재 상태 감지에 쓰일 true, false는 dark모드를 기준으로 함.
+  final isDeviceThemeDark =
+      SchedulerBinding.instance.window.platformBrightness == Brightness.dark;
+
+  //디바이스 테마 사용. 기본값은 true. 테마를 따로 조작하면 false.
+  var useDeviceTheme = true.obs;
+  var themeData = Get.isDarkMode ? ThemeData.dark() : ThemeData.light();
+
+  var isDarkModeOn = false.obs;
+  RxInt darkModeDateIndicatorColor = Colors.grey.value.obs;
+  RxInt lightModeDateIndicatorColor = Colors.white.value.obs;
+
+  var backgoundColorValue = 0.obs;
+  var subColorValue = 0.obs;
+  var iconColorValue = 0.obs;
+  var textColorValue = 0.obs;
+  var shadowColorValue = 0.obs;
+
+  //앱 진입시 테마적용.
+  themeInit() {
+    if (isDeviceThemeDark == true) {
+      //darkModeOn()을 사용하지 않는 이유: darkModeOn()은 디바이스 테마 해제 기능도 겸하기 때문.
+      Get.changeTheme(ThemeData.dark(useMaterial3: true));
+      isDarkModeOn.value = true;
+    }
+  }
+
+  deviceThemeOn(){
+    //디바이스 사용 확인.
+    useDeviceTheme.value = true;
+    if(isDeviceThemeDark == true){
+      //darkModeOn()을 사용하지 않는 이유: darkModeOn()은 디바이스 테마 해제 기능도 겸하기 때문.
+      Get.changeTheme(ThemeData.dark(useMaterial3: true));
+      isDarkModeOn.value = true;
+    } else{
+      //이하 마찬가지.
+      Get.changeTheme(ThemeData.light(useMaterial3: true));
+      isDarkModeOn.value = false;
+    }
+  }
+
+  darkModeOn() {
+    Get.changeTheme(ThemeData.dark(useMaterial3: true));
+    isDarkModeOn.value = true;
+    //사용자가 테마를 변경하면 디바이스 테마를 사용하지 않는 것으로 간주함.
+    useDeviceTheme.value = false;
+  }
+
+  lightModeOn() {
+    Get.changeTheme(ThemeData.light(useMaterial3: true));
+    isDarkModeOn.value = false;
+    //사용자가 테마를 변경하면 디바이스 테마를 사용하지 않는 것으로 간주함.
+    useDeviceTheme.value = false;
+  }
+
+  //mode part.
+  modePartHere() {
+    modeBookMark = '7';
+  }
+
+  //검색모드 전환시 bool.
+  RxBool searchModeOn = false.obs;
+
+  //태그 모드 전환시 bool.
+  RxBool tagModeOn = false.obs;
+
+  //날짜 모드 전환시 bool.
+  RxBool dateModeOn = false.obs;
+
+  RxBool defaultModeValueOn = true.obs;
+
+  searchButtonClicked() {
+    if (searchBarController.text != '') {
+      searchModeOn.value = true;
+      tagModeOn.value = false;
+      dateModeOn.value = false;
+
+      // defaultModeOn.value = true;
+    }
+  }
+
+  tagButtonClicked() {
+    tagModeOn.value = true;
+    searchModeOn.value = false;
+    dateModeOn.value = false;
+    //
+    // defaultModeOn.value = true;
+  }
+
+  dateButtonClicked() {
+    tagModeOn.value = false;
+    searchModeOn.value = false;
+    dateModeOn.value = true;
+    //
+    // defaultModeOn.value = true;
+  }
+
+  defaultModeOn() {
+    tagModeOn.value = false;
+    searchModeOn.value = false;
+    dateModeOn.value = false;
+    isEditMode.value = false;
+    //
+    // defaultModeOn.value = true;
+    refreshMemo();
+  }
+
+  //에딧모드 체크된 메모들을 가져와 for Each로 에딧 체크 콜롬에 0(false)을 넣어줌.
+  //홈뷰의 X FAB를 누를때 실행되며, 다시 메모 에딧 모드로 넘어갈때 이미 체크되어있는 상황을 방지하기 위함.
+  RxList editedMemo = [].obs;
+
+  editModeDone() async {
+    final data = await MemoHelper.getItemsByEditModeCheck();
+    await editModeDoneAnimation();
+    print('edited: ${data}');
+    editedMemo.addAll(data);
+    editedMemo.forEach((element) {
+      updateItemForEditCheckControll(element['id'], 0);
+    });
+    // isMemoTileShake.value = false;
+    // editModeCheckBoxX.value = 1.0;
+    // editModeCheckBoxY.value = 1.0;
+    editedMemo.value = [];
+    // refreshMemo();
+    print('edit mode done');
+  }
+
+  editModeCheckedItemDelete() async {
+    final data = await MemoHelper.getItemsByEditModeCheck();
+    print('edited: ${data}');
+    editedMemo.addAll(data);
+    editedMemo.forEach((element) {
+      itemToTrash(element['id']);
+    });
+    editedMemo.value = [];
+    // refreshMemo();
+    print('edit mode done');
+  }
+
+  editModeCheckedItemColorFill(color) async {
+    final data = await MemoHelper.getItemsByEditModeCheck();
+    print('edited cf: ${data}');
+    editedMemo.addAll(data);
+    editedMemo.forEach((element) {
+      updateItemForEditCheckItemColorControll(
+        element['id'],
+        color,
+      );
+    });
+    editedMemo.value = [];
+    // refreshMemo();
+    print('edit color fill');
+  }
+
   //DB PART
+  dbPartHere() {
+    dbBookMark = '8';
+  }
+
   //새로고침.
   //MemoHelper 에서 아이템을 추가하거나 업데이트하면 실행됨.
   //최상단의 memo RxList 를 db 의 데이터를 가져온 data 내부 변수로 저장함.
@@ -597,78 +769,13 @@ class HomeController extends GetxController
     refreshMemo();
   }
 
-  //UI part(bottom sheet)
+  //bottom sheet part.
+  bottomSheetPartHere() {
+    bottomSheetBookMark = '9';
+  }
 
-  //search bar controller
+  //search bar
   TextEditingController searchBarController = TextEditingController();
-
-  //AppBar mode
-  //search mode
-  //검색모드 전환시 bool.
-  RxBool searchModeOn = false.obs;
-
-  //태그 모드 전환시 bool.
-  RxBool tagModeOn = false.obs;
-
-  //날짜 모드 전환시 bool.
-  RxBool dateModeOn = false.obs;
-
-  RxBool defaultModeValueOn = true.obs;
-
-  searchButtonClicked() {
-    if (searchBarController.text != '') {
-      searchModeOn.value = true;
-      tagModeOn.value = false;
-      dateModeOn.value = false;
-
-      // defaultModeOn.value = true;
-    }
-  }
-
-  tagButtonClicked() {
-    tagModeOn.value = true;
-    searchModeOn.value = false;
-    dateModeOn.value = false;
-    //
-    // defaultModeOn.value = true;
-  }
-
-  dateButtonClicked() {
-    tagModeOn.value = false;
-    searchModeOn.value = false;
-    dateModeOn.value = true;
-    //
-    // defaultModeOn.value = true;
-  }
-
-  defaultModeOn() {
-    tagModeOn.value = false;
-    searchModeOn.value = false;
-    dateModeOn.value = false;
-    isEditMode.value = false;
-    //
-    // defaultModeOn.value = true;
-    refreshMemo();
-  }
-
-  RxString nowTag = ''.obs;
-
-  //storage part(get storage)
-  final tag = GetStorage();
-
-  //최초 실행시 태그 밸류 null 방지를 위한(동시에 색상 이름 표시) 메소드.
-  tagInit() {
-    tag.writeIfNull('red', 'red');
-    tag.writeIfNull('blue', 'blue');
-    tag.writeIfNull('aqua', 'aqua');
-    tag.writeIfNull('green', 'green');
-    tag.writeIfNull('pink', 'pink');
-    tag.writeIfNull('orange', 'orange');
-    tag.writeIfNull('purple', 'purple');
-    tag.writeIfNull('mustard', 'mustard');
-  }
-
-  //tileView part
 
   //월별로 데이터 가져오기.
   RxList eventRaw = [].obs;
@@ -852,7 +959,11 @@ class HomeController extends GetxController
     // print('memo0: ${memo[0]['createdAt']}');
   }
 
-  //애니메이션 파트.
+  //animation part.
+  animationPartHere() {
+    animationBookMark = '10';
+  }
+
   RxDouble memoTilePosition = 0.0.obs;
   RxDouble editModeCheckBoxX = 1.0.obs;
   RxDouble editModeCheckBoxY = 1.0.obs;
@@ -969,7 +1080,7 @@ class HomeController extends GetxController
 
     //tags, trash view 로 넘어가는 버튼 컨테이너의 텍스트.
     //딜레이를 크게 줘서 오버플로우 방지.
-    Future.delayed(Duration(milliseconds: 500), () {
+    Future.delayed(Duration(milliseconds: 300), () {
       controlViewTextSize.value = 15;
     });
   }
@@ -979,15 +1090,6 @@ class HomeController extends GetxController
     duration: Duration(milliseconds: 500),
     animationBehavior: AnimationBehavior.normal,
   );
-
-  //스크린 사이즈 가져오기.
-  getScreenSize() {
-    width.value = Get.width;
-    height.value = Get.height;
-
-    print('Screen width: ${width.value}');
-    print('Screen height: ${height.value}');
-  }
 
   //여기서 db 를 init 하고 고정적으로 불러와야 할 값들을 가져옴.
   //초기에 불러와야 할 값들 : ui 에 표시될 날짜들, 메모 기본 색상 등.
@@ -999,6 +1101,7 @@ class HomeController extends GetxController
     await getControllPageContainer();
     await MemoHelper.db();
     await getDefaultColor();
+    await themeInit();
     await getCurrentYear();
     await getCurrentMonthMM();
     await getCurrentDay();
@@ -1008,6 +1111,8 @@ class HomeController extends GetxController
     await getTiles();
     await tagInit();
     await firstInitGetDataKey();
+
+    print('is device theme dark: ${isDeviceThemeDark}');
 
     //테마 리스너
 
