@@ -15,14 +15,14 @@ class ControlView extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    // final verticalLine = Obx(
-    //   () => AnimatedContainer(
-    //     duration: Duration(milliseconds: 100),
-    //     width: 2,
-    //     height: controller.controllPageLongContainerVerticalLine.value,
-    //     color: Colors.grey[200],
-    //   ),
-    // );
+    final verticalLine = Obx(
+      () => AnimatedContainer(
+        duration: Duration(milliseconds: 100),
+        width: 1,
+        height: controller.controllPageLongContainerVerticalLine.value,
+        color: controller.isDarkModeOn.value == true ? shadowDark : shadowLight,
+      ),
+    );
 
     return Obx(
       () => Scaffold(
@@ -211,7 +211,8 @@ class ControlView extends GetView<HomeController> {
                         curve: Curves.easeIn,
                         duration: Duration(milliseconds: 100),
                         width: controller.controllPageLongContainerX.value,
-                        height: controller.controllPageLongContainerY.value,
+                        height:
+                            controller.controllPageLongContainerY.value * 0.9,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(25),
                           color: controller.isDarkModeOn.value == true
@@ -236,25 +237,82 @@ class ControlView extends GetView<HomeController> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              ElevatedButton(
-                                onPressed: () {},
-                                child: Text('설정에 맞게'),
+                              //시스템 테마.
+                              InkWell(
+                                onTap: () {},
+                                child: AnimatedContainer(
+                                  curve: Curves.easeIn,
+                                  duration: Duration(milliseconds: 100),
+                                  width: controller
+                                          .controllPageShortContainerX.value *
+                                      0.46,
+                                  height: controller
+                                          .controllPageShortContainerX.value *
+                                      0.6,
+                                  decoration: BoxDecoration(
+                                    color: controller.isDarkModeOn.value == true
+                                        ? subDark
+                                        : subLight,
+                                    borderRadius: BorderRadius.circular(25),
+                                  ),
+                                ),
                               ),
-                              ElevatedButton(
-                                onPressed: () {
+                              verticalLine,
+                              //라이트 테마.
+                              InkWell(
+                                onTap: () {
                                   controller.isDarkModeOn.value = false;
                                   Get.changeTheme(
-                                      ThemeData.light(useMaterial3: true));
+                                    ThemeData.light(useMaterial3: true),
+                                  );
                                 },
-                                child: Text('화이트'),
+                                child: AnimatedContainer(
+                                  curve: Curves.easeIn,
+                                  duration: Duration(milliseconds: 100),
+                                  width: controller
+                                          .controllPageShortContainerX.value *
+                                      0.46,
+                                  height: controller
+                                          .controllPageShortContainerX.value *
+                                      0.6,
+                                  decoration: BoxDecoration(
+                                    color: controller.isDarkModeOn.value == true
+                                        ? subDark
+                                        : subLight,
+                                    borderRadius: BorderRadius.circular(25),
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [],
+                                  ),
+                                ),
                               ),
-                              ElevatedButton(
-                                onPressed: () {
+                              verticalLine,
+                              //다크 테마.
+                              InkWell(
+                                onTap: () {
                                   controller.isDarkModeOn.value = true;
                                   Get.changeTheme(
-                                      ThemeData.dark(useMaterial3: true));
+                                    ThemeData.dark(useMaterial3: true),
+                                  );
                                 },
-                                child: Text('다크'),
+                                child: AnimatedContainer(
+                                  curve: Curves.easeIn,
+                                  duration: Duration(milliseconds: 100),
+                                  width: controller
+                                          .controllPageShortContainerX.value *
+                                      0.46,
+                                  height: controller
+                                          .controllPageShortContainerX.value *
+                                      0.6,
+                                  decoration: BoxDecoration(
+                                    color: controller.isDarkModeOn.value == true
+                                        ? subDark
+                                        : subLight,
+                                    borderRadius: BorderRadius.circular(25),
+                                  ),
+                                ),
                               ),
 
                               // Column(
@@ -372,7 +430,7 @@ class ControlView extends GetView<HomeController> {
                   ),
 
                   Padding(
-                    padding: EdgeInsets.fromLTRB(30, 0, 30, 30),
+                    padding: EdgeInsets.fromLTRB(0, 0, 0, 30),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -385,11 +443,12 @@ class ControlView extends GetView<HomeController> {
                             () => Center(
                               child: AnimatedContainer(
                                 curve: Curves.easeIn,
-                                duration: Duration(milliseconds: 240),
+                                duration: Duration(milliseconds: 100),
                                 width: controller
                                     .controllPageShortContainerX.value,
                                 height: controller
-                                    .controllPageShortContainerY.value,
+                                        .controllPageShortContainerY.value *
+                                    1.1,
                                 child: Center(
                                   child: Column(
                                     crossAxisAlignment:
@@ -416,12 +475,75 @@ class ControlView extends GetView<HomeController> {
                                           borderRadius:
                                               BorderRadius.circular(25),
                                         ),
-                                        child: Icon(Icons.tag),
+                                        child: Center(
+                                          child: Stack(
+                                            children: [
+                                              //태그버튼 내부 원모양 디자인 Ui 1.
+                                              Positioned(
+                                                left: 12,
+                                                bottom: 12,
+                                                child: AnimatedContainer(
+                                                  curve: Curves.easeIn,
+                                                  duration: Duration(
+                                                      milliseconds: 200),
+                                                  width: controller
+                                                          .controllPageShortContainerX
+                                                          .value *
+                                                      0.2,
+                                                  height: controller
+                                                          .controllPageShortContainerX
+                                                          .value *
+                                                      0.2,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            50),
+                                                    color: controller
+                                                                .isDarkModeOn
+                                                                .value ==
+                                                            true
+                                                        ? iconDark
+                                                        : iconLight,
+                                                  ),
+                                                ),
+                                              ),
+                                              //태그버튼 내부 원모양 디자인 Ui 2.
+                                              Positioned(
+                                                right: 12,
+                                                top: 12,
+                                                child: AnimatedContainer(
+                                                  curve: Curves.easeIn,
+                                                  duration: Duration(
+                                                      milliseconds: 200),
+                                                  width: controller
+                                                          .controllPageShortContainerX
+                                                          .value *
+                                                      0.2,
+                                                  height: controller
+                                                          .controllPageShortContainerX
+                                                          .value *
+                                                      0.2,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            50),
+                                                    color: controller
+                                                                .isDarkModeOn
+                                                                .value ==
+                                                            true
+                                                        ? backgroundDark
+                                                        : backgroundLight,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
                                       ),
                                       Obx(
                                         () => AnimatedContainer(
                                           curve: Curves.easeIn,
-                                          duration: Duration(milliseconds: 50),
+                                          duration: Duration(milliseconds: 200),
                                           child: Text(
                                             'Tags',
                                             style: TextStyle(
@@ -470,11 +592,12 @@ class ControlView extends GetView<HomeController> {
                             () => Center(
                               child: AnimatedContainer(
                                 curve: Curves.easeIn,
-                                duration: Duration(milliseconds: 100),
+                                duration: Duration(milliseconds: 200),
                                 width: controller
                                     .controllPageShortContainerX.value,
                                 height: controller
-                                    .controllPageShortContainerY.value,
+                                        .controllPageShortContainerY.value *
+                                    1.1,
                                 child: Center(
                                   child: Column(
                                     crossAxisAlignment:
@@ -483,7 +606,7 @@ class ControlView extends GetView<HomeController> {
                                     children: [
                                       AnimatedContainer(
                                         curve: Curves.easeIn,
-                                        duration: Duration(milliseconds: 100),
+                                        duration: Duration(milliseconds: 200),
                                         width: controller
                                                 .controllPageShortContainerX
                                                 .value *
@@ -506,7 +629,7 @@ class ControlView extends GetView<HomeController> {
                                       Obx(
                                         () => AnimatedContainer(
                                           curve: Curves.easeIn,
-                                          duration: Duration(milliseconds: 50),
+                                          duration: Duration(milliseconds: 300),
                                           child: Text(
                                             'Deleted Memo',
                                             style: TextStyle(

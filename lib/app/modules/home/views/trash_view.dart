@@ -17,9 +17,9 @@ class TrashView extends GetView<HomeController> {
             controller.isDarkModeOn.value == true ? subDark : subLight,
         appBar: AppBar(
           title: Text(
-            'TRASH MEMO',
+            'Deleted Memo',
             style: TextStyle(
-              fontSize: 27,
+              fontSize: 20,
               fontWeight: FontWeight.w700,
             ),
           ),

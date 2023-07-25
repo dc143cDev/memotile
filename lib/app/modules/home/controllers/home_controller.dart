@@ -942,10 +942,10 @@ class HomeController extends GetxController
     controllPageLongContainerVerticalLine.value = 10;
 
     controllPageShortContainerX.value = Get.width * 0.2;
-    controllPageShortContainerY.value = Get.height * 0.09;
+    controllPageShortContainerY.value = Get.height * 0.11;
   }
 
-  //너무 정신사납지 않게 실행당 한번만 애니메이션 작동.
+  //컨트롤뷰 진입시 애니메이트된 컨테이너들 사이즈 적용.
   controllPageContainerInitAnimation() {
     controllPageContainerAnimationOn.value = true;
 
@@ -953,14 +953,17 @@ class HomeController extends GetxController
       Duration(milliseconds: 100),
       () {
         controllPageContainerOpacity.value = 1.0;
-        controllPageLongContainerX.value = Get.width * 0.92;
-        controllPageLongContainerY.value = Get.height * 0.15;
+        //UI 한 라인의 X 길이 값의 총합은 width 의 90프로여야함.
+        controllPageLongContainerX.value = Get.width * 0.9;
+        controllPageLongContainerY.value = Get.height * 0.2;
 
-        controllPageLongContainerVerticalLine.value = 80;
+        controllPageLongContainerVerticalLine.value = Get.height * 0.12;
         controllPageLongContainerSubBox.value = 55;
 
-        controllPageShortContainerX.value = Get.width * 0.394;
-        controllPageShortContainerY.value = Get.height * 0.15;
+        //UI 한 라인의 X 길이 값의 총합은 width 의 90프로여야함.
+        //0.4(Tags) + 0.4(DeletedMemo) + 0.1(SizedBox)
+        controllPageShortContainerX.value = Get.width * 0.4;
+        controllPageShortContainerY.value = Get.height * 0.17;
       },
     );
 

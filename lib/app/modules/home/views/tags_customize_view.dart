@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
+
 import 'package:memotile/app/modules/home/controllers/home_controller.dart';
+
+import '../../../global/palette.dart';
 
 class TagsCustomizeView extends GetView<HomeController> {
   const TagsCustomizeView({Key? key}) : super(key: key);
@@ -10,19 +12,19 @@ class TagsCustomizeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor:
+          controller.isDarkModeOn.value == true ? subDark : subLight,
       appBar: AppBar(
-        leading: IconButton(
-          //Get.back 으로 나가면 바텀시트에는 태그 이름이 바로 반영되지 않기에 홈으로 이동.
-          onPressed: () {
-            Get.back();
-          },
-          icon: Icon(Icons.close),
-        ),
+        backgroundColor:
+            controller.isDarkModeOn.value == true ? subDark : subLight,
         title: const Text(
           'Tags Customize',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w700,
+          ),
         ),
-        centerTitle: true,
+        centerTitle: false,
       ),
       body: SafeArea(
         child: Column(
@@ -54,8 +56,8 @@ class TagsCustomizeView extends GetView<HomeController> {
                                       splashColor: Colors.transparent,
                                       onPressed: () {},
                                       shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(50)),
+                                        borderRadius: BorderRadius.circular(50),
+                                      ),
                                       color: Color(controller.redredValue),
                                     ),
                                   ),
@@ -74,8 +76,10 @@ class TagsCustomizeView extends GetView<HomeController> {
                                 hintText: controller.tag.read('red'),
                                 suffixIcon: IconButton(
                                   onPressed: () {
-                                    controller.tag.write('red',
-                                        controller.redredTagController.text);
+                                    controller.tag.write(
+                                      'red',
+                                      controller.redredTagController.text,
+                                    );
                                   },
                                   icon: Icon(Icons.edit),
                                 ),
