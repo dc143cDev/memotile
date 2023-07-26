@@ -16,6 +16,7 @@ class MemoTileDeleted extends GetView<HomeController> {
       this.isFirst,
       this.isDeleteChecked,
       this.isDeleted,
+      this.isHardDeleted,
       this.colorValue})
       : super(key: key);
 
@@ -26,6 +27,7 @@ class MemoTileDeleted extends GetView<HomeController> {
   final int? isFirst;
   final int? isDeleteChecked;
   final int? isDeleted;
+  final int? isHardDeleted;
   final int? colorValue;
 
   @override
@@ -201,22 +203,25 @@ class MemoTileDeleted extends GetView<HomeController> {
         ],
       ),
     );
-    return Padding(
-      padding: EdgeInsets.only(right: 32, left: 18, top: 5, bottom: 5),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              SizedBox(
-                height: 3,
-              ),
-              //최종적으로 감싸기.
-              memo,
-            ],
-          ),
-        ],
-      ),
-    );
+    //표면적 삭제된 아이템들은 Container로.
+    return isHardDeleted == 1
+        ? Container()
+        : Padding(
+            padding: EdgeInsets.only(right: 32, left: 18, top: 5, bottom: 5),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    SizedBox(
+                      height: 3,
+                    ),
+                    //최종적으로 감싸기.
+                    memo,
+                  ],
+                ),
+              ],
+            ),
+          );
   }
 }

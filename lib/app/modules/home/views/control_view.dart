@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 
@@ -282,7 +283,7 @@ class ControlView extends GetView<HomeController> {
                                         'Device',
                                         style: TextStyle(
                                           fontSize: controller
-                                              .controlViewTextSize.value,
+                                              .controllPageTextSize.value,
                                         ),
                                       ),
                                     ],
@@ -336,7 +337,7 @@ class ControlView extends GetView<HomeController> {
                                         'Light',
                                         style: TextStyle(
                                           fontSize: controller
-                                              .controlViewTextSize.value,
+                                              .controllPageTextSize.value,
                                         ),
                                       ),
                                     ],
@@ -390,7 +391,7 @@ class ControlView extends GetView<HomeController> {
                                         'Dark',
                                         style: TextStyle(
                                           fontSize: controller
-                                              .controlViewTextSize.value,
+                                              .controllPageTextSize.value,
                                         ),
                                       ),
                                     ],
@@ -632,7 +633,7 @@ class ControlView extends GetView<HomeController> {
                                             'Tags',
                                             style: TextStyle(
                                               fontSize: controller
-                                                  .controlViewTextSize.value,
+                                                  .controllPageTextSize.value,
                                             ),
                                           ),
                                         ),
@@ -670,6 +671,7 @@ class ControlView extends GetView<HomeController> {
                         InkWell(
                           onTap: () async {
                             await controller.refreshDeletedMemo();
+                            await controller.trashViewCheckClear();
                             Get.toNamed('/trash');
                           },
                           child: Obx(
@@ -708,7 +710,7 @@ class ControlView extends GetView<HomeController> {
                                           borderRadius:
                                               BorderRadius.circular(25),
                                         ),
-                                        child: Icon(Icons.delete_outline),
+                                        child: Icon(Icons.delete_outline, size: controller.controllPageIconSize.value,),
                                       ),
                                       Obx(
                                         () => AnimatedContainer(
@@ -718,7 +720,7 @@ class ControlView extends GetView<HomeController> {
                                             'Deleted Memo',
                                             style: TextStyle(
                                               fontSize: controller
-                                                  .controlViewTextSize.value,
+                                                  .controllPageTextSize.value,
                                             ),
                                           ),
                                         ),

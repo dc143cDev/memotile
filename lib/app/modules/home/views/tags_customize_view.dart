@@ -15,6 +15,12 @@ class TagsCustomizeView extends GetView<HomeController> {
       backgroundColor:
           controller.isDarkModeOn.value == true ? subDark : subLight,
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios_new_outlined),
+          onPressed: () {
+            Get.back();
+          },
+        ),
         backgroundColor:
             controller.isDarkModeOn.value == true ? subDark : subLight,
         title: const Text(

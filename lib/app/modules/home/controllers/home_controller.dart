@@ -429,28 +429,37 @@ class HomeController extends GetxController
 
   //앱 진입시 테마적용.
   themeInit() {
+    print('theme init');
     if (isDeviceThemeDark == true) {
       //darkModeOn()을 사용하지 않는 이유: darkModeOn()은 디바이스 테마 해제 기능도 겸하기 때문.
+      Get.changeThemeMode(ThemeMode.dark);
       Get.changeTheme(ThemeData.dark(useMaterial3: true));
       isDarkModeOn.value = true;
+    } else {
+      Get.changeThemeMode(ThemeMode.light);
+      Get.changeTheme(ThemeData.light(useMaterial3: true));
+      isDarkModeOn.value = false;
     }
   }
 
-  deviceThemeOn(){
+  deviceThemeOn() {
     //디바이스 사용 확인.
     useDeviceTheme.value = true;
-    if(isDeviceThemeDark == true){
+    if (isDeviceThemeDark == true) {
       //darkModeOn()을 사용하지 않는 이유: darkModeOn()은 디바이스 테마 해제 기능도 겸하기 때문.
+      Get.changeThemeMode(ThemeMode.dark);
       Get.changeTheme(ThemeData.dark(useMaterial3: true));
       isDarkModeOn.value = true;
-    } else{
+    } else {
       //이하 마찬가지.
+      Get.changeThemeMode(ThemeMode.light);
       Get.changeTheme(ThemeData.light(useMaterial3: true));
       isDarkModeOn.value = false;
     }
   }
 
   darkModeOn() {
+    Get.changeThemeMode(ThemeMode.dark);
     Get.changeTheme(ThemeData.dark(useMaterial3: true));
     isDarkModeOn.value = true;
     //사용자가 테마를 변경하면 디바이스 테마를 사용하지 않는 것으로 간주함.
@@ -458,6 +467,7 @@ class HomeController extends GetxController
   }
 
   lightModeOn() {
+    Get.changeThemeMode(ThemeMode.light);
     Get.changeTheme(ThemeData.light(useMaterial3: true));
     isDarkModeOn.value = false;
     //사용자가 테마를 변경하면 디바이스 테마를 사용하지 않는 것으로 간주함.
@@ -520,19 +530,19 @@ class HomeController extends GetxController
   //홈뷰의 X FAB를 누를때 실행되며, 다시 메모 에딧 모드로 넘어갈때 이미 체크되어있는 상황을 방지하기 위함.
   RxList editedMemo = [].obs;
 
+  RxList deleteCheckedMemo = [].obs;
+
   editModeDone() async {
     final data = await MemoHelper.getItemsByEditModeCheck();
     await editModeDoneAnimation();
     print('edited: ${data}');
     editedMemo.addAll(data);
-    editedMemo.forEach((element) {
-      updateItemForEditCheckControll(element['id'], 0);
-    });
-    // isMemoTileShake.value = false;
-    // editModeCheckBoxX.value = 1.0;
-    // editModeCheckBoxY.value = 1.0;
+    editedMemo.forEach(
+      (element) {
+        updateItemForEditCheckClear(element['id'], 0);
+      },
+    );
     editedMemo.value = [];
-    // refreshMemo();
     print('edit mode done');
   }
 
@@ -540,27 +550,70 @@ class HomeController extends GetxController
     final data = await MemoHelper.getItemsByEditModeCheck();
     print('edited: ${data}');
     editedMemo.addAll(data);
-    editedMemo.forEach((element) {
-      itemToTrash(element['id']);
-    });
+    editedMemo.forEach(
+      (element) {
+        itemToTrash(element['id']);
+      },
+    );
     editedMemo.value = [];
     // refreshMemo();
-    print('edit mode done');
   }
 
   editModeCheckedItemColorFill(color) async {
     final data = await MemoHelper.getItemsByEditModeCheck();
     print('edited cf: ${data}');
     editedMemo.addAll(data);
-    editedMemo.forEach((element) {
-      updateItemForEditCheckItemColorControll(
-        element['id'],
-        color,
-      );
-    });
+    editedMemo.forEach(
+      (element) {
+        updateItemForEditCheckItemColorControll(
+          element['id'],
+          color,
+        );
+      },
+    );
     editedMemo.value = [];
     // refreshMemo();
     print('edit color fill');
+  }
+
+  //trashView 삭제 체크 클리어.
+  trashViewCheckClear() async {
+    final data = await MemoHelper.getDeletedItem();
+    print('deleted: ${data}');
+    deleteCheckedMemo.addAll(data);
+    deleteCheckedMemo.forEach(
+      (element) {
+        updateItemForDeletedCheckClear(element['id'], 0);
+      },
+    );
+
+    deleteCheckedMemo.value = [];
+  }
+
+  //영구삭제 이전에 ui상에 안보이게끔 하기. (표면적 삭제)
+  trashViewCheckedMemoInvisible() async {
+    final data = await MemoHelper.getDeleteCheckedItem();
+    print('edited: ${data}');
+    deleteCheckedMemo.addAll(data);
+    deleteCheckedMemo.forEach(
+          (element) {
+        trashViewItemInvisible(element['id']);
+      },
+    );
+    deleteCheckedMemo.value = [];
+  }
+
+  //trashView에서 선택한 아이템 영구삭제.
+  trashViewCheckedMemoHardDelete() async {
+    final data = await MemoHelper.getItemsByHardDeleted();
+    print('edited: ${data}');
+    deleteCheckedMemo.addAll(data);
+    deleteCheckedMemo.forEach(
+      (element) {
+        deletItem(element['id']);
+      },
+    );
+    deleteCheckedMemo.value = [];
   }
 
   //DB PART
@@ -586,6 +639,13 @@ class HomeController extends GetxController
     // });
   }
 
+  //삭제된 아이템 가져오기.
+  refreshDeletedMemo() async {
+    final data = await MemoHelper.getDeletedItem();
+    deletedMemo.value = data;
+    print('deleted item: ${deletedMemo}');
+  }
+
   //최초 로그인시 메모 데이터. 가장 최근 날짜의 데이터만 가져옴.
   refreshMemoInit() async {
     // minusValue.value = 1;
@@ -607,13 +667,6 @@ class HomeController extends GetxController
     goToDown();
     print('refresh data: ${data}');
     print('memo refreshed');
-  }
-
-  //삭제된 아이템 가져오기.
-  refreshDeletedMemo() async {
-    final data = await MemoHelper.getDeletedItem();
-    deletedMemo.value = data;
-    print('deleted item: ${deletedMemo}');
   }
 
   //colorValue 에 따라 아이템 가져오기.
@@ -722,8 +775,14 @@ class HomeController extends GetxController
     refreshMemo();
   }
 
-  Future<void> updateItemForEditCheckControll(int id, int isEditChecked) async {
+  Future<void> updateItemForEditCheckClear(int id, int isEditChecked) async {
     await MemoHelper.updateItemForEdit(id, 0);
+    refreshMemo();
+  }
+
+  Future<void> updateItemForDeletedCheckClear(
+      int id, int isDeletedChecked) async {
+    await MemoHelper.updateItemForDelete(id, 0);
     refreshMemo();
   }
 
@@ -738,6 +797,12 @@ class HomeController extends GetxController
   void itemToTrash(int id) async {
     await MemoHelper.itemToTrashDB(id);
     refreshMemo();
+  }
+
+  //trash View에 있는 아이템 표먼적 삭제.
+  void trashViewItemInvisible(int id) async {
+    await MemoHelper.trashViewItemInvisibleDB(id);
+    refreshDeletedMemo();
   }
 
   //그 날의 첫번째 메모는 위에 날짜표시줄이 표기되는데, 그런 날짜표시줄이 표기된 아이템을 지우면 표시줄도 같이 지워짐.
@@ -1017,10 +1082,13 @@ class HomeController extends GetxController
       () {
         isEditMode.value = false;
         isMemoTileShake.value = false;
-        Future.delayed(Duration(milliseconds: 1), () {
-          editModeCheckBoxX.value = 1.toDouble();
-          editModeCheckBoxY.value = 1.toDouble();
-        });
+        Future.delayed(
+          Duration(milliseconds: 1),
+          () {
+            editModeCheckBoxX.value = 1.toDouble();
+            editModeCheckBoxY.value = 1.toDouble();
+          },
+        );
       },
     );
   }
@@ -1042,13 +1110,19 @@ class HomeController extends GetxController
   RxDouble controllPageContainerOpacity = 0.6.obs;
 
   //text size.
-  RxDouble controlViewTextSize = 0.0.obs;
+  RxDouble controllPageTextSize = 0.0.obs;
+  RxDouble controllPageIconSize = 0.0.obs;
 
-  getControllPageContainer() {
+  //컨트롤뷰 나갈때 애니메이션. 오버플로우 방지를 위해 딱히 딜레이를 주지 않음.
+  escapeFromControlViewAnimation() {
+    print('escape from control view');
     controllPageContainerAnimationOn.value = false;
 
     controllPageLongContainerX.value = Get.width * 0.7;
     controllPageLongContainerY.value = Get.height * 0.10;
+
+    controllPageTextSize.value = 1;
+    controllPageIconSize.value = 1;
 
     controllPageLongContainerVerticalLine.value = 10;
 
@@ -1056,8 +1130,10 @@ class HomeController extends GetxController
     controllPageShortContainerY.value = Get.height * 0.11;
   }
 
-  //컨트롤뷰 진입시 애니메이트된 컨테이너들 사이즈 적용.
-  controllPageContainerInitAnimation() {
+  //컨트롤뷰 진입시 애니메이션.
+  //특정 컨테이너 내부의 크기값들은 딜레이를 나누어 오버플로우를 방지함.
+  initToControlViewAnimation() {
+    print('control view init');
     controllPageContainerAnimationOn.value = true;
 
     Future.delayed(
@@ -1078,10 +1154,11 @@ class HomeController extends GetxController
       },
     );
 
-    //tags, trash view 로 넘어가는 버튼 컨테이너의 텍스트.
-    //딜레이를 크게 줘서 오버플로우 방지.
+    //text, icon 같은 컨테이너 내부의 요소들.
+    //컨테이너보다 늦게 커지도록 하여 오버플로우 방지.
     Future.delayed(Duration(milliseconds: 300), () {
-      controlViewTextSize.value = 15;
+      controllPageTextSize.value = 15;
+      controllPageIconSize.value = 30;
     });
   }
 
@@ -1098,7 +1175,7 @@ class HomeController extends GetxController
     super.onInit();
 
     await getScreenSize();
-    await getControllPageContainer();
+    await escapeFromControlViewAnimation();
     await MemoHelper.db();
     await getDefaultColor();
     await themeInit();
@@ -1112,6 +1189,10 @@ class HomeController extends GetxController
     await tagInit();
     await firstInitGetDataKey();
 
+    //처음 한번 새로고침으로 메모 가져오기.
+    refreshMemoInit();
+
+    //디바이스 테마 확인 디버그.
     print('is device theme dark: ${isDeviceThemeDark}');
 
     //테마 리스너
@@ -1144,8 +1225,6 @@ class HomeController extends GetxController
     } catch (e, s) {
       print(s);
     }
-    //처음 한번 새로고침으로 메모 가져오기.
-    refreshMemoInit();
   }
 
   //init 후 1프레임 뒤.
