@@ -42,10 +42,11 @@ class TagsCustomizeView extends GetView<HomeController> {
                   scrollDirection: Axis.vertical,
                   children: [
                     Container(
-                      width: 380,
-                      height: 80,
+                      height: controller.height.value * 0.1,
                       decoration: BoxDecoration(
-                        color: Colors.grey[100],
+                        color: controller.isDarkModeOn.value == true
+                            ? backgroundDark
+                            : backgroundLight,
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Row(
@@ -56,8 +57,8 @@ class TagsCustomizeView extends GetView<HomeController> {
                               children: [
                                 Center(
                                   child: SizedBox(
-                                    width: 40,
-                                    height: 40,
+                                    width: controller.height.value * 0.05,
+                                    height: controller.height.value * 0.05,
                                     child: MaterialButton(
                                       splashColor: Colors.transparent,
                                       onPressed: () {},
@@ -102,10 +103,11 @@ class TagsCustomizeView extends GetView<HomeController> {
                       height: 15,
                     ),
                     Container(
-                      width: 380,
-                      height: 80,
+                      height: controller.height.value * 0.1,
                       decoration: BoxDecoration(
-                        color: Colors.grey[100],
+                        color: controller.isDarkModeOn.value == true
+                            ? backgroundDark
+                            : backgroundLight,
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Row(
@@ -163,10 +165,11 @@ class TagsCustomizeView extends GetView<HomeController> {
                       height: 15,
                     ),
                     Container(
-                      width: 380,
-                      height: 80,
+                      height: controller.height.value * 0.1,
                       decoration: BoxDecoration(
-                        color: Colors.grey[100],
+                        color: controller.isDarkModeOn.value == true
+                            ? backgroundDark
+                            : backgroundLight,
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Row(
@@ -221,10 +224,11 @@ class TagsCustomizeView extends GetView<HomeController> {
                       height: 15,
                     ),
                     Container(
-                      width: 380,
-                      height: 80,
+                      height: controller.height.value * 0.1,
                       decoration: BoxDecoration(
-                        color: Colors.grey[100],
+                        color: controller.isDarkModeOn.value == true
+                            ? backgroundDark
+                            : backgroundLight,
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Row(
@@ -279,10 +283,11 @@ class TagsCustomizeView extends GetView<HomeController> {
                       height: 15,
                     ),
                     Container(
-                      width: 380,
-                      height: 80,
+                      height: controller.height.value * 0.1,
                       decoration: BoxDecoration(
-                        color: Colors.grey[100],
+                        color: controller.isDarkModeOn.value == true
+                            ? backgroundDark
+                            : backgroundLight,
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Row(
@@ -335,10 +340,11 @@ class TagsCustomizeView extends GetView<HomeController> {
                       height: 15,
                     ),
                     Container(
-                      width: 380,
-                      height: 80,
+                      height: controller.height.value * 0.1,
                       decoration: BoxDecoration(
-                        color: Colors.grey[100],
+                        color: controller.isDarkModeOn.value == true
+                            ? backgroundDark
+                            : backgroundLight,
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Row(
@@ -391,10 +397,11 @@ class TagsCustomizeView extends GetView<HomeController> {
                       height: 15,
                     ),
                     Container(
-                      width: 380,
-                      height: 80,
+                      height: controller.height.value * 0.1,
                       decoration: BoxDecoration(
-                        color: Colors.grey[100],
+                        color: controller.isDarkModeOn.value == true
+                            ? backgroundDark
+                            : backgroundLight,
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Row(
@@ -447,10 +454,11 @@ class TagsCustomizeView extends GetView<HomeController> {
                       height: 15,
                     ),
                     Container(
-                      width: 380,
-                      height: 80,
+                      height: controller.height.value * 0.1,
                       decoration: BoxDecoration(
-                        color: Colors.grey[100],
+                        color: controller.isDarkModeOn.value == true
+                            ? backgroundDark
+                            : backgroundLight,
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Row(

@@ -75,6 +75,7 @@ class HomeController extends GetxController
 
   //focus node.
   FocusNode textFocus = FocusNode();
+  FocusNode searchTextFocus = FocusNode();
 
   //edit 버튼 클릭시.
   var isEditMode = false.obs;
@@ -553,13 +554,16 @@ class HomeController extends GetxController
     // defaultModeOn.value = true;
   }
 
-  defaultModeOn() {
+  defaultModeOn() async{
+    //모드 해제시 애니메이션.
+    await modeDoneAnimation();
     tagModeOn.value = false;
     searchModeOn.value = false;
     dateModeOn.value = false;
     isEditMode.value = false;
     //
     // defaultModeOn.value = true;
+
     refreshMemo();
   }
 
@@ -571,7 +575,7 @@ class HomeController extends GetxController
 
   editModeDone() async {
     final data = await MemoHelper.getItemsByEditModeCheck();
-    await editModeDoneAnimation();
+    await modeDoneAnimation();
     print('edited: ${data}');
     editedMemo.addAll(data);
     editedMemo.forEach(
@@ -1142,7 +1146,7 @@ class HomeController extends GetxController
   }
 
   //editModeDone에 포함될, 에딧모드 종료시 애니메이션.
-  editModeDoneAnimation() {
+  modeDoneAnimation() {
     memoTileAnimationController.forward();
 
     Future.delayed(
