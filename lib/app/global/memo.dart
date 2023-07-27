@@ -286,6 +286,22 @@ class MemoHelper {
     return result;
   }
 
+  //메모 복구.
+  static Future<int> itemRecover(int id) async {
+    final db = await MemoHelper.db();
+
+    final data = {
+      'isDeleted' : 0,
+    };
+    final result = await db.update(
+      'memo_test27',
+      data,
+      where: "id = ?",
+      whereArgs: [id],
+    );
+    return result;
+  }
+
   //REAL HARD DELETE
   static Future<void> deleteItem(int id) async {
     final db = await MemoHelper.db();

@@ -14,7 +14,7 @@ class HomeController extends GetxController
   var setUpBookMark;
 
   //2.scroll control
-  var scrollBookMark;
+  var scrollControlBookMark;
 
   //3.date
   var dateBookMark;
@@ -96,8 +96,8 @@ class HomeController extends GetxController
   }
 
   //scroll control part.
-  scrollPartHere() {
-    scrollBookMark = '2';
+  scrollControlPartHere() {
+    scrollControlBookMark = '2';
   }
 
   var scrollController = ScrollController().obs;
@@ -165,6 +165,43 @@ class HomeController extends GetxController
     } else {
       print('else');
     }
+  }
+
+  //empty 상태 표기를 위한 empty 체크.
+  //메모의 갯수가 삭제된 메모의 갯수와 같거나(모든 메모가 쓰레기통으로 들어갔다는 뜻).
+  //memo변수가 isEmpty상태라면 empty를 표기하도록 함.
+  //trashView에서는 삭제된 메모의 갯수와 영구삭제된(될)메모의 갯수를 비교함.
+
+  //영구삭제될 메모를 담아둘 변수가 없어서 여기에 추가함.
+  //기존 기능에서는 바로 삭제되므로 굳이 만들어두지 않았었음.
+  var hardDeletedItemForEmptyCheck = [].obs;
+
+  //두 진영 메모 변수의 갯수가 같은지 확인하기 위한 변수.
+  //for Home
+  var isDeletedMemoLenghtSameWithNormalMemoLenght = false.obs;
+  //for Trash
+  var isDeletedMemoLenghtSameWithHardDeletedMemoLenght = false.obs;
+
+  //refreshMemo에 포함됨.
+  homeEmptyCheck(){
+    refreshDeletedMemo();
+    if(memo.length == deletedMemo.length){
+      isDeletedMemoLenghtSameWithNormalMemoLenght.value = true;
+    }else{
+      isDeletedMemoLenghtSameWithNormalMemoLenght.value = false;
+    }
+  }
+
+  //refreshDeletedMemo에 포함됨.
+  trashEmptyCheck() async{
+    final data = await MemoHelper.getItemsByHardDeleted();
+    hardDeletedItemForEmptyCheck.addAll(data);
+    if(deletedMemo.length == hardDeletedItemForEmptyCheck.length){
+      isDeletedMemoLenghtSameWithHardDeletedMemoLenght.value = true;
+    }else{
+      isDeletedMemoLenghtSameWithHardDeletedMemoLenght.value = false;
+    }
+    hardDeletedItemForEmptyCheck.clear();
   }
 
   //date PART
@@ -603,14 +640,40 @@ class HomeController extends GetxController
     deleteCheckedMemo.value = [];
   }
 
+  //trashView의 모든 아이템 표면적 삭제.
+  allTrashViewMemoInvisible() async {
+    final data = await MemoHelper.getDeletedItem();
+    print('edited: ${data}');
+    deleteCheckedMemo.addAll(data);
+    deleteCheckedMemo.forEach(
+          (element) {
+        trashViewItemInvisible(element['id']);
+      },
+    );
+    deleteCheckedMemo.value = [];
+  }
+
   //trashView에서 선택한 아이템 영구삭제.
   trashViewCheckedMemoHardDelete() async {
     final data = await MemoHelper.getItemsByHardDeleted();
-    print('edited: ${data}');
+    print('Hard delete: ${data}');
     deleteCheckedMemo.addAll(data);
     deleteCheckedMemo.forEach(
       (element) {
         deletItem(element['id']);
+      },
+    );
+    deleteCheckedMemo.value = [];
+  }
+
+  //선택된 메모 복구.
+  trashViewCheckedMenoRecover() async {
+    final data = await MemoHelper.getDeleteCheckedItem();
+    print('edited: ${data}');
+    deleteCheckedMemo.addAll(data);
+    deleteCheckedMemo.forEach(
+          (element) {
+        trashViewItemRecover(element['id']);
       },
     );
     deleteCheckedMemo.value = [];
@@ -632,6 +695,8 @@ class HomeController extends GetxController
   refreshMemo() async {
     final data = await MemoHelper.getItems();
     memo.value = data;
+    //empty check for home
+    homeEmptyCheck();
     // memo.value = [];
     // currentKeyList.forEach((element) async{
     //   final data = await MemoHelper.getItemsByDate(element);
@@ -644,6 +709,8 @@ class HomeController extends GetxController
     final data = await MemoHelper.getDeletedItem();
     deletedMemo.value = data;
     print('deleted item: ${deletedMemo}');
+    //empty check for trash
+    trashEmptyCheck();
   }
 
   //최초 로그인시 메모 데이터. 가장 최근 날짜의 데이터만 가져옴.
@@ -802,6 +869,13 @@ class HomeController extends GetxController
   //trash View에 있는 아이템 표먼적 삭제.
   void trashViewItemInvisible(int id) async {
     await MemoHelper.trashViewItemInvisibleDB(id);
+    refreshDeletedMemo();
+  }
+
+  //메모 복구.
+  void trashViewItemRecover(int id) async {
+    await MemoHelper.itemRecover(id);
+    refreshMemo();
     refreshDeletedMemo();
   }
 

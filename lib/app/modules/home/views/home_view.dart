@@ -668,7 +668,9 @@ class HomeView extends GetView<HomeController> {
                   ),
                   SafeArea(
                     //아무런 메모가 없을 경우 나오는 화면.
-                    child: controller.memo.toString() == '[]'
+                    //메모의 갯수가 삭제된 메모의 갯수와 같거나(모두 쓰레기통에 있는 경우)
+                    //또는 메모가 아예 비어있다면, empty화면을 표기함. 자세한 동작원리는 컨트롤러에.
+                    child: controller.memo.isEmpty == true || controller.isDeletedMemoLenghtSameWithNormalMemoLenght.value == true
                         ? Column(
                             children: [
                               Expanded(

@@ -16,6 +16,42 @@ class TrashView extends GetView<HomeController> {
         backgroundColor:
             controller.isDarkModeOn.value == true ? subDark : subLight,
         appBar: AppBar(
+          actions: [
+            //휴지통 비우기.
+            IconButton(
+              onPressed: () {
+                Get.defaultDialog(
+                  title: 'Delete All Items',
+                  content: Text(
+                    'Are you sure you want to \npermanently delete all items?',
+                  ),
+                  contentPadding: EdgeInsets.all(8),
+                  //취소.
+                  cancel: ElevatedButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    child: Text('Cancel'),
+                  ),
+                  //확인.
+                  confirm: ElevatedButton(
+                    onPressed: () async{
+                      await controller.allTrashViewMemoInvisible();
+                      Get.back();
+                    },
+                    child: Text(
+                      'Confrim',
+                      style: TextStyle(color: Colors.red),
+                    ),
+                  ),
+                );
+              },
+              icon: Icon(
+                Icons.delete_forever,
+                color: Colors.red,
+              ),
+            ),
+          ],
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios_new_outlined),
             onPressed: () async {
@@ -54,17 +90,60 @@ class TrashView extends GetView<HomeController> {
               children: [
                 ElevatedButton(
                   onPressed: () async {
+                    await controller.trashViewCheckedMenoRecover();
+                    await controller.refreshDeletedMemo();
+                  },
+                  child: Text(
+                    'Recover Memo',
+                  ),
+                ),
+                SizedBox(
+                  width: 20,
+                ),
+                ElevatedButton(
+                  onPressed: () async {
                     await controller.trashViewCheckedMemoInvisible();
                     await controller.refreshDeletedMemo();
                   },
-                  child: Text('Delete Memo'),
+                  child: Text(
+                    'Hard Delete',
+                    style: TextStyle(
+                      color: Colors.red,
+                    ),
+                  ),
                 ),
               ],
             ),
           ),
         ),
         body: SafeArea(
-          child: Column(
+          child: controller.deletedMemo.isEmpty == true || controller.isDeletedMemoLenghtSameWithHardDeletedMemoLenght.value == true ? Column(
+            children: [
+              Expanded(
+                flex: 3,
+                child: Center(
+                  child: Obx(
+                        () => Text(
+                      'empty',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 31,
+                        color: controller.isDarkModeOn.value ==
+                            true
+                            ? iconDark
+                            : iconLight,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 7,
+                child: SizedBox(),
+              ),
+              //textField. empty 상태일때 굳이 필요 없다고 판단.
+            ],
+          ) :Column(
             children: [
               Expanded(
                 child: Obx(
@@ -86,7 +165,8 @@ class TrashView extends GetView<HomeController> {
                           date: controller.deletedMemo[index]['dateData'],
                           isFirst: controller.deletedMemo[index]['isFirst'],
                           isDeleted: controller.deletedMemo[index]['isDeleted'],
-                          isHardDeleted: controller.deletedMemo[index]['isHardDeleted'],
+                          isHardDeleted: controller.deletedMemo[index]
+                              ['isHardDeleted'],
                           colorValue: controller.deletedMemo[index]
                               ['colorValue'],
                         ),

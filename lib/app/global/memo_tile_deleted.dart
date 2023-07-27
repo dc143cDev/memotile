@@ -168,7 +168,9 @@ class MemoTileDeleted extends GetView<HomeController> {
                         decoration: BoxDecoration(
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
+                              color: controller.isDarkModeOn.value == true
+                                  ? shadowDark
+                                  : shadowLight,
                               spreadRadius: 1,
                               blurRadius: 1,
                               offset:
