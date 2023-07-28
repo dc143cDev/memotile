@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:memotile/app/global/memo_tile_date.dart';
 import 'package:memotile/app/global/palette.dart';
 import 'package:memotile/app/modules/home/views/control_view.dart';
 
@@ -43,12 +44,51 @@ class HomeView extends GetView<HomeController> {
     // );
 
     final home = GestureDetector(
-      onPanUpdate: (i) {
-        //왼쪽에서 오른쪽으로 스와이프시 에딧모드.
-        if (i.delta.dx > 20) {
-          controller.editModeInitAnimation();
+      //화면 * 0.2 범위 내에서 드래그가 시작되면 드래그 인지.
+      onHorizontalDragStart: (ds) {
+        if (ds.globalPosition.dx < controller.width * 0.2) {
+          //에딧모드 드래그 시작.
+          controller.dragStartForEditMode.value = true;
+        }
+        //화면 * 0.8 지점보다 큰 범위 내에서 드래그가 시작되면 드래그 인지.
+        if (ds.globalPosition.dx > controller.width * 0.8) {
+          //페이지변환 드래그 시작.
+          controller.dragStartForPageSwipe.value = true;
         }
       },
+      onHorizontalDragEnd: (de) async {
+        //에딧모드 드래그가 시작되었고, 종료되는 지점이 화면 * 0.2 이상이라면, 에딧모드 작동 후 드래그 종료.
+        if (de.velocity.pixelsPerSecond.dx > controller.width * 0.2 &&
+            controller.dragStartForEditMode.value == true) {
+          await controller.editModeInitAnimation();
+          //에딧모드 드래그 종료.
+          controller.dragStartForEditMode.value = false;
+        }
+        //페이지변환 드래기그 시작되었고, 드래그 종료되는 지점이 화면 * 0.8 지점 이하라면, 페이지 변환 후 드래그 종료.
+        if (de.velocity.pixelsPerSecond.dx < controller.width * 0.8 &&
+            controller.dragStartForPageSwipe.value == true) {
+          controller.pageController.animateToPage(
+            1,
+            duration: Duration(milliseconds: 300),
+            curve: Curves.easeIn,
+          );
+          //컨트롤 페이지로 넘어갈때 에딧모드 해제. 자연스러운 해제를 위해 딜레이 주기.
+          controller.editModeDone();
+
+          Future.delayed(
+            Duration(milliseconds: 200),
+            () {
+              controller.isEditMode.value = false;
+            },
+          );
+        }
+      },
+      // onPanUpdate: (i) {
+      //   //왼쪽에서 오른쪽으로 스와이프시 에딧모드.
+      //   if (i.delta.dx >= 0.1) {
+      //     controller.editModeInitAnimation();
+      //   }
+      // },
       onTap: () {
         //어느 화면이나 눌렀을때 텍스트 필드를 내리기 위해 Gesture Detector 감싸주기.
         controller.textFocus.unfocus();
@@ -242,18 +282,16 @@ class HomeView extends GetView<HomeController> {
                                     const EdgeInsets.fromLTRB(20, 0, 20, 0),
                                 child: Container(
                                   decoration: BoxDecoration(
-                                    color:
-                                        controller.isDarkModeOn.value == true
-                                            ? subDark
-                                            : subLight,
+                                    color: controller.isDarkModeOn.value == true
+                                        ? subDark
+                                        : subLight,
                                     borderRadius: BorderRadius.circular(15),
                                     boxShadow: [
                                       BoxShadow(
-                                        color:
-                                            controller.isDarkModeOn.value ==
-                                                    true
-                                                ? shadowDark
-                                                : shadowLight,
+                                        color: controller.isDarkModeOn.value ==
+                                                true
+                                            ? shadowDark
+                                            : shadowLight,
                                         spreadRadius: 1,
                                         blurRadius: 1,
                                         offset: Offset(0, 3),
@@ -283,21 +321,21 @@ class HomeView extends GetView<HomeController> {
                                                                   .colorValue
                                                                   .value);
                                                     },
-                                                    color: Color(controller
-                                                        .redredValue),
+                                                    color: Color(
+                                                        controller.redredValue),
                                                     shape:
                                                         RoundedRectangleBorder(
                                                       borderRadius:
-                                                          BorderRadius
-                                                              .circular(50),
+                                                          BorderRadius.circular(
+                                                              50),
                                                     ),
                                                   ),
                                                 ),
                                                 SizedBox(
                                                   height: 5,
                                                 ),
-                                                Text(controller.tag
-                                                    .read('red')),
+                                                Text(
+                                                    controller.tag.read('red')),
                                               ],
                                             ),
                                             Column(
@@ -320,8 +358,8 @@ class HomeView extends GetView<HomeController> {
                                                     shape:
                                                         RoundedRectangleBorder(
                                                       borderRadius:
-                                                          BorderRadius
-                                                              .circular(50),
+                                                          BorderRadius.circular(
+                                                              50),
                                                     ),
                                                   ),
                                                 ),
@@ -352,8 +390,8 @@ class HomeView extends GetView<HomeController> {
                                                     shape:
                                                         RoundedRectangleBorder(
                                                       borderRadius:
-                                                          BorderRadius
-                                                              .circular(50),
+                                                          BorderRadius.circular(
+                                                              50),
                                                     ),
                                                   ),
                                                 ),
@@ -379,13 +417,13 @@ class HomeView extends GetView<HomeController> {
                                                                   .colorValue
                                                                   .value);
                                                     },
-                                                    color: Color(controller
-                                                        .greenValue),
+                                                    color: Color(
+                                                        controller.greenValue),
                                                     shape:
                                                         RoundedRectangleBorder(
                                                       borderRadius:
-                                                          BorderRadius
-                                                              .circular(50),
+                                                          BorderRadius.circular(
+                                                              50),
                                                     ),
                                                   ),
                                                 ),
@@ -422,8 +460,8 @@ class HomeView extends GetView<HomeController> {
                                                     shape:
                                                         RoundedRectangleBorder(
                                                       borderRadius:
-                                                          BorderRadius
-                                                              .circular(50),
+                                                          BorderRadius.circular(
+                                                              50),
                                                     ),
                                                   ),
                                                 ),
@@ -449,13 +487,13 @@ class HomeView extends GetView<HomeController> {
                                                                   .colorValue
                                                                   .value);
                                                     },
-                                                    color: Color(controller
-                                                        .orangeValue),
+                                                    color: Color(
+                                                        controller.orangeValue),
                                                     shape:
                                                         RoundedRectangleBorder(
                                                       borderRadius:
-                                                          BorderRadius
-                                                              .circular(50),
+                                                          BorderRadius.circular(
+                                                              50),
                                                     ),
                                                   ),
                                                 ),
@@ -481,13 +519,13 @@ class HomeView extends GetView<HomeController> {
                                                                   .colorValue
                                                                   .value);
                                                     },
-                                                    color: Color(controller
-                                                        .purpleValue),
+                                                    color: Color(
+                                                        controller.purpleValue),
                                                     shape:
                                                         RoundedRectangleBorder(
                                                       borderRadius:
-                                                          BorderRadius
-                                                              .circular(50),
+                                                          BorderRadius.circular(
+                                                              50),
                                                     ),
                                                   ),
                                                 ),
@@ -518,8 +556,8 @@ class HomeView extends GetView<HomeController> {
                                                     shape:
                                                         RoundedRectangleBorder(
                                                       borderRadius:
-                                                          BorderRadius
-                                                              .circular(50),
+                                                          BorderRadius.circular(
+                                                              50),
                                                     ),
                                                   ),
                                                 ),
@@ -566,8 +604,7 @@ class HomeView extends GetView<HomeController> {
                                       focusNode: controller.textFocus,
                                       controller: controller.memoController,
                                       cursorColor:
-                                          controller.isDarkModeOn.value ==
-                                                  true
+                                          controller.isDarkModeOn.value == true
                                               ? iconDark
                                               : iconLight,
                                       decoration: InputDecoration(
@@ -610,6 +647,7 @@ class HomeView extends GetView<HomeController> {
                                     await controller.getCurrentYear();
                                     await controller.getCurrentDayDetail();
                                     await controller.getCurrentDate();
+                                    //실물기기 에러포인트.
                                     await controller.firstCheckByDate();
                                     controller.addItem();
                                     //스크롤 아래로 내리기.
@@ -619,10 +657,16 @@ class HomeView extends GetView<HomeController> {
                                     //defaultModeOn
                                     controller.defaultModeOn();
                                     //debug.
-                                    print(controller.colorValue.value
-                                        .toString());
+                                    print(
+                                        controller.colorValue.value.toString());
                                     print(controller.CurrentDayDetail.value
                                         .toString());
+                                  } else {
+                                    Get.snackbar(
+                                      'The content is empty!',
+                                      'Please add some text.',
+                                      duration: Duration(milliseconds: 800),
+                                    );
                                   }
                                 },
                                 icon: Icon(
@@ -648,7 +692,6 @@ class HomeView extends GetView<HomeController> {
                     child: Container(
                       width: controller.width * 0.09,
                       height: controller.height * 0.082,
-
                       color: controller.isDarkModeOn.value == true
                           ? subDark
                           : subLight,
@@ -674,26 +717,40 @@ class HomeView extends GetView<HomeController> {
                     //아무런 메모가 없을 경우 나오는 화면.
                     //메모의 갯수가 삭제된 메모의 갯수와 같거나(모두 쓰레기통에 있는 경우)
                     //또는 메모가 아예 비어있다면, empty화면을 표기함. 자세한 동작원리는 컨트롤러에.
-                    child: controller.memo.isEmpty == true || controller.isDeletedMemoLenghtSameWithNormalMemoLenght.value == true
+                    child: controller.memo.isEmpty == true ||
+                            controller
+                                    .isDeletedMemoLenghtSameWithNormalMemoLenght
+                                    .value ==
+                                true
                         ? Column(
                             children: [
                               Expanded(
                                 flex: 3,
-                                child: Center(
-                                  child: Obx(
-                                    () => Text(
-                                      'empty',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 31,
-                                        color: controller.isDarkModeOn.value ==
-                                                true
-                                            ? iconDark
-                                            : iconLight,
+                                child: controller.searchTextFocus.hasFocus ==
+                                            true ||
+                                        controller.searchModeOn.value == true
+                                    //검색결과가 없다면.
+                                    ? Center(
+                                        child: Text(
+                                          'search empty',
+                                        ),
+                                      )
+                                    : Center(
+                                        child: Obx(
+                                          () => Text(
+                                            'empty',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 31,
+                                              color: controller
+                                                          .isDarkModeOn.value ==
+                                                      true
+                                                  ? iconDark
+                                                  : iconLight,
+                                            ),
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                ),
                               ),
                               Expanded(
                                 flex: 7,
@@ -715,35 +772,68 @@ class HomeView extends GetView<HomeController> {
                                             controller.isScrollMax.value == true
                                                 ? 10
                                                 : 0),
-                                    child: ListView.builder(
-                                      shrinkWrap: true,
-                                      reverse: false,
-                                      //아이템이 몇개 없어도 스크롤되도록 함.
-                                      physics: AlwaysScrollableScrollPhysics(),
-                                      controller:
-                                          controller.scrollController.value,
-                                      itemCount: controller.memo.length,
-                                      itemBuilder: (context, index) {
-                                        return MemoTile(
-                                          //memo_tile ui 에 들어갈 각 객체를 index 와 column 값을 넣어 구성.
-                                          id: controller.memo[index]['id'],
-                                          text: controller.memo[index]
-                                              ['content'],
-                                          createdAt: controller.memo[index]
-                                              ['createdAt'],
-                                          isEditChecked: controller.memo[index]
-                                              ['isEditChecked'],
-                                          date: controller.memo[index]
-                                              ['dateData'],
-                                          isFirst: controller.memo[index]
-                                              ['isFirst'],
-                                          isDeleted: controller.memo[index]
-                                              ['isDeleted'],
-                                          colorValue: controller.memo[index]
-                                              ['colorValue'],
-                                        );
-                                      },
-                                    ),
+                                    child: controller.dateModeOn.value == true
+                                        //date모드일때는 날짜표시줄이 빠진 메모타일을 빌드.
+                                        ? ListView.builder(
+                                            shrinkWrap: true,
+                                            reverse: false,
+                                            physics:
+                                                AlwaysScrollableScrollPhysics(),
+                                            controller: controller
+                                                .scrollController.value,
+                                            itemCount: controller.memo.length,
+                                            itemBuilder: (context, index) {
+                                              return MemoTileDate(
+                                                id: controller.memo[index]
+                                                    ['id'],
+                                                text: controller.memo[index]
+                                                    ['content'],
+                                                createdAt: controller
+                                                    .memo[index]['createdAt'],
+                                                isEditChecked:
+                                                    controller.memo[index]
+                                                        ['isEditChecked'],
+                                                date: controller.memo[index]
+                                                    ['dateData'],
+                                                isDeleted: controller
+                                                    .memo[index]['isDeleted'],
+                                                colorValue: controller
+                                                    .memo[index]['colorValue'],
+                                              );
+                                            },
+                                          )
+                                        : ListView.builder(
+                                            shrinkWrap: true,
+                                            reverse: false,
+                                            //아이템이 몇개 없어도 스크롤되도록 함.
+                                            physics:
+                                                AlwaysScrollableScrollPhysics(),
+                                            controller: controller
+                                                .scrollController.value,
+                                            itemCount: controller.memo.length,
+                                            itemBuilder: (context, index) {
+                                              return MemoTile(
+                                                //memo_tile ui 에 들어갈 각 객체를 index 와 column 값을 넣어 구성.
+                                                id: controller.memo[index]
+                                                    ['id'],
+                                                text: controller.memo[index]
+                                                    ['content'],
+                                                createdAt: controller
+                                                    .memo[index]['createdAt'],
+                                                isEditChecked:
+                                                    controller.memo[index]
+                                                        ['isEditChecked'],
+                                                date: controller.memo[index]
+                                                    ['dateData'],
+                                                isFirst: controller.memo[index]
+                                                    ['isFirst'],
+                                                isDeleted: controller
+                                                    .memo[index]['isDeleted'],
+                                                colorValue: controller
+                                                    .memo[index]['colorValue'],
+                                              );
+                                            },
+                                          ),
                                   ),
                                 ),
                               ),
@@ -904,6 +994,7 @@ class HomeView extends GetView<HomeController> {
           await controller.initToControlViewAnimation();
         } else if (controller.controllPageContainerAnimationOn.value == true) {
           controller.escapeFromControlViewAnimation();
+          controller.goToDown();
         }
         controller.CurrentMonthForTile.value = controller.CurrentMonthMMM.value;
       },
@@ -1132,7 +1223,8 @@ class HomeView extends GetView<HomeController> {
                               controller.nowTag.value = 'red';
                               controller.tagButtonClicked();
                               controller.refreshMemoByColor(
-                                  controller.colorValue.value);
+                                controller.colorValue.value,
+                              );
                               Get.back();
                             },
                             color: Color(controller.redredValue),

@@ -7,7 +7,7 @@ class MemoHelper {
 
   static Future<void> createTables(sql.Database database) async {
     // String dbID = 'memo_test24';
-    await database.execute('''CREATE TABLE memo_test27(
+    await database.execute('''CREATE TABLE memo_test28(
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     content TEXT,
     dateData TEXT,
@@ -27,7 +27,7 @@ class MemoHelper {
   static Future<sql.Database> db() async {
     //debug
     // print('create tables');
-    return sql.openDatabase('memo_test27.db', version: 1,
+    return sql.openDatabase('memo_test28.db', version: 1,
         onCreate: (sql.Database database, int version) async {
       await createTables(database);
     });
@@ -48,7 +48,7 @@ class MemoHelper {
       'colorValue': color
     };
     final id = await db.insert(
-      'memo_test27',
+      'memo_test28',
       data,
       conflictAlgorithm: sql.ConflictAlgorithm.replace,
     );
@@ -60,19 +60,19 @@ class MemoHelper {
   //get all items
   static Future<List<Map<String, dynamic>>> getItems() async {
     final db = await MemoHelper.db();
-    return db.query('memo_test27', orderBy: "id");
+    return db.query('memo_test28', orderBy: "id");
   }
 
   //단일 아이템 조회
   static Future<List<Map<String, dynamic>>> getItem(int id) async {
     final db = await MemoHelper.db();
-    return db.query('memo_test27', where: "id = ?", whereArgs: [id], limit: 1);
+    return db.query('memo_test28', where: "id = ?", whereArgs: [id], limit: 1);
   }
 
   //get all createdAt
   static Future<List<Map<String, dynamic>>> getItemsCreatedAt() async {
     final db = await MemoHelper.db();
-    return db.query('memo_test27', orderBy: "id", columns: ['id', 'createdAt']);
+    return db.query('memo_test28', orderBy: "id", columns: ['id', 'createdAt']);
   }
 
   //삭제된 아이템 조회.
@@ -80,7 +80,7 @@ class MemoHelper {
   static Future<List<Map<String, dynamic>>> getDeletedItem() async {
     final db = await MemoHelper.db();
     return db.query(
-      'memo_test27',
+      'memo_test28',
       orderBy: "isDeleted",
       where: "isDeleted = 1",
       // columns: ['id', 'contents', 'isEditChecked'],
@@ -91,7 +91,7 @@ class MemoHelper {
   static Future<List<Map<String, dynamic>>> getDeleteCheckedItem() async {
     final db = await MemoHelper.db();
     return db.query(
-      'memo_test27',
+      'memo_test28',
       orderBy: "isDeleteChecked",
       where: "isDeleteChecked = 1",
       // columns: ['id', 'contents', 'isEditChecked'],
@@ -101,7 +101,7 @@ class MemoHelper {
   static Future<List<Map<String, dynamic>>> getItemsByHardDeleted() async {
     final db = await MemoHelper.db();
     return db.query(
-      'memo_test27',
+      'memo_test28',
       orderBy: "isHardDeleted",
       where: "isHardDeleted = 1",
     );
@@ -109,14 +109,14 @@ class MemoHelper {
 
   static Future<List<Map<String, dynamic>>> getItemsByDate(String date) async {
     final db = await MemoHelper.db();
-    return db.query('memo_test27',
+    return db.query('memo_test28',
         orderBy: "createdAt", whereArgs: [date], where: "createdAt = $date");
   }
 
   static Future<List<Map<String, dynamic>>> getItemsByEditModeCheck() async {
     final db = await MemoHelper.db();
     return db.query(
-      'memo_test27',
+      'memo_test28',
       orderBy: "isEditChecked",
       where: "isEditChecked = 1",
     );
@@ -128,7 +128,7 @@ class MemoHelper {
     final db = await MemoHelper.db();
     // return db.rawQuery("SELECT * FROM memo_test20 WHERE createdAt LIKE '%${date}%'");
     return db.query(
-      'memo_test27',
+      'memo_test28',
       orderBy: "createdAt",
       whereArgs: [date],
       where: "createdAt = $date",
@@ -143,7 +143,7 @@ class MemoHelper {
     final db = await MemoHelper.db();
     // return db.rawQuery("SELECT * FROM memo_test20 WHERE createdAt LIKE '%${date}%'");
     return db.query(
-      'memo_test27',
+      'memo_test28',
       orderBy: "createdAt",
       whereArgs: [date],
       where: "createdAt = $date",
@@ -154,7 +154,7 @@ class MemoHelper {
   static Future<List<Map<String, dynamic>>> getItemsByDateMM(int mm) async {
     final db = await MemoHelper.db();
     return db.query(
-      'memo_test27',
+      'memo_test28',
       orderBy: "mm",
       //event 필요한 columns 들만 가져오기.
       columns: ['createdAt', 'colorValue', 'isDeleted'],
@@ -163,7 +163,7 @@ class MemoHelper {
 
   static Future<List<Map<String, dynamic>>> getItemsByColor(int color) async {
     final db = await MemoHelper.db();
-    return db.query('memo_test27',
+    return db.query('memo_test28',
         orderBy: "colorValue",
         whereArgs: [color],
         where: "colorValue = $color");
@@ -173,7 +173,7 @@ class MemoHelper {
       String content) async {
     final db = await MemoHelper.db();
     return db.rawQuery(
-        "SELECT * FROM memo_test27 WHERE content LIKE '%${content}%'");
+        "SELECT * FROM memo_test28 WHERE content LIKE '%${content}%'");
   }
 
   static Future<int> updateItem(
@@ -186,7 +186,7 @@ class MemoHelper {
       'colorValue': color,
     };
     final result = await db.update(
-      'memo_test27',
+      'memo_test28',
       data,
       where: "id = ?",
       whereArgs: [id],
@@ -201,7 +201,7 @@ class MemoHelper {
       'isFirst': isFirst,
     };
     final result = await db.update(
-      'memo_test27',
+      'memo_test28',
       data,
       where: "id = ?",
       whereArgs: [id],
@@ -216,7 +216,7 @@ class MemoHelper {
       'isEditChecked': isEditChecked,
     };
     final result = await db.update(
-      'memo_test27',
+      'memo_test28',
       data,
       where: "id = ?",
       whereArgs: [id],
@@ -232,7 +232,7 @@ class MemoHelper {
       'isDeleteChecked': isDeleteChecked,
     };
     final result = await db.update(
-      'memo_test27',
+      'memo_test28',
       data,
       where: "id = ?",
       whereArgs: [id],
@@ -247,7 +247,7 @@ class MemoHelper {
       'colorValue' : color,
     };
     final result = await db.update(
-      'memo_test27',
+      'memo_test28',
       data,
       where: "id = ?",
       whereArgs: [id],
@@ -262,7 +262,7 @@ class MemoHelper {
       'isDeleted' : 1,
     };
     final result = await db.update(
-      'memo_test27',
+      'memo_test28',
       data,
       where: "id = ?",
       whereArgs: [id],
@@ -278,7 +278,7 @@ class MemoHelper {
       'isHardDeleted' : 1,
     };
     final result = await db.update(
-      'memo_test27',
+      'memo_test28',
       data,
       where: "id = ?",
       whereArgs: [id],
@@ -294,7 +294,7 @@ class MemoHelper {
       'isDeleted' : 0,
     };
     final result = await db.update(
-      'memo_test27',
+      'memo_test28',
       data,
       where: "id = ?",
       whereArgs: [id],
@@ -307,7 +307,7 @@ class MemoHelper {
     final db = await MemoHelper.db();
     try {
       await db.delete(
-        "memo_test27",
+        "memo_test28",
         where: "id = ?",
         whereArgs: [id],
       );

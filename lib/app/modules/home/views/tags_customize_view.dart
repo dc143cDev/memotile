@@ -72,21 +72,31 @@ class TagsCustomizeView extends GetView<HomeController> {
                               ],
                             ),
                           ),
+                          //반복되는 UI이기에 코드 해설은 레드에 몰아서 설명함.
                           Expanded(
                             flex: 7,
                             child: TextField(
-                              maxLength: 10,
-                              controller: controller.redredTagController,
+                              //최대길이 제한.
+                              maxLength: 8,
+                              focusNode: controller.redTagFocusNode,
+                              controller: controller.redTagController,
                               decoration: InputDecoration(
                                 counterText: '',
                                 border: InputBorder.none,
                                 hintText: controller.tag.read('red'),
                                 suffixIcon: IconButton(
                                   onPressed: () {
-                                    controller.tag.write(
+                                    //값이 비어있을때 저장 버튼 누르면 기본값으로.
+                                    if(controller.redTagController.text.isEmpty){
+                                      controller.tag.write(
+                                        'red',
+                                        'red',
+                                      );
+                                    }else controller.tag.write(
                                       'red',
-                                      controller.redredTagController.text,
+                                      controller.redTagController.text,
                                     );
+                                    controller.redTagFocusNode.unfocus();
                                   },
                                   icon: Icon(Icons.edit),
                                 ),
@@ -136,7 +146,8 @@ class TagsCustomizeView extends GetView<HomeController> {
                           Expanded(
                             flex: 7,
                             child: TextField(
-                              maxLength: 10,
+                              maxLength: 8,
+                              focusNode: controller.blueTagFocusNode,
                               controller: controller.blueTagController,
                               decoration: InputDecoration(
                                 counterText: '',
@@ -147,8 +158,16 @@ class TagsCustomizeView extends GetView<HomeController> {
                                         : controller.tag.read('blue'),
                                 suffixIcon: IconButton(
                                   onPressed: () {
-                                    controller.tag.write('blue',
-                                        controller.blueTagController.text);
+                                    if(controller.blueTagController.text.isEmpty){
+                                      controller.tag.write(
+                                        'blue',
+                                        'blue',
+                                      );
+                                    }else controller.tag.write(
+                                      'blue',
+                                      controller.blueTagController.text,
+                                    );
+                                    controller.blueTagFocusNode.unfocus();
                                   },
                                   icon: Icon(Icons.edit),
                                 ),
@@ -188,7 +207,9 @@ class TagsCustomizeView extends GetView<HomeController> {
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(50)),
-                                      color: Color(controller.aquaValue),
+                                      color: Color(
+                                        controller.aquaValue,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -198,7 +219,8 @@ class TagsCustomizeView extends GetView<HomeController> {
                           Expanded(
                             flex: 7,
                             child: TextField(
-                              maxLength: 10,
+                              maxLength: 8,
+                              focusNode: controller.aquaTagFocusNode,
                               controller: controller.aquaTagController,
                               decoration: InputDecoration(
                                 counterText: '',
@@ -206,8 +228,16 @@ class TagsCustomizeView extends GetView<HomeController> {
                                 hintText: controller.tag.read('aqua'),
                                 suffixIcon: IconButton(
                                   onPressed: () {
-                                    controller.tag.write('aqua',
-                                        controller.aquaTagController.text);
+                                    if(controller.aquaTagController.text.isEmpty){
+                                      controller.tag.write(
+                                        'aqua',
+                                        'aqua',
+                                      );
+                                    }else controller.tag.write(
+                                      'aqua',
+                                      controller.aquaTagController.text,
+                                    );
+                                    controller.aquaTagFocusNode.unfocus();
                                   },
                                   icon: Icon(Icons.edit),
                                 ),
@@ -258,6 +288,7 @@ class TagsCustomizeView extends GetView<HomeController> {
                             flex: 7,
                             child: TextField(
                               maxLength: 8,
+                              focusNode: controller.greenTagFocusNode,
                               controller: controller.greenTagController,
                               decoration: InputDecoration(
                                 counterText: '',
@@ -265,8 +296,16 @@ class TagsCustomizeView extends GetView<HomeController> {
                                 hintText: controller.tag.read('green'),
                                 suffixIcon: IconButton(
                                   onPressed: () {
-                                    controller.tag.write('green',
-                                        controller.greenTagController.text);
+                                    if(controller.greenTagController.text.isEmpty){
+                                      controller.tag.write(
+                                        'green',
+                                        'green',
+                                      );
+                                    }else controller.tag.write(
+                                      'green',
+                                      controller.greenTagController.text,
+                                    );
+                                    controller.greenTagFocusNode.unfocus();
                                   },
                                   icon: Icon(Icons.edit),
                                 ),
@@ -316,14 +355,25 @@ class TagsCustomizeView extends GetView<HomeController> {
                           Expanded(
                             flex: 7,
                             child: TextField(
+                              maxLength: 8,
+                              focusNode: controller.pinkTagFocusNode,
                               controller: controller.pinkTagController,
                               decoration: InputDecoration(
+                                counterText: '',
                                 border: InputBorder.none,
                                 hintText: controller.tag.read('pink'),
                                 suffixIcon: IconButton(
                                   onPressed: () {
-                                    controller.tag.write('pink',
-                                        controller.pinkTagController.text);
+                                    if(controller.pinkTagController.text.isEmpty){
+                                      controller.tag.write(
+                                        'pink',
+                                        'pink',
+                                      );
+                                    }else controller.tag.write(
+                                      'pink',
+                                      controller.pinkTagController.text,
+                                    );
+                                    controller.pinkTagFocusNode.unfocus();
                                   },
                                   icon: Icon(Icons.edit),
                                 ),
@@ -373,14 +423,25 @@ class TagsCustomizeView extends GetView<HomeController> {
                           Expanded(
                             flex: 7,
                             child: TextField(
+                              maxLength: 8,
+                              focusNode: controller.orangeTagFocusNode,
                               controller: controller.orangeTagController,
                               decoration: InputDecoration(
+                                counterText: '',
                                 border: InputBorder.none,
                                 hintText: controller.tag.read('orange'),
                                 suffixIcon: IconButton(
                                   onPressed: () {
-                                    controller.tag.write('orange',
-                                        controller.orangeTagController.text);
+                                    if(controller.orangeTagController.text.isEmpty){
+                                      controller.tag.write(
+                                        'orange',
+                                        'orange',
+                                      );
+                                    }else controller.tag.write(
+                                      'orange',
+                                      controller.orangeTagController.text,
+                                    );
+                                    controller.orangeTagFocusNode.unfocus();
                                   },
                                   icon: Icon(Icons.edit),
                                 ),
@@ -430,14 +491,23 @@ class TagsCustomizeView extends GetView<HomeController> {
                           Expanded(
                             flex: 7,
                             child: TextField(
+                              maxLength: 8,
+                              focusNode: controller.purpleTagFocusNode,
                               controller: controller.purpleTagController,
                               decoration: InputDecoration(
+                                counterText: '',
                                 border: InputBorder.none,
                                 hintText: controller.tag.read('purple'),
                                 suffixIcon: IconButton(
                                   onPressed: () {
-                                    controller.tag.write('purple',
+                                    if(controller.purpleTagController.text.isEmpty){
+                                      controller.tag.write(
+                                        'purple',
+                                        'purple',
+                                      );
+                                    }else  controller.tag.write('purple',
                                         controller.purpleTagController.text);
+                                    controller.purpleTagFocusNode.unfocus();
                                   },
                                   icon: Icon(Icons.edit),
                                 ),
@@ -487,14 +557,25 @@ class TagsCustomizeView extends GetView<HomeController> {
                           Expanded(
                             flex: 7,
                             child: TextField(
+                              maxLength: 8,
+                              focusNode: controller.mustardTagFocusNode,
                               controller: controller.mustardTagController,
                               decoration: InputDecoration(
+                                counterText: '',
                                 border: InputBorder.none,
                                 hintText: controller.tag.read('mustard'),
                                 suffixIcon: IconButton(
                                   onPressed: () {
-                                    controller.tag.write('mustard',
-                                        controller.mustardTagController.text);
+                                    if(controller.mustardTagController.text.isEmpty){
+                                      controller.tag.write(
+                                        'mustard',
+                                        'mustard',
+                                      );
+                                    }else controller.tag.write(
+                                      'mustard',
+                                      controller.mustardTagController.text,
+                                    );
+                                    controller.mustardTagFocusNode.unfocus();
                                   },
                                   icon: Icon(Icons.edit),
                                 ),

@@ -18,7 +18,7 @@ dependencies:
   rect_getter: ^1.1.0
   syncfusion_flutter_calendar: ^21.2.9
   flutter_local_notifications: ^14.1.1
-  flutter_native_timezone: ^2.0.0
+#  flutter_native_timezone: ^2.0.0
   flutter_app_badger: ^1.5.0
   flutter_shake_animated: ^0.0.5
   animated_text_kit: ^4.2.2

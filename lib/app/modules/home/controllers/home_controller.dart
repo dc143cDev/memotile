@@ -48,6 +48,7 @@ class HomeController extends GetxController
   //가장 중요한 변수.
   //실질적 데이터인 MemoHelper 에서 내려온 data 변수가 ui 에 표시되기 위해 여기에 담김.
   RxList memo = [].obs;
+  RxInt memoLenght = 10.obs;
 
   //삭제된 메모 조회를 위한 변수.
   RxList deletedMemo = [].obs;
@@ -106,6 +107,8 @@ class HomeController extends GetxController
   var hasMore = false.obs;
   var goToDownButtonDontShow = true.obs;
   var isScrollMax = false.obs;
+  var dragStartForEditMode = false.obs;
+  var dragStartForPageSwipe = false.obs;
 
   //스크롤 아래로 내리기.
   //아이템 추가, 처음 ui 진입 시 호출됨.
@@ -180,26 +183,27 @@ class HomeController extends GetxController
   //두 진영 메모 변수의 갯수가 같은지 확인하기 위한 변수.
   //for Home
   var isDeletedMemoLenghtSameWithNormalMemoLenght = false.obs;
+
   //for Trash
   var isDeletedMemoLenghtSameWithHardDeletedMemoLenght = false.obs;
 
   //refreshMemo에 포함됨.
-  homeEmptyCheck(){
+  homeEmptyCheck() {
     refreshDeletedMemo();
-    if(memo.length == deletedMemo.length){
+    if (memo.length == deletedMemo.length) {
       isDeletedMemoLenghtSameWithNormalMemoLenght.value = true;
-    }else{
+    } else {
       isDeletedMemoLenghtSameWithNormalMemoLenght.value = false;
     }
   }
 
   //refreshDeletedMemo에 포함됨.
-  trashEmptyCheck() async{
+  trashEmptyCheck() async {
     final data = await MemoHelper.getItemsByHardDeleted();
     hardDeletedItemForEmptyCheck.addAll(data);
-    if(deletedMemo.length == hardDeletedItemForEmptyCheck.length){
+    if (deletedMemo.length == hardDeletedItemForEmptyCheck.length) {
       isDeletedMemoLenghtSameWithHardDeletedMemoLenght.value = true;
-    }else{
+    } else {
       isDeletedMemoLenghtSameWithHardDeletedMemoLenght.value = false;
     }
     hardDeletedItemForEmptyCheck.clear();
@@ -329,53 +333,58 @@ class HomeController extends GetxController
   int purpleValue = Color(0xffbb9beb).value;
   int mustardValue = Color(0xfff0dc7a).value;
 
+  //구 테마 가져오기.
+  // getRed() {
+  //   colorValue.value = redValue;
+  // }
+  //
+  // getTeal() {
+  //   colorValue.value = tealValue;
+  // }
+  //
+  // getLightPink() {
+  //   colorValue.value = lightPinkValue;
+  // }
+  //
+  // getYellow() {
+  //   colorValue.value = yellowValue;
+  // }
+  //
+  // getLightGreen() {
+  //   colorValue.value = lightGreenValue;
+  // }
+  //
+  // getTurquoise() {
+  //   colorValue.value = turquoiseValue;
+  // }
+  //
+  // getLightCyan() {
+  //   colorValue.value = lightCyanValue;
+  // }
+  //
+  // getLightBlue() {
+  //   colorValue.value = lightBlueValue;
+  // }
+  //
+  // getPlum() {
+  //   colorValue.value = plumValue;
+  // }
+
+
+
   //앱 시작시 초기 컬러 가져오기.
+  //기본 컬러(화이트) 가져오기.
   getDefaultColor() {
     colorValue.value = whiteValue;
   }
 
-  getRed() {
-    colorValue.value = redValue;
-  }
-
-  getTeal() {
-    colorValue.value = tealValue;
-  }
-
-  getLightPink() {
-    colorValue.value = lightPinkValue;
-  }
-
-  getYellow() {
-    colorValue.value = yellowValue;
-  }
-
-  getLightGreen() {
-    colorValue.value = lightGreenValue;
-  }
-
-  getTurquoise() {
-    colorValue.value = turquoiseValue;
-  }
-
-  getLightCyan() {
-    colorValue.value = lightCyanValue;
-  }
-
-  getLightBlue() {
-    colorValue.value = lightBlueValue;
-  }
-
-  getPlum() {
-    colorValue.value = plumValue;
+  //테마 컬러 가져오기.
+  getRedRed() {
+    colorValue.value = redredValue;
   }
 
   getBlue() {
     colorValue.value = blueValue;
-  }
-
-  getRedRed() {
-    colorValue.value = redredValue;
   }
 
   getAqua() {
@@ -410,25 +419,38 @@ class HomeController extends GetxController
   RxString nowTag = ''.obs;
   final tag = GetStorage();
 
+
+  //구 테마.
+  // TextEditingController redTagController = TextEditingController();
+  // TextEditingController tealTagController = TextEditingController();
+  // TextEditingController lightPinkTagController = TextEditingController();
+  // TextEditingController yellowTagController = TextEditingController();
+  // TextEditingController lightGreenTagController = TextEditingController();
+  // TextEditingController turquoiseTagController = TextEditingController();
+  // TextEditingController lightCyanTagController = TextEditingController();
+  // TextEditingController lightBlueTagController = TextEditingController();
+  // TextEditingController plumTagController = TextEditingController();
+
+
   //tags customize 시 사용될 TextField controllers
   TextEditingController redTagController = TextEditingController();
-  TextEditingController tealTagController = TextEditingController();
-  TextEditingController lightPinkTagController = TextEditingController();
-  TextEditingController yellowTagController = TextEditingController();
-  TextEditingController lightGreenTagController = TextEditingController();
-  TextEditingController turquoiseTagController = TextEditingController();
-  TextEditingController lightCyanTagController = TextEditingController();
-  TextEditingController lightBlueTagController = TextEditingController();
-  TextEditingController plumTagController = TextEditingController();
-
   TextEditingController blueTagController = TextEditingController();
-  TextEditingController redredTagController = TextEditingController();
   TextEditingController aquaTagController = TextEditingController();
   TextEditingController greenTagController = TextEditingController();
   TextEditingController pinkTagController = TextEditingController();
   TextEditingController orangeTagController = TextEditingController();
   TextEditingController purpleTagController = TextEditingController();
   TextEditingController mustardTagController = TextEditingController();
+
+  //tags customize에 사용될 포커스노드.
+  FocusNode redTagFocusNode = FocusNode();
+  FocusNode blueTagFocusNode = FocusNode();
+  FocusNode aquaTagFocusNode = FocusNode();
+  FocusNode greenTagFocusNode = FocusNode();
+  FocusNode pinkTagFocusNode = FocusNode();
+  FocusNode orangeTagFocusNode = FocusNode();
+  FocusNode purpleTagFocusNode = FocusNode();
+  FocusNode mustardTagFocusNode = FocusNode();
 
   //최초 실행시 태그 밸류 null 방지를 위한(동시에 색상 이름 표시) 메소드.
   tagInit() {
@@ -554,7 +576,7 @@ class HomeController extends GetxController
     // defaultModeOn.value = true;
   }
 
-  defaultModeOn() async{
+  defaultModeOn() async {
     //모드 해제시 애니메이션.
     await modeDoneAnimation();
     tagModeOn.value = false;
@@ -565,6 +587,7 @@ class HomeController extends GetxController
     // defaultModeOn.value = true;
 
     refreshMemo();
+    goToDown();
   }
 
   //에딧모드 체크된 메모들을 가져와 for Each로 에딧 체크 콜롬에 0(false)을 넣어줌.
@@ -575,7 +598,7 @@ class HomeController extends GetxController
 
   editModeDone() async {
     final data = await MemoHelper.getItemsByEditModeCheck();
-    await modeDoneAnimation();
+    // await modeDoneAnimation();
     print('edited: ${data}');
     editedMemo.addAll(data);
     editedMemo.forEach(
@@ -637,7 +660,7 @@ class HomeController extends GetxController
     print('edited: ${data}');
     deleteCheckedMemo.addAll(data);
     deleteCheckedMemo.forEach(
-          (element) {
+      (element) {
         trashViewItemInvisible(element['id']);
       },
     );
@@ -650,7 +673,7 @@ class HomeController extends GetxController
     print('edited: ${data}');
     deleteCheckedMemo.addAll(data);
     deleteCheckedMemo.forEach(
-          (element) {
+      (element) {
         trashViewItemInvisible(element['id']);
       },
     );
@@ -676,7 +699,7 @@ class HomeController extends GetxController
     print('edited: ${data}');
     deleteCheckedMemo.addAll(data);
     deleteCheckedMemo.forEach(
-          (element) {
+      (element) {
         trashViewItemRecover(element['id']);
       },
     );
@@ -979,52 +1002,56 @@ class HomeController extends GetxController
     print('event Hash Keys = $keys');
     print('event Hash raw = $eventsHashRaw');
 
-    keys.forEach((key) async {
-      print('key: ${key}');
-      //2023NN key 로 일별 데이터 조회.
-      final dateData = await MemoHelper.getItemsByDateToColor(key);
-      print('dateData: ${dateData}');
+    keys.forEach(
+      (key) async {
+        print('key: ${key}');
+        //2023NN key 로 일별 데이터 조회.
+        final dateData = await MemoHelper.getItemsByDateToColor(key);
+        print('dateData: ${dateData}');
 
-      //조회된 일별 데이터로 forEach 사용.
-      dateData.forEach((dateData) {
-        print(dateData['createdAt']);
-        print(dateData['colorValue']);
-        print('eventHashRaw: ${eventsHash}');
-        //이쪽에서도 white, deletedItem 걸러주기.
-        if (dateData['colorValue'] == 4294967295) {
-          null;
-        } else if (dateData['isDeleted'] == 1) {
-          null;
-        } else if (eventsHash.containsKey(dateData['createdAt']) == true) {
-          //같은 key 의 데이터가 존재하면 map 을 생성하는게 아니라 이미 있던 맵에 colorValue add.
-          print('same obj');
-          //null check 위해 사전에 선언한 list 에 데이터 먼저 넣어주기.
-          //아래를 거쳐와서 이미 첫번째 colorValue는 들어가있음.
-          sameKeyColorValueList.add(dateData['colorValue']);
-          //완성된 데이터 리스트를 toString, 그리고 []를 제거하여 이벤트 해쉬에 삽입.
-          eventsHash[dateData['createdAt']] = [
-            sameKeyColorValueList
-                .toString()
-                .replaceAll('[', '')
-                .replaceAll(']', '')
-          ];
-          print('eventRaw2:${sameKeyColorValueList}');
-          print('same hash: ${eventsHash}');
-          // eventsHashRaw[dateData['createdAt']] = [].addAll(dateData);
-        } else {
-          //같은 Key 의 데이터가 존재하지 않으면 평소대로 map 생성.
-          //위에서 대체되지 않도록 same value 상태를 상정하고 미리 초기 데이터 넣어두기.
-          sameKeyColorValueList.add(dateData['colorValue']);
-          keyColorValue.add(dateData['colorValue']);
-          eventsHash[dateData['createdAt']] = [
-            keyColorValue.toString().replaceAll('[', '').replaceAll(']', '')
-          ];
-        }
-        print('eventHashRaw final: ${eventsHash}');
-      });
-      sameKeyColorValueList.clear();
-      keyColorValue.clear();
-    });
+        //조회된 일별 데이터로 forEach 사용.
+        dateData.forEach(
+          (dateData) {
+            print(dateData['createdAt']);
+            print(dateData['colorValue']);
+            print('eventHashRaw: ${eventsHash}');
+            //이쪽에서도 white, deletedItem 걸러주기.
+            if (dateData['colorValue'] == 4294967295) {
+              null;
+            } else if (dateData['isDeleted'] == 1) {
+              null;
+            } else if (eventsHash.containsKey(dateData['createdAt']) == true) {
+              //같은 key 의 데이터가 존재하면 map 을 생성하는게 아니라 이미 있던 맵에 colorValue add.
+              print('same obj');
+              //null check 위해 사전에 선언한 list 에 데이터 먼저 넣어주기.
+              //아래를 거쳐와서 이미 첫번째 colorValue는 들어가있음.
+              sameKeyColorValueList.add(dateData['colorValue']);
+              //완성된 데이터 리스트를 toString, 그리고 []를 제거하여 이벤트 해쉬에 삽입.
+              eventsHash[dateData['createdAt']] = [
+                sameKeyColorValueList
+                    .toString()
+                    .replaceAll('[', '')
+                    .replaceAll(']', '')
+              ];
+              print('eventRaw2:${sameKeyColorValueList}');
+              print('same hash: ${eventsHash}');
+              // eventsHashRaw[dateData['createdAt']] = [].addAll(dateData);
+            } else {
+              //같은 Key 의 데이터가 존재하지 않으면 평소대로 map 생성.
+              //위에서 대체되지 않도록 same value 상태를 상정하고 미리 초기 데이터 넣어두기.
+              sameKeyColorValueList.add(dateData['colorValue']);
+              keyColorValue.add(dateData['colorValue']);
+              eventsHash[dateData['createdAt']] = [
+                keyColorValue.toString().replaceAll('[', '').replaceAll(']', '')
+              ];
+            }
+            print('eventHashRaw final: ${eventsHash}');
+          },
+        );
+        sameKeyColorValueList.clear();
+        keyColorValue.clear();
+      },
+    );
   } //getTiles
 
   //월별로 가져온 메모 데이터. 이벤트 표시를 위해 사용됨.
@@ -1071,9 +1098,11 @@ class HomeController extends GetxController
     print('initKeyList: ${initKeyList}');
   }
 
+  //현재는 미사용.
   //스크롤을 맨 위로 올렸을때 아이템 가져오기.
   RxInt minusValue = 1.obs;
 
+  //현재는 미사용.
   addPatchData() async {
     //minusValue를 증가시켜 계속 올려도 데이터 인덱스를 찾을수 있도록 함.
     //다만 minusValue가 데이터의 총 인덱스보다 높아지면 에러가 뜨기에, 조건을 추가.
@@ -1266,9 +1295,12 @@ class HomeController extends GetxController
     await getTiles();
     await tagInit();
     await firstInitGetDataKey();
+    await refreshMemo();
+
+    goToDown();
 
     //처음 한번 새로고침으로 메모 가져오기.
-    refreshMemoInit();
+    // refreshMemoInit();
 
     //디바이스 테마 확인 디버그.
     print('is device theme dark: ${isDeviceThemeDark}');
@@ -1288,11 +1320,13 @@ class HomeController extends GetxController
           goToDownButtonDontShow.value = true;
         }
         //offset이 0보다 낮아지면(화면이 위로 오버스크롤되면) 데이터 불러오기.
-        if (-100 >= scrollController.value.offset) {
-          await firstInitGetDataKey();
-          addPatchData();
-          // print('sc');
-        }
+        // if (-100 >= scrollController.value.offset) {
+        //   memoLenght.value += 10;
+        //   refreshMemo();
+        //   // await firstInitGetDataKey();
+        //   // addPatchData();
+        //   // print('sc');
+        // }
         if (scrollController.value.offset >=
             scrollController.value.position.maxScrollExtent) {
           isScrollMax.value = true;
@@ -1303,6 +1337,8 @@ class HomeController extends GetxController
     } catch (e, s) {
       print(s);
     }
+
+    //페이지 리스너.
   }
 
   //init 후 1프레임 뒤.

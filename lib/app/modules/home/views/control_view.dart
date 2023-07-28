@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -100,6 +98,13 @@ class ControlView extends GetView<HomeController> {
                             child: TableCalendar(
                               headerVisible: false,
                               calendarBuilders: CalendarBuilders(
+                                defaultBuilder: (context, day, day2) {
+                                  return Center(
+                                    child: Text(
+                                      DateFormat('dd').format(day),
+                                    ),
+                                  );
+                                },
                                 //마커 타일 빌더.
                                 //context 와 날짜(년월일시분초까지 다 표시되는 버전), event(List)를 넘겨줄수 있음.
                                 markerBuilder: (context, day, events) {
@@ -130,6 +135,7 @@ class ControlView extends GetView<HomeController> {
                                 },
                               ),
                               calendarStyle: CalendarStyle(
+                                defaultTextStyle: TextStyle(),
                                 todayTextStyle: TextStyle(
                                   color: controller.isDarkModeOn.value == true
                                       ? Colors.white
@@ -264,18 +270,20 @@ class ControlView extends GetView<HomeController> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       //디바이스 테마 활성화시에는 항상 노란불.
-                                      controller.useDeviceTheme.value == true ? Icon(
-                                        Icons.perm_device_info,
-                                        color: seletedThemeIcon,
-                                      ) :
-                                      Icon(
-                                        //아니라면 테마에 맞는 비활성화 아이콘 색깔로.
-                                        Icons.perm_device_info,
-                                        color: controller.isDarkModeOn.value ==
-                                                true
-                                            ? iconDark
-                                            : iconLight,
-                                      ),
+                                      controller.useDeviceTheme.value == true
+                                          ? Icon(
+                                              Icons.perm_device_info,
+                                              color: seletedThemeIcon,
+                                            )
+                                          : Icon(
+                                              //아니라면 테마에 맞는 비활성화 아이콘 색깔로.
+                                              Icons.perm_device_info,
+                                              color: controller
+                                                          .isDarkModeOn.value ==
+                                                      true
+                                                  ? iconDark
+                                                  : iconLight,
+                                            ),
                                       SizedBox(
                                         height: 5,
                                       ),
@@ -316,20 +324,23 @@ class ControlView extends GetView<HomeController> {
                                         CrossAxisAlignment.center,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      controller.useDeviceTheme.value == true ? Icon(
-                                        Icons.light_mode,
-                                        color: controller.isDarkModeOn.value ==
-                                            true
-                                            ? iconDark
-                                            : iconLight,
-                                      ) :
-                                      Icon(
-                                        Icons.light_mode,
-                                        color: controller.isDarkModeOn.value ==
-                                                true
-                                            ? iconDark
-                                            : seletedThemeIcon,
-                                      ),
+                                      controller.useDeviceTheme.value == true
+                                          ? Icon(
+                                              Icons.light_mode,
+                                              color: controller
+                                                          .isDarkModeOn.value ==
+                                                      true
+                                                  ? iconDark
+                                                  : iconLight,
+                                            )
+                                          : Icon(
+                                              Icons.light_mode,
+                                              color: controller
+                                                          .isDarkModeOn.value ==
+                                                      true
+                                                  ? iconDark
+                                                  : seletedThemeIcon,
+                                            ),
                                       SizedBox(
                                         height: 5,
                                       ),
@@ -370,20 +381,23 @@ class ControlView extends GetView<HomeController> {
                                         CrossAxisAlignment.center,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      controller.useDeviceTheme.value == true ? Icon(
-                                        Icons.dark_mode,
-                                        color: controller.isDarkModeOn.value ==
-                                            true
-                                            ? iconDark
-                                            : iconLight,
-                                      ) :
-                                      Icon(
-                                        Icons.dark_mode,
-                                        color: controller.isDarkModeOn.value ==
-                                                false
-                                            ? iconLight
-                                            : seletedThemeIcon,
-                                      ),
+                                      controller.useDeviceTheme.value == true
+                                          ? Icon(
+                                              Icons.dark_mode,
+                                              color: controller
+                                                          .isDarkModeOn.value ==
+                                                      true
+                                                  ? iconDark
+                                                  : iconLight,
+                                            )
+                                          : Icon(
+                                              Icons.dark_mode,
+                                              color: controller
+                                                          .isDarkModeOn.value ==
+                                                      false
+                                                  ? iconLight
+                                                  : seletedThemeIcon,
+                                            ),
                                       SizedBox(
                                         height: 5,
                                       ),
@@ -710,7 +724,11 @@ class ControlView extends GetView<HomeController> {
                                           borderRadius:
                                               BorderRadius.circular(25),
                                         ),
-                                        child: Icon(Icons.delete_outline, size: controller.controllPageIconSize.value,),
+                                        child: Icon(
+                                          Icons.delete_outline,
+                                          size: controller
+                                              .controllPageIconSize.value,
+                                        ),
                                       ),
                                       Obx(
                                         () => AnimatedContainer(
