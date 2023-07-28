@@ -940,6 +940,8 @@ class HomeController extends GetxController
     bottomSheetBookMark = '9';
   }
 
+  //바텀시트 키보드 오버플로우를 방지하기 위한 ViewInsets.
+
   //search bar
   TextEditingController searchBarController = TextEditingController();
 
