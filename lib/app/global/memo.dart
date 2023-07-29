@@ -107,10 +107,12 @@ class MemoHelper {
     );
   }
 
+  //안드로이드 실물기기 에러포인트.
+  //"=?" 을 추가하면 에러는 안나는데, firstCheck 기능이 상실된 체로 메모가 작성됨.
   static Future<List<Map<String, dynamic>>> getItemsByDate(String date) async {
     final db = await MemoHelper.db();
     return db.query('memo_test28',
-        orderBy: "createdAt", whereArgs: [date], where: "createdAt = $date");
+        orderBy: "createdAt", whereArgs: [date], where: "createdAt = $date" + "=?");
   }
 
   static Future<List<Map<String, dynamic>>> getItemsByEditModeCheck() async {
