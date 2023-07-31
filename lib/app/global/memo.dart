@@ -150,7 +150,7 @@ class MemoHelper {
       orderBy: "createdAt",
       whereArgs: [date],
       where: "createdAt = $date",
-      columns: ['id', 'createdAt', 'isFirst'],
+      columns: ['id', 'createdAt', 'isFirst', 'isDeleted'],
     );
   }
 

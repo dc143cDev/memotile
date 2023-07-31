@@ -163,7 +163,6 @@ class TrashView extends GetView<HomeController> {
                           isDeleteChecked: controller.deletedMemo[index]
                               ['isDeleteChecked'],
                           date: controller.deletedMemo[index]['dateData'],
-                          isFirst: controller.deletedMemo[index]['isFirst'],
                           isDeleted: controller.deletedMemo[index]['isDeleted'],
                           isHardDeleted: controller.deletedMemo[index]
                               ['isHardDeleted'],

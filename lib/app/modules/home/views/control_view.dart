@@ -114,6 +114,9 @@ class ControlView extends GetView<HomeController> {
                                     emptyCheck: isEmpty,
                                   );
                                 },
+                                outsideBuilder: (context, day, day2) {
+
+                                },
                                 //마커 타일 빌더.
                                 //context 와 날짜(년월일시분초까지 다 표시되는 버전), event(List)를 넘겨줄수 있음.
                                 markerBuilder: (context, day, events) {

@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -813,7 +815,16 @@ class HomeController extends GetxController
   firstCheckByDate() async {
     await getCurrentDayDetail();
     final data = await MemoHelper.getItemsByDate(CurrentDayDetail.value);
-    firstCheckValue.value = data;
+    data.forEach(
+      (element) {
+        //isDeleted 거르기.
+        if (element['isDeleted'] == 1) {
+          null;
+        } else {
+          firstCheckValue.add(element);
+        }
+      },
+    );
     // print('memo refreshed by date ${firstCheckValue}');
   }
 
@@ -885,8 +896,46 @@ class HomeController extends GetxController
   //D
   //쓰레기통으로 보내기.
   void itemToTrash(int id) async {
+    final data = await MemoHelper.getItem(id);
+    await MemoHelper.updateItemForFirstCheck(id, 0);
     await MemoHelper.itemToTrashDB(id);
+    //날짜표시줄 리프래쉬.
+    await firstRefresh(data[0]['createdAt']);
     refreshMemo();
+  }
+
+  //날짜표시줄 리프래쉬.
+  //아이템 휴지통으로 옮길때, 휴지통에서 복구할때 호출됨.
+  var dataListForFirstRefresh = [].obs;
+
+  firstRefresh(String date) async {
+    final data = await MemoHelper.getItemsByDateToFirstCheck(date);
+    // dataListForFirstRefresh.addAll(data);
+    data.forEach(
+      (element) {
+        //isDeleted 거르기.
+        if (element['isDeleted'] == 1) {
+          null;
+        } else {
+          //걸러진 아이템만(휴지통에 없는) 위의 리스트에 넣기.
+          dataListForFirstRefresh.add(element);
+        }
+      },
+    );
+    //리스트의 첫번째 아이템이 화면에 보이는 날짜 내의 첫 아이템이므로 isFirst 를 1로 업데이트.
+    MemoHelper.updateItemForFirstCheck(dataListForFirstRefresh.first['id'], 1);
+    dataListForFirstRefresh.clear();
+  }
+
+  //아이템 복구할때, firstRefresh 직전에 호출됨.
+  firstRefreshForRecover(String date) async {
+    final data = await MemoHelper.getItemsByDateToFirstCheck(date);
+    //여기서는 모든 아이템의 firstCheck를 일단 해제시킴.
+    //이후에 firstRefresh가 호출되며 정상적으로 ui 그려줌.
+    data.forEach((element) {
+      MemoHelper.updateItemForFirstCheck(element['id'], 0);
+    });
+    firstRefresh(date);
   }
 
   //trash View에 있는 아이템 표먼적 삭제.
@@ -897,7 +946,10 @@ class HomeController extends GetxController
 
   //메모 복구.
   void trashViewItemRecover(int id) async {
+    final data = await MemoHelper.getItem(id);
     await MemoHelper.itemRecover(id);
+    //복구될때 날짜표시줄 리프래쉬.
+    await firstRefreshForRecover(data[0]['createdAt']);
     refreshMemo();
     refreshDeletedMemo();
   }
@@ -908,26 +960,27 @@ class HomeController extends GetxController
     //item 삭제 전 삭제할 item의 데이터를 가져옴.
     //가져온 데이터의 isFirst가 false라면, 바로 삭제하고.
     //ifFirst가 true라면, 삭제와 동시에 다음 순번의 메모의 isFirst를 true로 만듦.
-    final dataForCheck = await MemoHelper.getItem(id);
-    final dataForCheckToDateList = await MemoHelper.getItemsByDateToFirstCheck(
-        dataForCheck[0]['createdAt']);
-    if (dataForCheck[0]['isFirst'] == 0) {
-      print('dataForCheck: ${dataForCheck}');
-      await MemoHelper.deleteItem(id);
-    } else if (dataForCheckToDateList.length == 1) {
-      //해당 날짜에 isFirst이자 그 메모 하나 뿐이라면, 그냥 삭제.
-      await MemoHelper.deleteItem(dataForCheck[0]['id']);
-    } else {
-      //해당 날짜에 메모 데이터가 둘 이상이라는 대전제 추가.
-      //ifFirst가 true라면, dataForCheck의 createdAt으로 날짜로 메모조회 메소드를 실행->
-      //해당 날짜의 메모들중 dataForCheck의 id와 일치하는 아이템의 다음 순번 아이템의 index를 구함->
-      //해당 index의 아이템의 isFirst를 1로 만들고 dataForCheck와 일치한 id의 아이템은 삭제.
-      //isFirst가 true인 메모는 항상 0번 인덱스이므로, 우리가 구할 그 아이템의 인덱스는 항상 1임.
-      print('dataForCTDG: ${dataForCheckToDateList[1]}');
-      await MemoHelper.deleteItem(dataForCheck[0]['id']);
-      await MemoHelper.updateItemForFirstCheck(
-          dataForCheckToDateList[1]['id'], 1);
-    }
+    // final dataForCheck = await MemoHelper.getItem(id);
+    // final dataForCheckToDateList = await MemoHelper.getItemsByDateToFirstCheck(
+    //     dataForCheck[0]['createdAt']);
+    // if (dataForCheck[0]['isFirst'] == 0) {
+    //   print('dataForCheck: ${dataForCheck}');
+    //
+    // } else if (dataForCheckToDateList.length == 1) {
+    //   //해당 날짜에 isFirst이자 그 메모 하나 뿐이라면, 그냥 삭제.
+    //   await MemoHelper.deleteItem(dataForCheck[0]['id']);
+    // } else {
+    //   //해당 날짜에 메모 데이터가 둘 이상이라는 대전제 추가.
+    //   //ifFirst가 true라면, dataForCheck의 createdAt으로 날짜로 메모조회 메소드를 실행->
+    //   //해당 날짜의 메모들중 dataForCheck의 id와 일치하는 아이템의 다음 순번 아이템의 index를 구함->
+    //   //해당 index의 아이템의 isFirst를 1로 만들고 dataForCheck와 일치한 id의 아이템은 삭제.
+    //   //isFirst가 true인 메모는 항상 0번 인덱스이므로, 우리가 구할 그 아이템의 인덱스는 항상 1임.
+    //   print('dataForCTDG: ${dataForCheckToDateList[1]}');
+    //   await MemoHelper.deleteItem(dataForCheck[0]['id']);
+    //   await MemoHelper.updateItemForFirstCheck(
+    //       dataForCheckToDateList[1]['id'], 1);
+    // }
+    await MemoHelper.deleteItem(id);
     refreshMemo();
   }
 

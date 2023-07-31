@@ -13,7 +13,6 @@ class MemoTileDeleted extends GetView<HomeController> {
       this.text,
       this.createdAt,
       this.date,
-      this.isFirst,
       this.isDeleteChecked,
       this.isDeleted,
       this.isHardDeleted,
@@ -24,7 +23,6 @@ class MemoTileDeleted extends GetView<HomeController> {
   final String? text;
   final String? createdAt;
   final String? date;
-  final int? isFirst;
   final int? isDeleteChecked;
   final int? isDeleted;
   final int? isHardDeleted;
@@ -35,44 +33,6 @@ class MemoTileDeleted extends GetView<HomeController> {
     final memo = Flexible(
       child: Column(
         children: [
-          isFirst == 1
-              ? SizedBox(
-                  height: 5,
-                )
-              : SizedBox(),
-          //해당 날짜의 첫번째 메모라면 위에 날짜 표시줄 생성.
-          isFirst == 1
-              ? Padding(
-                  padding: const EdgeInsets.only(bottom: 15),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        width: controller.width.value * 0.03,
-                      ),
-                      Container(
-                        width: controller.width.value * 0.4,
-                        height: 30,
-                        decoration: BoxDecoration(
-                          color: controller.isDarkModeOn.value == true
-                              ? backgroundDark
-                              : backgroundLight,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              createdAt!,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              : Container(),
           //왜인지 타일의 텍스트가 길면 날짜 표시줄과 간격이 벌어지지 않음. 임의로 작성.
           // text!.length >= 30
           //     ? SizedBox(

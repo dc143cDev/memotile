@@ -152,14 +152,9 @@ class MemoTile extends GetView<HomeController> {
                         // print(createdAt);
                         // controller.goToDetail(id!, text!, date!, colorValue!);
                       },
-                      onTap: () {
-                        // controller.memoTileAnimationController.forward();
-                        // Future.delayed(
-                        //   Duration(milliseconds: 700),
-                        //   () {
-                        //     controller.memoTileAnimationController.reverse();
-                        //   },
-                        // );
+                      onTap: () async {
+                        final data = await MemoHelper.getItem(id!);
+                        print('Memo Debug ::: $data');
                       },
                       child: ShakeWidget(
                         //에딧모드 진입시 흔들리는 애니메이션.
