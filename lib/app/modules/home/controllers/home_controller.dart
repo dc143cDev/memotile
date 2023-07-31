@@ -370,8 +370,6 @@ class HomeController extends GetxController
   //   colorValue.value = plumValue;
   // }
 
-
-
   //앱 시작시 초기 컬러 가져오기.
   //기본 컬러(화이트) 가져오기.
   getDefaultColor() {
@@ -419,7 +417,6 @@ class HomeController extends GetxController
   RxString nowTag = ''.obs;
   final tag = GetStorage();
 
-
   //구 테마.
   // TextEditingController redTagController = TextEditingController();
   // TextEditingController tealTagController = TextEditingController();
@@ -430,7 +427,6 @@ class HomeController extends GetxController
   // TextEditingController lightCyanTagController = TextEditingController();
   // TextEditingController lightBlueTagController = TextEditingController();
   // TextEditingController plumTagController = TextEditingController();
-
 
   //tags customize 시 사용될 TextField controllers
   TextEditingController redTagController = TextEditingController();
@@ -984,22 +980,22 @@ class HomeController extends GetxController
         // print('element: ${element}');
         //white 타일은 존재하지 않기 때문에 colorValue 가 white 면 eventsHash 에 추가하지 않도록 함.
         //deleted 된 메모도 마찬가지로 보이지 않게끔 함.
-        if (element['isDeleted'] == 1) {
-          null;
-        } else if (element['colorValue'] == 4294967295) {
-          null;
-        } else {
+        if (element['isDeleted'] != 1 || element['colorValue'] != 4294967295) {
           print('now element: ${element}');
-          print('now element: ${element['isDeleted']}');
+          print('now element is Deleted: ${element['isDeleted']}');
           //키를 만들어야 하기 때문에 우선 데이터 삽입.
           eventsHashRaw['${element['createdAt'].toString()}'] = [
             '${element['colorValue'].toString()}'
           ];
+        } else {
+          null;
         }
       },
     );
     isLoading.value = false;
     //키 표시 및 선언.
+    //해당 키가 곧 데이터를 보유한 날짜이므로, 비어있는 날짜 UI구현을 위해서도 사용됨.
+    //calander의 dayBuilder의 day가 keys에 포함되어있지 않다면 빈 날짜로 표시.
     keys.value = eventsHashRaw.keys.toList();
     print('event Hash Keys = $keys');
     print('event Hash raw = $eventsHashRaw');
@@ -1018,11 +1014,11 @@ class HomeController extends GetxController
             print(dateData['colorValue']);
             print('eventHashRaw: ${eventsHash}');
             //이쪽에서도 white, deletedItem 걸러주기.
-            if (dateData['colorValue'] == 4294967295) {
+            if (dateData['isDeleted'] == 1 ||
+                dateData['colorValue'] == 4294967295) {
               null;
-            } else if (dateData['isDeleted'] == 1) {
-              null;
-            } else if (eventsHash.containsKey(dateData['createdAt']) == true) {
+            } else if (eventsHash.containsKey(dateData['createdAt']) == true &&
+                dateData['isDeleted'] != 1) {
               //같은 key 의 데이터가 존재하면 map 을 생성하는게 아니라 이미 있던 맵에 colorValue add.
               print('same obj');
               //null check 위해 사전에 선언한 list 에 데이터 먼저 넣어주기.
@@ -1075,6 +1071,18 @@ class HomeController extends GetxController
       return [];
     }
     // return events[day] ?? [];
+  }
+
+  var yyyyMM = ''.obs;
+  var yyyyMMddList = [].obs;
+  var dd = 1.obs;
+
+  //데이터 없는 날 조회.
+  getNonMemoDays() {
+    getCurrentYear();
+    getCurrentMonthMM();
+    yyyyMM.value = CurrentYyyy.value.toString() + CurrentMM.value.toString();
+    if (CurrentMM.value % 2 == 1) {}
   }
 
   //컨트롤러 생성 및 삽입시 초기에 실행.

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:memotile/app/global/default_day.dart';
 import 'package:memotile/app/global/palette.dart';
 import 'package:memotile/app/modules/home/controllers/home_controller.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -99,10 +100,18 @@ class ControlView extends GetView<HomeController> {
                               headerVisible: false,
                               calendarBuilders: CalendarBuilders(
                                 defaultBuilder: (context, day, day2) {
-                                  return Center(
-                                    child: Text(
-                                      DateFormat('dd').format(day),
-                                    ),
+                                  final yyyyMMdd =
+                                      DateFormat('yyyyMMdd').format(day);
+                                  //event Hash Keys가 곧 데이터를 보유한 날짜의 리스트임.
+                                  //day(yyyyMMdd)가 keys에 해당되지 않는다면, false를 반환.
+                                  //반환된 날짜는 UI에 흐리게 표시되고 클릭되지 않게끔 함.
+                                  final isEmpty = controller.keys
+                                      .contains(yyyyMMdd)
+                                      .toString();
+                                  print('isM : $isEmpty');
+                                  return DefaultDay(
+                                    dateValue: DateFormat('dd').format(day),
+                                    emptyCheck: isEmpty,
                                   );
                                 },
                                 //마커 타일 빌더.
@@ -181,20 +190,30 @@ class ControlView extends GetView<HomeController> {
                               lastDay: DateTime(2033, 12, 31),
                               onDaySelected: (DateTime selectedDay,
                                   DateTime focusedDay) async {
-                                //DB 검색 용이성을 위해 미리 지정된 포맷으로 selectedDay 반환.
-                                // await controller.goToTop();
-                                controller.selectedDay.value =
-                                    DateFormat("yyyyMMdd").format(selectedDay);
-                                print('$selectedDay is selected');
-                                print('$focusedDay is focused');
-                                print(controller.selectedDay);
-                                controller.refreshMemoByDateTile(
-                                    controller.selectedDay);
-                                controller.dateButtonClicked();
-                                controller.pageController.animateToPage(0,
-                                    duration: Duration(milliseconds: 200),
-                                    curve: Curves.easeIn);
-                                // controller.goToDown();
+                                //이쪽도 위의 defaultDayBuilder와 마찬가지.
+                                //keys에 해당되지 않는 날짜는 클릭되지 않게끔 함.
+                                if (controller.keys.contains(
+                                      DateFormat("yyyyMMdd")
+                                          .format(selectedDay),
+                                    ) ==
+                                    true) {
+                                  //DB 검색 용이성을 위해 미리 지정된 포맷으로 selectedDay 반환.
+                                  // await controller.goToTop();
+                                  controller.selectedDay.value =
+                                      DateFormat("yyyyMMdd")
+                                          .format(selectedDay);
+                                  print('$selectedDay is selected');
+                                  print('$focusedDay is focused');
+                                  print(controller.selectedDay);
+                                  controller.refreshMemoByDateTile(
+                                      controller.selectedDay);
+                                  controller.dateButtonClicked();
+                                  controller.pageController.animateToPage(0,
+                                      duration: Duration(milliseconds: 200),
+                                      curve: Curves.easeIn);
+                                } else {
+                                  null;
+                                }
                               },
                               onPageChanged: (day) {
                                 //페이지 전환할때마다 값을 지금이 몇월인지 값 넘겨주기.

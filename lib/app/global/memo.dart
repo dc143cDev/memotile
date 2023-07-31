@@ -112,7 +112,7 @@ class MemoHelper {
   static Future<List<Map<String, dynamic>>> getItemsByDate(String date) async {
     final db = await MemoHelper.db();
     return db.query('memo_test28',
-        orderBy: "createdAt", whereArgs: [date], where: "createdAt = $date" + "=?");
+        orderBy: "createdAt", whereArgs: [date], where: "createdAt = $date");
   }
 
   static Future<List<Map<String, dynamic>>> getItemsByEditModeCheck() async {
@@ -134,7 +134,8 @@ class MemoHelper {
       orderBy: "createdAt",
       whereArgs: [date],
       where: "createdAt = $date",
-      columns: ['createdAt', 'colorValue'],
+      //controlView의 캘린더에 삭제된 메모를 걸러줘야하기때문에 isDeleted도 넘겨줌.
+      columns: ['createdAt', 'colorValue', 'isDeleted'],
     );
   }
 
@@ -159,6 +160,7 @@ class MemoHelper {
       'memo_test28',
       orderBy: "mm",
       //event 필요한 columns 들만 가져오기.
+      //controlView의 캘린더에 삭제된 메모를 걸러줘야하기때문에 isDeleted도 넘겨줌.
       columns: ['createdAt', 'colorValue', 'isDeleted'],
     );
   }

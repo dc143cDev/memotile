@@ -478,6 +478,7 @@ class HomeView extends GetView<HomeController> {
         //페이지변환 드래기그 시작되었고, 드래그 종료되는 지점이 화면 * 0.8 지점 이하라면, 페이지 변환 후 드래그 종료.
         if (de.velocity.pixelsPerSecond.dx < controller.width * 0.7 &&
             controller.dragStartForPageSwipe.value == true) {
+          controller.getTiles();
           controller.pageController.animateToPage(
             1,
             duration: Duration(milliseconds: 300),
@@ -1397,6 +1398,7 @@ class HomeView extends GetView<HomeController> {
                                 borderRadius: BorderRadius.circular(15),
                                 child: IconButton(
                                   onPressed: () async {
+                                    await controller.getTiles();
                                     controller.pageController.animateToPage(1,
                                         duration: Duration(milliseconds: 300),
                                         curve: Curves.easeIn);
@@ -1435,6 +1437,7 @@ class HomeView extends GetView<HomeController> {
     //최종 빌드될 리턴.
     return PageView(
       onPageChanged: (int) async {
+        //이벤트 마커 타일 가져오기.
         await controller.getTiles();
         if (controller.controllPageContainerAnimationOn.value == false) {
           await controller.initToControlViewAnimation();
