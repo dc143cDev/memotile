@@ -427,33 +427,6 @@ class HomeView extends GetView<HomeController> {
       );
     }
 
-    // const colorizeTextStyle = TextStyle(
-    //   color: Colors.black,
-    //   fontSize: 27,
-    //   fontWeight: FontWeight.w700,
-    // );
-
-    // final appBarTitle = SizedBox(
-    //   width: 250,
-    //   child: AnimatedTextKit(
-    //     animatedTexts: [
-    //       ColorizeAnimatedText(
-    //         'MOTOMEE',
-    //         textStyle: colorizeTextStyle,
-    //         colors: [Colors.black, Colors.red],
-    //       ),
-    //       ColorizeAnimatedText(
-    //         controller.redredTagController.text,
-    //         textStyle: colorizeTextStyle,
-    //         colors: [
-    //           Color(controller.redredValue),
-    //           Color(controller.colorValue.value)
-    //         ],
-    //       ),
-    //     ],
-    //   ),
-    // );
-
     //Empty UI
     final emptyUI = Obx(
       () => SizedBox(
@@ -507,7 +480,9 @@ class HomeView extends GetView<HomeController> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  SizedBox(width: 3,),
+                  SizedBox(
+                    width: 3,
+                  ),
                   Expanded(
                     child: Icon(
                       Icons.warning,
@@ -543,8 +518,8 @@ class HomeView extends GetView<HomeController> {
               ),
               child: controller.tagModeOn.value == true
                   ? Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Column(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -582,7 +557,7 @@ class HomeView extends GetView<HomeController> {
                           ),
                         ],
                       ),
-                  )
+                    )
                   : Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -612,6 +587,134 @@ class HomeView extends GetView<HomeController> {
       ),
     );
 
+    final emptyUISearchMode = Obx(
+      () => SizedBox(
+        width: controller.width.value * 0.5,
+        height: controller.height.value * 0.5,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: controller.width.value * 0.35,
+              height: controller.height.value * 0.05,
+              decoration: BoxDecoration(
+                color:
+                    controller.isDarkModeOn.value == true ? subDark : subLight,
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: 15,
+                  ),
+                  Expanded(
+                    child: Text(
+                      'Memo is Empty',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: controller.isDarkModeOn.value == true
+                            ? backgroundDark
+                            : backgroundLight,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              width: controller.width.value * 0.2,
+              height: controller.height.value * 0.05,
+              decoration: BoxDecoration(
+                color:
+                    controller.isDarkModeOn.value == true ? subDark : subLight,
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: 3,
+                  ),
+                  Expanded(
+                    child: Icon(
+                      Icons.search_rounded,
+                      color: controller.isDarkModeOn.value == true
+                          ? backgroundDark
+                          : backgroundLight,
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      '~!@',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: controller.isDarkModeOn.value == true
+                            ? backgroundDark
+                            : backgroundLight,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              width: controller.width.value * 0.5,
+              height: controller.height.value * 0.1,
+              decoration: BoxDecoration(
+                color:
+                    controller.isDarkModeOn.value == true ? subDark : subLight,
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'Can not found Memo',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: controller.isDarkModeOn.value == true
+                              ? backgroundDark
+                              : backgroundLight,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Text(
+                        'Searched in ${controller.searchBarController.text}',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: controller.isDarkModeOn.value == true
+                              ? backgroundDark
+                              : backgroundLight,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+          ],
+        ),
+      ),
+    );
+
     final home = GestureDetector(
       //화면 * 0.2 범위 내에서 드래그가 시작되면 드래그 인지.
       onHorizontalDragStart: (ds) {
@@ -630,12 +733,18 @@ class HomeView extends GetView<HomeController> {
         if (de.velocity.pixelsPerSecond.dx > controller.width * 0.3 &&
             controller.dragStartForEditMode.value == true) {
           await controller.editModeInitAnimation();
+          await controller.editModeDoneOne();
+          controller.isOneEditMode.value = false;
+          //textField 포커싱되어있으면 풀어주기.
+          controller.textFocus.unfocus();
           //에딧모드 드래그 종료.
           controller.dragStartForEditMode.value = false;
         }
         //페이지변환 드래기그 시작되었고, 드래그 종료되는 지점이 화면 * 0.8 지점 이하라면, 페이지 변환 후 드래그 종료.
         if (de.velocity.pixelsPerSecond.dx < controller.width * 0.7 &&
             controller.dragStartForPageSwipe.value == true) {
+          //textField 포커싱되어있으면 풀어주기.
+          controller.textFocus.unfocus();
           controller.getTiles();
           controller.pageController.animateToPage(
             1,
@@ -644,11 +753,13 @@ class HomeView extends GetView<HomeController> {
           );
           //컨트롤 페이지로 넘어갈때 에딧모드 해제. 자연스러운 해제를 위해 딜레이 주기.
           controller.editModeDone();
+          controller.editModeDoneOne();
 
           Future.delayed(
             Duration(milliseconds: 100),
             () {
               controller.isEditMode.value = false;
+              controller.isOneEditMode.value = false;
             },
           );
           //드래그 종료.
@@ -681,6 +792,7 @@ class HomeView extends GetView<HomeController> {
                         heroTag: true,
                         backgroundColor: Get.isDarkMode ? subDark : subLight,
                         child: controller.isEditMode.value == true ||
+                                controller.isOneEditMode.value == true ||
                                 controller.searchModeOn.value == true ||
                                 controller.tagModeOn.value == true
                             ? Icon(
@@ -697,10 +809,13 @@ class HomeView extends GetView<HomeController> {
                               ),
                         onPressed: () async {
                           if (controller.isEditMode.value == true ||
+                              controller.isOneEditMode.value == true ||
                               controller.searchModeOn.value == true ||
                               controller.tagModeOn.value == true) {
                             //에딧모드 종료시 실행되는 메소드.
                             await controller.editModeDone();
+                            await controller.editModeDoneOne();
+
                             Future.delayed(Duration(milliseconds: 200), () {
                               controller.defaultModeOn();
                             });
@@ -837,7 +952,8 @@ class HomeView extends GetView<HomeController> {
                 child: Form(
                   key: this.key,
                   child: BottomAppBar(
-                    height: controller.isEditMode.value == true
+                    height: controller.isEditMode.value == true ||
+                            controller.isOneEditMode.value == true
                         ? controller.height.value * 0.2
                         : controller.height.value * 0.12,
                     elevation: 0,
@@ -848,7 +964,8 @@ class HomeView extends GetView<HomeController> {
                     color: controller.isDarkModeOn.value == true
                         ? subDark
                         : subLight,
-                    child: controller.isEditMode.value == true
+                    child: controller.isEditMode.value == true ||
+                            controller.isOneEditMode.value == true
                         ? Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -872,7 +989,7 @@ class HomeView extends GetView<HomeController> {
                                                       await controller
                                                           .getRedRed();
                                                       controller
-                                                          .editModeCheckedItemColorFill(
+                                                          .editModeItemColorFill(
                                                               controller
                                                                   .colorValue
                                                                   .value);
@@ -907,7 +1024,7 @@ class HomeView extends GetView<HomeController> {
                                                       await controller
                                                           .getBlue();
                                                       controller
-                                                          .editModeCheckedItemColorFill(
+                                                          .editModeItemColorFill(
                                                               controller
                                                                   .colorValue
                                                                   .value);
@@ -942,7 +1059,7 @@ class HomeView extends GetView<HomeController> {
                                                       await controller
                                                           .getAqua();
                                                       controller
-                                                          .editModeCheckedItemColorFill(
+                                                          .editModeItemColorFill(
                                                               controller
                                                                   .colorValue
                                                                   .value);
@@ -977,7 +1094,7 @@ class HomeView extends GetView<HomeController> {
                                                       await controller
                                                           .getGreen();
                                                       controller
-                                                          .editModeCheckedItemColorFill(
+                                                          .editModeItemColorFill(
                                                               controller
                                                                   .colorValue
                                                                   .value);
@@ -1012,7 +1129,7 @@ class HomeView extends GetView<HomeController> {
                                                       await controller
                                                           .getPink();
                                                       controller
-                                                          .editModeCheckedItemColorFill(
+                                                          .editModeItemColorFill(
                                                               controller
                                                                   .colorValue
                                                                   .value);
@@ -1047,7 +1164,7 @@ class HomeView extends GetView<HomeController> {
                                                       await controller
                                                           .getOrange();
                                                       controller
-                                                          .editModeCheckedItemColorFill(
+                                                          .editModeItemColorFill(
                                                               controller
                                                                   .colorValue
                                                                   .value);
@@ -1082,7 +1199,7 @@ class HomeView extends GetView<HomeController> {
                                                       await controller
                                                           .getPurple();
                                                       controller
-                                                          .editModeCheckedItemColorFill(
+                                                          .editModeItemColorFill(
                                                               controller
                                                                   .colorValue
                                                                   .value);
@@ -1117,7 +1234,7 @@ class HomeView extends GetView<HomeController> {
                                                       await controller
                                                           .getMustard();
                                                       controller
-                                                          .editModeCheckedItemColorFill(
+                                                          .editModeItemColorFill(
                                                               controller
                                                                   .colorValue
                                                                   .value);
@@ -1167,30 +1284,49 @@ class HomeView extends GetView<HomeController> {
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      controller.editModeDone();
-                                    },
-                                    child: Text(
-                                      'Check Clear',
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 20,
-                                  ),
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      controller.editModeCheckedItemDelete();
-                                    },
-                                    child: Text(
-                                      'Delete Checked Item',
-                                      style: TextStyle(
-                                        color: Colors.red,
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                                children: controller.isOneEditMode.value == true
+                                    ? [
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            controller
+                                                .editModeItemDelete();
+                                            controller.refreshMemo();
+                                          },
+                                          child: Text(
+                                            'Delete Item',
+                                            style: TextStyle(
+                                              color: Colors.red,
+                                            ),
+                                          ),
+                                        ),
+                                      ]
+                                    : [
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            controller.editModeDone();
+                                            controller.refreshMemo();
+                                          },
+                                          child: Text(
+                                            'Check Clear',
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 20,
+                                        ),
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            controller
+                                                .editModeItemDelete();
+                                            controller.refreshMemo();
+                                          },
+                                          child: Text(
+                                            'Delete Checked Item',
+                                            style: TextStyle(
+                                              color: Colors.red,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                               ),
                             ],
                           )
@@ -1335,9 +1471,7 @@ class HomeView extends GetView<HomeController> {
                                         controller.searchModeOn.value == true
                                     //searchMode empty.
                                     ? Center(
-                                        child: Text(
-                                          'search empty',
-                                        ),
+                                        child: emptyUISearchMode,
                                       )
                                     //default empty.
                                     : Center(
@@ -1412,6 +1546,8 @@ class HomeView extends GetView<HomeController> {
                                                 isEditChecked:
                                                     controller.memo[index]
                                                         ['isEditChecked'],
+                                                isEditing: controller
+                                                    .memo[index]['isEditing'],
                                                 date: controller.memo[index]
                                                     ['dateData'],
                                                 isFirst: controller.memo[index]
@@ -1540,17 +1676,21 @@ class HomeView extends GetView<HomeController> {
                                 borderRadius: BorderRadius.circular(15),
                                 child: IconButton(
                                   onPressed: () async {
+                                    //타일 데이터 가져오기.
                                     await controller.getTiles();
+                                    //textField 포커싱되어있으면 풀어주기.
+                                    controller.textFocus.unfocus();
                                     controller.pageController.animateToPage(1,
                                         duration: Duration(milliseconds: 300),
                                         curve: Curves.easeIn);
                                     //컨트롤 페이지로 넘어갈때 에딧모드 해제. 자연스러운 해제를 위해 딜레이 주기.
                                     controller.editModeDone();
-
+                                    await controller.editModeDoneOne();
                                     Future.delayed(
                                       Duration(milliseconds: 200),
                                       () {
                                         controller.isEditMode.value = false;
+                                        controller.isOneEditMode.value = false;
                                       },
                                     );
                                   },
@@ -1586,7 +1726,10 @@ class HomeView extends GetView<HomeController> {
         } else if (controller.controllPageContainerAnimationOn.value == true) {
           controller.escapeFromControlViewAnimation();
           //메모 상태 한번 리프레쉬하여 리커버 등 상태변화시 ui 다시 그려주기.
-          controller.editModeDone();
+          //이걸 안해주면 데이터상으로 firstRefresh가 되어도 ui에 그려지진 않음.
+          Future.delayed(Duration(milliseconds: 1), () {
+            controller.refreshMemo();
+          });
           controller.goToDown();
         }
         controller.CurrentMonthForTile.value = controller.CurrentMonthMMM.value;

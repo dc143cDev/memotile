@@ -35,7 +35,7 @@ class TrashView extends GetView<HomeController> {
                   ),
                   //확인.
                   confirm: ElevatedButton(
-                    onPressed: () async{
+                    onPressed: () async {
                       await controller.allTrashViewMemoInvisible();
                       Get.back();
                     },
@@ -117,65 +117,88 @@ class TrashView extends GetView<HomeController> {
           ),
         ),
         body: SafeArea(
-          child: controller.deletedMemo.isEmpty == true || controller.isDeletedMemoLenghtSameWithHardDeletedMemoLenght.value == true ? Column(
-            children: [
-              Expanded(
-                flex: 3,
-                child: Center(
-                  child: Obx(
-                        () => Text(
-                      'empty',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 31,
-                        color: controller.isDarkModeOn.value ==
-                            true
-                            ? iconDark
-                            : iconLight,
+          child: controller.deletedMemo.isEmpty == true ||
+                  controller.isDeletedMemoLenghtSameWithHardDeletedMemoLenght
+                          .value ==
+                      true
+              ? Column(
+                  children: [
+                    Expanded(
+                      child: Center(
+                        child: Obx(
+                          () => SizedBox(
+                            height: controller.height * 0.6,
+                            width: controller.width * 0.6,
+                            child: Center(
+                              child: Stack(
+                                children: [
+                                  Center(
+                                    child: Icon(
+                                      Icons.delete,
+                                      size: controller.width * 0.6,
+                                      color:
+                                          controller.isDarkModeOn.value == true
+                                              ? backgroundDark
+                                              : backgroundLight,
+                                    ),
+                                  ),
+                                  Center(
+                                    child: Text(
+                                      'Deleted Memo\nis Empty',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 13,
+                                        color: controller.isDarkModeOn.value ==
+                                                true
+                                            ? subDark
+                                            : subLight,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-              ),
-              Expanded(
-                flex: 7,
-                child: SizedBox(),
-              ),
-              //textField. empty 상태일때 굳이 필요 없다고 판단.
-            ],
-          ) :Column(
-            children: [
-              Expanded(
-                child: Obx(
-                  () => ListView.builder(
-                    shrinkWrap: true,
-                    reverse: false,
-                    physics: AlwaysScrollableScrollPhysics(),
-                    controller: controller.scrollController.value,
-                    itemCount: controller.deletedMemo.length,
-                    itemBuilder: (context, index) {
-                      return Obx(
-                        () => MemoTileDeleted(
-                          //memo_tile ui 에 들어갈 각 객체를 index 와 column 값을 넣어 구성.
-                          id: controller.deletedMemo[index]['id'],
-                          text: controller.deletedMemo[index]['content'],
-                          createdAt: controller.deletedMemo[index]['createdAt'],
-                          isDeleteChecked: controller.deletedMemo[index]
-                              ['isDeleteChecked'],
-                          date: controller.deletedMemo[index]['dateData'],
-                          isDeleted: controller.deletedMemo[index]['isDeleted'],
-                          isHardDeleted: controller.deletedMemo[index]
-                              ['isHardDeleted'],
-                          colorValue: controller.deletedMemo[index]
-                              ['colorValue'],
+                  ],
+                )
+              : Column(
+                  children: [
+                    Expanded(
+                      child: Obx(
+                        () => ListView.builder(
+                          shrinkWrap: true,
+                          reverse: false,
+                          physics: AlwaysScrollableScrollPhysics(),
+                          controller: controller.scrollController.value,
+                          itemCount: controller.deletedMemo.length,
+                          itemBuilder: (context, index) {
+                            return Obx(
+                              () => MemoTileDeleted(
+                                //memo_tile ui 에 들어갈 각 객체를 index 와 column 값을 넣어 구성.
+                                id: controller.deletedMemo[index]['id'],
+                                text: controller.deletedMemo[index]['content'],
+                                createdAt: controller.deletedMemo[index]
+                                    ['createdAt'],
+                                isDeleteChecked: controller.deletedMemo[index]
+                                    ['isDeleteChecked'],
+                                date: controller.deletedMemo[index]['dateData'],
+                                isDeleted: controller.deletedMemo[index]
+                                    ['isDeleted'],
+                                isHardDeleted: controller.deletedMemo[index]
+                                    ['isHardDeleted'],
+                                colorValue: controller.deletedMemo[index]
+                                    ['colorValue'],
+                              ),
+                            );
+                          },
                         ),
-                      );
-                    },
-                  ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          ),
         ),
       ),
     );

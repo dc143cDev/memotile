@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -77,9 +79,6 @@ class HomeController extends GetxController
   //focus node.
   FocusNode textFocus = FocusNode();
   FocusNode searchTextFocus = FocusNode();
-
-  //edit 버튼 클릭시.
-  var isEditMode = false.obs;
 
   //insert here.
   TextEditingController memoController = TextEditingController();
@@ -535,6 +534,13 @@ class HomeController extends GetxController
     modeBookMark = '7';
   }
 
+  //왼쪽 스와이프시, 클릭시.
+  //에딧모드 기능은 애니메이션 단에 있음.
+  var isEditMode = false.obs;
+
+  //
+  var isOneEditMode = false.obs;
+
   //검색모드 전환시 bool.
   RxBool searchModeOn = false.obs;
 
@@ -579,6 +585,7 @@ class HomeController extends GetxController
     searchModeOn.value = false;
     dateModeOn.value = false;
     isEditMode.value = false;
+    isOneEditMode.value = false;
     //
     // defaultModeOn.value = true;
 
@@ -606,34 +613,60 @@ class HomeController extends GetxController
     print('edit mode done');
   }
 
-  editModeCheckedItemDelete() async {
-    final data = await MemoHelper.getItemsByEditModeCheck();
-    print('edited: ${data}');
-    editedMemo.addAll(data);
-    editedMemo.forEach(
-      (element) {
-        itemToTrash(element['id']);
-      },
-    );
-    editedMemo.value = [];
-    // refreshMemo();
+  editModeDoneOne() async {
+    final data = await MemoHelper.getItemByEditing();
+    //null safe.
+    if (data.isEmpty) {
+      null;
+    } else {
+      MemoHelper.updateItemForEditOne(data[0]['id'], 0);
+    }
+
+    refreshMemo();
   }
 
-  editModeCheckedItemColorFill(color) async {
-    final data = await MemoHelper.getItemsByEditModeCheck();
-    print('edited cf: ${data}');
-    editedMemo.addAll(data);
-    editedMemo.forEach(
-      (element) {
-        updateItemForEditCheckItemColorControll(
-          element['id'],
-          color,
-        );
-      },
-    );
-    editedMemo.value = [];
-    // refreshMemo();
-    print('edit color fill');
+  editModeItemDelete() async {
+    if (isEditMode.value == true) {
+      final data = await MemoHelper.getItemsByEditModeCheck();
+      print('edited: ${data}');
+      editedMemo.addAll(data);
+      editedMemo.forEach(
+        (element) {
+          itemToTrash(element['id']);
+        },
+      );
+      editedMemo.value = [];
+      // refreshMemo();
+    } else if (isOneEditMode.value == true) {
+      final dataOne = await MemoHelper.getItemByEditing();
+      itemToTrash(dataOne[0]['id']);
+    } else {
+      null;
+    }
+  }
+
+  editModeItemColorFill(color) async {
+    if (isEditMode.value == true) {
+      final data = await MemoHelper.getItemsByEditModeCheck();
+      print('edited cf: ${data}');
+      editedMemo.addAll(data);
+      editedMemo.forEach(
+        (element) {
+          updateItemForEditCheckItemColorControll(
+            element['id'],
+            color,
+          );
+        },
+      );
+      editedMemo.value = [];
+      // refreshMemo();
+      print('edit color fill');
+    } else if (isOneEditMode.value == true) {
+      final dataOne = await MemoHelper.getItemByEditing();
+      updateItemForEditCheckItemColorControll(dataOne[0]['id'], color);
+    } else {
+      null;
+    }
   }
 
   //trashView 삭제 체크 클리어.
@@ -653,14 +686,14 @@ class HomeController extends GetxController
   //영구삭제 이전에 ui상에 안보이게끔 하기. (표면적 삭제)
   trashViewCheckedMemoInvisible() async {
     final data = await MemoHelper.getDeleteCheckedItem();
-    print('edited: ${data}');
-    deleteCheckedMemo.addAll(data);
-    deleteCheckedMemo.forEach(
+    final deletedSoonItems = data;
+    print('deleted soon: ${data}');
+
+    deletedSoonItems.forEach(
       (element) {
         trashViewItemInvisible(element['id']);
       },
     );
-    deleteCheckedMemo.value = [];
   }
 
   //trashView의 모든 아이템 표면적 삭제.
@@ -878,6 +911,7 @@ class HomeController extends GetxController
       refreshMemo();
       print('first check false');
     }
+    firstRefresh(CurrentDayDetail.value);
     // memoTileAnimationController.forward();
     // goToDown();
   }
@@ -1387,6 +1421,11 @@ class HomeController extends GetxController
     await tagInit();
     await firstInitGetDataKey();
     await refreshMemo();
+    await editModeDone();
+
+    Future.delayed(Duration(milliseconds: 1), () {
+      editModeDoneOne();
+    });
 
     goToDown();
 

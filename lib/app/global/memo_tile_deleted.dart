@@ -106,7 +106,9 @@ class MemoTileDeleted extends GetView<HomeController> {
                       // print(createdAt);
                       // controller.goToDetail(id!, text!, date!, colorValue!);
                     },
-                    onTap: () {
+                    onTap: () async{
+                      final data = await MemoHelper.getItem(id!);
+                      print('Memo Debug ::: $data');
                       // controller.memoTileAnimationController.forward();
                       // Future.delayed(
                       //   Duration(milliseconds: 700),
@@ -149,14 +151,6 @@ class MemoTileDeleted extends GetView<HomeController> {
                         ),
                       ),
                     ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                      left: 15, top: 20, right: 7, bottom: 12),
-                  child: Text(
-                    date!,
-                    style: TextStyle(color: Colors.grey),
                   ),
                 ),
               ],

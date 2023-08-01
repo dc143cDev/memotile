@@ -15,6 +15,7 @@ class MemoTile extends GetView<HomeController> {
       this.date,
       this.isFirst,
       this.isEditChecked,
+      this.isEditing,
       this.isDeleted,
       this.colorValue})
       : super(key: key);
@@ -25,6 +26,7 @@ class MemoTile extends GetView<HomeController> {
   final String? date;
   final int? isFirst;
   final int? isEditChecked;
+  final int? isEditing;
   final int? isDeleted;
   final int? colorValue;
 
@@ -141,9 +143,29 @@ class MemoTile extends GetView<HomeController> {
                           ),
                         )
                       : Container(),
+                  isEditing == 1
+                      ? SizedBox(
+                          width: 7,
+                        )
+                      : Container(),
                   Flexible(
                     child: InkWell(
-                      onLongPress: () {
+                      onLongPress: () async {
+                        if(controller.isOneEditMode.value == true){
+
+                          // controller.isOneEditMode.value = false;
+                          controller.editModeDoneOne();
+                          controller.refreshMemo();
+                          Future.delayed(Duration(milliseconds: 1), (){
+                            MemoHelper.updateItemForEditOne(id!, 1);
+                            controller.refreshMemo();
+                          });
+                        }else if(controller.isOneEditMode.value == false){
+                          controller.isOneEditMode.value = true;
+                          await MemoHelper.updateItemForEditOne(id!, 1);
+                          controller.refreshMemo();
+                        }
+
                         // controller.isEditMode.value = true;
                         // controller.isMemoTileShake.value = true;
                         // controller.colorValue.value = colorValue!;
@@ -156,36 +178,40 @@ class MemoTile extends GetView<HomeController> {
                         final data = await MemoHelper.getItem(id!);
                         print('Memo Debug ::: $data');
                       },
-                      child: ShakeWidget(
-                        //에딧모드 진입시 흔들리는 애니메이션.
-                        //패키지가 구형이므로 미지원 상정해야함.
-                        //흔들리는 애니메이션은 에딧모드에서 선택됐을때만.
-                        autoPlay: isEditChecked == 1 ? true : false,
-                        duration: Duration(seconds: 4),
-                        shakeConstant: ShakeLittleConstant1(),
-                        child: AnimatedContainer(
-                          duration: Duration(milliseconds: 200),
-                          padding: EdgeInsets.all(14),
-                          decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                color: controller.isDarkModeOn.value == true
-                                    ? shadowDark
-                                    : shadowLight,
-                                spreadRadius: 1,
-                                blurRadius: 1,
-                                offset:
-                                    Offset(0, 3), // changes position of shadow
+                      child: Obx(
+                        () => ShakeWidget(
+                          //에딧모드 진입시 흔들리는 애니메이션.
+                          //패키지가 구형이므로 미지원 상정해야함.
+                          //흔들리는 애니메이션은 에딧모드에서 선택됐을때만.
+                          autoPlay: isEditChecked == 1 || isEditing == 1
+                              ? true
+                              : false,
+                          duration: Duration(seconds: 4),
+                          shakeConstant: ShakeLittleConstant1(),
+                          child: AnimatedContainer(
+                            duration: Duration(milliseconds: 200),
+                            padding: EdgeInsets.all(14),
+                            decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                  color: controller.isDarkModeOn.value == true
+                                      ? shadowDark
+                                      : shadowLight,
+                                  spreadRadius: 1,
+                                  blurRadius: 1,
+                                  offset: Offset(
+                                      0, 3), // changes position of shadow
+                                ),
+                              ],
+                              borderRadius: BorderRadius.circular(8),
+                              color: Color(colorValue!),
+                            ),
+                            child: Text(
+                              text!,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                color: Colors.grey[900],
                               ),
-                            ],
-                            borderRadius: BorderRadius.circular(8),
-                            color: Color(colorValue!),
-                          ),
-                          child: Text(
-                            text!,
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              color: Colors.grey[900],
                             ),
                           ),
                         ),
