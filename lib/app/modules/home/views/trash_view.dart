@@ -90,7 +90,7 @@ class TrashView extends GetView<HomeController> {
               children: [
                 ElevatedButton(
                   onPressed: () async {
-                    await controller.trashViewCheckedMenoRecover();
+                    await controller.trashViewCheckedMemoRecover();
                     await controller.refreshDeletedMemo();
                   },
                   child: Text(

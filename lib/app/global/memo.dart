@@ -296,6 +296,7 @@ class MemoHelper {
 
     final data = {
       'isDeleted' : 0,
+      'isFirst' : 0,
     };
     final result = await db.update(
       'memo_test28',

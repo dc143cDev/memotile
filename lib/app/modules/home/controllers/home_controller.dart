@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -692,7 +690,7 @@ class HomeController extends GetxController
   }
 
   //선택된 메모 복구.
-  trashViewCheckedMenoRecover() async {
+  trashViewCheckedMemoRecover() async {
     final data = await MemoHelper.getDeleteCheckedItem();
     print('edited: ${data}');
     deleteCheckedMemo.addAll(data);
@@ -763,9 +761,19 @@ class HomeController extends GetxController
 
   //colorValue 에 따라 아이템 가져오기.
   //색상 태그별 정리 기능에 사용됨.
+
   refreshMemoByColor(int color) async {
     final data = await MemoHelper.getItemsByColor(color);
-    memo.value = data;
+    final memoListForColorRefresh = [].obs;
+    //삭제된 아이템 거르기.
+    data.forEach((element) {
+      if (element['isDeleted'] == 1) {
+        null;
+      } else {
+        memoListForColorRefresh.add(element);
+      }
+    });
+    memo.value = memoListForColorRefresh;
     isLoading.value = false;
     print(memo.toString());
     print('memo refreshed by color $color');
@@ -803,8 +811,16 @@ class HomeController extends GetxController
   //검색 기능. 내용에 따라 아이템 가져오기.
   refreshMemoByContent(String content) async {
     final data = await MemoHelper.getItemsByContent(content);
-    print(data);
-    memo.value = data;
+    final memoListForSearchRefresh = [].obs;
+    //삭제된 아이템 거르기.
+    data.forEach((element) {
+      if (element['isDeleted'] == 1) {
+        null;
+      } else {
+        memoListForSearchRefresh.add(element);
+      }
+    });
+    memo.value = memoListForSearchRefresh;
     isLoading.value = false;
     print('memo refreshed by content $content');
   }
@@ -949,7 +965,7 @@ class HomeController extends GetxController
     final data = await MemoHelper.getItem(id);
     await MemoHelper.itemRecover(id);
     //복구될때 날짜표시줄 리프래쉬.
-    await firstRefreshForRecover(data[0]['createdAt']);
+    // await firstRefreshForRecover(data[0]['createdAt']);
     refreshMemo();
     refreshDeletedMemo();
   }

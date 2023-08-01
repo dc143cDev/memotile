@@ -1443,6 +1443,8 @@ class HomeView extends GetView<HomeController> {
           await controller.initToControlViewAnimation();
         } else if (controller.controllPageContainerAnimationOn.value == true) {
           controller.escapeFromControlViewAnimation();
+          //메모 상태 한번 리프레쉬하여 리커버 등 상태변화시 ui 다시 그려주기.
+          controller.editModeDone();
           controller.goToDown();
         }
         controller.CurrentMonthForTile.value = controller.CurrentMonthMMM.value;
