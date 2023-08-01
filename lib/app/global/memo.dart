@@ -81,7 +81,8 @@ class MemoHelper {
     return db.query(
       'memo_test29',
       orderBy: "isDeleted",
-      where: "isDeleted = 1",
+      where: "isDeleted = ?",
+      whereArgs: ['1']
       // columns: ['id', 'contents', 'isEditChecked'],
     );
   }
@@ -92,7 +93,8 @@ class MemoHelper {
     return db.query(
       'memo_test29',
       orderBy: "isDeleteChecked",
-      where: "isDeleteChecked = 1",
+      where: "isDeleteChecked = ?",
+      whereArgs: ['1']
       // columns: ['id', 'contents', 'isEditChecked'],
     );
   }
@@ -102,7 +104,8 @@ class MemoHelper {
     return db.query(
       'memo_test29',
       orderBy: "isHardDeleted",
-      where: "isHardDeleted = 1",
+      where: "isHardDeleted = ?",
+      whereArgs: ['1']
     );
   }
 
@@ -114,7 +117,7 @@ class MemoHelper {
       'memo_test29',
       orderBy: "createdAt",
       whereArgs: [date],
-      where: "createdAt = $date",
+      where: "createdAt = ?",
     );
   }
 
@@ -123,7 +126,8 @@ class MemoHelper {
     return db.query(
       'memo_test29',
       orderBy: "isEditChecked",
-      where: "isEditChecked = 1",
+      where: "isEditChecked = ?",
+      whereArgs: ['1']
     );
   }
 
@@ -132,7 +136,8 @@ class MemoHelper {
     return db.query(
       'memo_test29',
       orderBy: "isEditing",
-      where: "isEditing = 1",
+      where: "isEditing = ?",
+      whereArgs: ['1']
     );
   }
 
@@ -145,7 +150,7 @@ class MemoHelper {
       'memo_test29',
       orderBy: "createdAt",
       whereArgs: [date],
-      where: "createdAt = $date",
+      where: "createdAt = ?",
       //controlView의 캘린더에 삭제된 메모를 걸러줘야하기때문에 isDeleted도 넘겨줌.
       columns: ['createdAt', 'colorValue', 'isDeleted'],
     );
@@ -161,7 +166,7 @@ class MemoHelper {
       'memo_test29',
       orderBy: "createdAt",
       whereArgs: [date],
-      where: "createdAt = $date",
+      where: "createdAt = ?",
       columns: ['id', 'createdAt', 'isFirst', 'isDeleted'],
     );
   }
@@ -182,7 +187,7 @@ class MemoHelper {
     return db.query('memo_test29',
         orderBy: "colorValue",
         whereArgs: [color],
-        where: "colorValue = $color");
+        where: "colorValue = ?");
   }
 
   static Future<List<Map<String, dynamic>>> getItemsByContent(

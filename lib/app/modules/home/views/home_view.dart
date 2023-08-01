@@ -1290,6 +1290,7 @@ class HomeView extends GetView<HomeController> {
                                           onPressed: () {
                                             controller
                                                 .editModeItemDelete();
+                                            controller.isOneEditMode.value = false;
                                             controller.refreshMemo();
                                           },
                                           child: Text(
