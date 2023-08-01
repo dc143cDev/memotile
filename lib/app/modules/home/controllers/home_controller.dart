@@ -926,8 +926,13 @@ class HomeController extends GetxController
 
   firstRefresh(String date) async {
     final data = await MemoHelper.getItemsByDateToFirstCheck(date);
+    data.forEach((element) {
+      MemoHelper.updateItemForFirstCheck(element['id'], 0);
+    });
+    final data2 = await MemoHelper.getItemsByDateToFirstCheck(date);
     // dataListForFirstRefresh.addAll(data);
-    data.forEach(
+
+    data2.forEach(
       (element) {
         //isDeleted 거르기.
         if (element['isDeleted'] == 1) {
@@ -939,8 +944,14 @@ class HomeController extends GetxController
       },
     );
     //리스트의 첫번째 아이템이 화면에 보이는 날짜 내의 첫 아이템이므로 isFirst 를 1로 업데이트.
-    MemoHelper.updateItemForFirstCheck(dataListForFirstRefresh.first['id'], 1);
-    dataListForFirstRefresh.clear();
+
+    if (dataListForFirstRefresh.isEmpty == true) {
+      null;
+    } else {
+      MemoHelper.updateItemForFirstCheck(
+          dataListForFirstRefresh.first['id'], 1);
+      dataListForFirstRefresh.clear();
+    }
   }
 
   //아이템 복구할때, firstRefresh 직전에 호출됨.
@@ -964,6 +975,7 @@ class HomeController extends GetxController
   void trashViewItemRecover(int id) async {
     final data = await MemoHelper.getItem(id);
     await MemoHelper.itemRecover(id);
+    firstRefresh(data[0]['createdAt']);
     //복구될때 날짜표시줄 리프래쉬.
     // await firstRefreshForRecover(data[0]['createdAt']);
     refreshMemo();

@@ -454,6 +454,164 @@ class HomeView extends GetView<HomeController> {
     //   ),
     // );
 
+    //Empty UI
+    final emptyUI = Obx(
+      () => SizedBox(
+        width: controller.width.value * 0.5,
+        height: controller.height.value * 0.5,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: controller.width.value * 0.35,
+              height: controller.height.value * 0.05,
+              decoration: BoxDecoration(
+                color:
+                    controller.isDarkModeOn.value == true ? subDark : subLight,
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: 15,
+                  ),
+                  Expanded(
+                    child: Text(
+                      'Memo is Empty',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: controller.isDarkModeOn.value == true
+                            ? backgroundDark
+                            : backgroundLight,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              width: controller.width.value * 0.2,
+              height: controller.height.value * 0.05,
+              decoration: BoxDecoration(
+                color:
+                    controller.isDarkModeOn.value == true ? subDark : subLight,
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(width: 3,),
+                  Expanded(
+                    child: Icon(
+                      Icons.warning,
+                      color: controller.isDarkModeOn.value == true
+                          ? backgroundDark
+                          : backgroundLight,
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      '~!@',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: controller.isDarkModeOn.value == true
+                            ? backgroundDark
+                            : backgroundLight,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              width: controller.width.value * 0.5,
+              height: controller.height.value * 0.1,
+              decoration: BoxDecoration(
+                color:
+                    controller.isDarkModeOn.value == true ? subDark : subLight,
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: controller.tagModeOn.value == true
+                  ? Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              'Can not find Memo',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: controller.isDarkModeOn.value == true
+                                    ? backgroundDark
+                                    : backgroundLight,
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Row(
+                              children: [
+                                Text(
+                                  'Tagged in ',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: controller.isDarkModeOn.value == true
+                                        ? backgroundDark
+                                        : backgroundLight,
+                                  ),
+                                ),
+                                Text(
+                                  controller.tag.read(controller.nowTag.value),
+                                  style: TextStyle(
+                                      color: Color(controller.colorValue.value),
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                  )
+                  : Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          width: 15,
+                        ),
+                        Expanded(
+                          child: Text(
+                            'Please get send button\nTo add Memo',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: controller.isDarkModeOn.value == true
+                                  ? backgroundDark
+                                  : backgroundLight,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+          ],
+        ),
+      ),
+    );
+
     final home = GestureDetector(
       //화면 * 0.2 범위 내에서 드래그가 시작되면 드래그 인지.
       onHorizontalDragStart: (ds) {
@@ -1172,37 +1330,21 @@ class HomeView extends GetView<HomeController> {
                         ? Column(
                             children: [
                               Expanded(
-                                flex: 3,
                                 child: controller.searchTextFocus.hasFocus ==
                                             true ||
                                         controller.searchModeOn.value == true
-                                    //검색결과가 없다면.
+                                    //searchMode empty.
                                     ? Center(
                                         child: Text(
                                           'search empty',
                                         ),
                                       )
+                                    //default empty.
                                     : Center(
-                                        child: Obx(
-                                          () => Text(
-                                            'empty',
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 31,
-                                              color: controller
-                                                          .isDarkModeOn.value ==
-                                                      true
-                                                  ? iconDark
-                                                  : iconLight,
-                                            ),
-                                          ),
-                                        ),
+                                        child: emptyUI,
                                       ),
                               ),
-                              Expanded(
-                                flex: 7,
-                                child: SizedBox(),
-                              ),
+
                               //textField. empty 상태일때 굳이 필요 없다고 판단.
                             ],
                           )
