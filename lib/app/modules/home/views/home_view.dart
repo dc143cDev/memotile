@@ -1342,12 +1342,14 @@ class HomeView extends GetView<HomeController> {
                                         key: this.key,
                                         focusNode: controller.textFocus,
                                         controller: controller.memoController,
+                                        maxLength: 500,
                                         cursorColor:
                                             controller.isDarkModeOn.value ==
                                                     true
                                                 ? iconDark
                                                 : iconLight,
                                         decoration: InputDecoration(
+                                          counterText: '',
                                           border: InputBorder.none,
                                           focusColor:
                                               controller.isDarkModeOn.value ==

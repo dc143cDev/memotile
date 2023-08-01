@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart' as sql;
 
 class MemoHelper {
-
-
   static Future<void> createTables(sql.Database database) async {
     // String dbID = 'memo_test24';
     await database.execute('''CREATE TABLE memo_test29(
@@ -112,8 +110,12 @@ class MemoHelper {
   //"=?" 을 추가하면 에러는 안나는데, firstCheck 기능이 상실된 체로 메모가 작성됨.
   static Future<List<Map<String, dynamic>>> getItemsByDate(String date) async {
     final db = await MemoHelper.db();
-    return db.query('memo_test29',
-        orderBy: "createdAt", whereArgs: [date], where: "createdAt = $date");
+    return db.query(
+      'memo_test29',
+      orderBy: "createdAt",
+      whereArgs: [date],
+      where: "createdAt = $date",
+    );
   }
 
   static Future<List<Map<String, dynamic>>> getItemsByEditModeCheck() async {
@@ -274,7 +276,7 @@ class MemoHelper {
     final db = await MemoHelper.db();
 
     final data = {
-      'colorValue' : color,
+      'colorValue': color,
     };
     final result = await db.update(
       'memo_test29',
@@ -289,7 +291,7 @@ class MemoHelper {
     final db = await MemoHelper.db();
 
     final data = {
-      'isDeleted' : 1,
+      'isDeleted': 1,
     };
     final result = await db.update(
       'memo_test29',
@@ -305,7 +307,7 @@ class MemoHelper {
     final db = await MemoHelper.db();
 
     final data = {
-      'isHardDeleted' : 1,
+      'isHardDeleted': 1,
     };
     final result = await db.update(
       'memo_test29',
@@ -321,9 +323,9 @@ class MemoHelper {
     final db = await MemoHelper.db();
 
     final data = {
-      'isDeleted' : 0,
-      'isFirst' : 0,
-      'isDeleteChecked' : 0,
+      'isDeleted': 0,
+      'isFirst': 0,
+      'isDeleteChecked': 0,
     };
     final result = await db.update(
       'memo_test29',
