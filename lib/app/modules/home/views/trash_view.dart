@@ -16,14 +16,18 @@ class TrashView extends GetView<HomeController> {
         backgroundColor:
             controller.isDarkModeOn.value == true ? subDark : subLight,
         appBar: AppBar(
-          actions: [
+          actions: controller.deletedMemo.isEmpty == true ||
+              controller.isDeletedMemoLenghtSameWithHardDeletedMemoLenght
+                  .value ==
+                  true ? [] :[
             //휴지통 비우기.
             IconButton(
               onPressed: () {
                 Get.defaultDialog(
-                  title: 'Delete All Items',
+                  titleStyle: TextStyle(fontWeight: FontWeight.bold),
+                  title: 'Delete All Items'.tr,
                   content: Text(
-                    'Are you sure you want to \npermanently delete all items?',
+                    'Are you sure you want to \npermanently delete all items?'.tr,
                   ),
                   contentPadding: EdgeInsets.all(8),
                   //취소.
@@ -31,7 +35,7 @@ class TrashView extends GetView<HomeController> {
                     onPressed: () {
                       Get.back();
                     },
-                    child: Text('Cancel'),
+                    child: Text('Cancel'.tr),
                   ),
                   //확인.
                   confirm: ElevatedButton(
@@ -40,7 +44,7 @@ class TrashView extends GetView<HomeController> {
                       Get.back();
                     },
                     child: Text(
-                      'Confrim',
+                      'Confirm'.tr,
                       style: TextStyle(color: Colors.red),
                     ),
                   ),
@@ -63,7 +67,7 @@ class TrashView extends GetView<HomeController> {
             },
           ),
           title: Text(
-            'Deleted Memo',
+            'Deleted Memo'.tr,
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w700,
@@ -85,16 +89,46 @@ class TrashView extends GetView<HomeController> {
                 ? backgroundDark
                 : backgroundLight,
             child: Row(
+              //삭제된 메모가 비어있다면 버튼 비활성화.
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
+              children: controller.deletedMemo.isEmpty == true ||
+                  controller.isDeletedMemoLenghtSameWithHardDeletedMemoLenght
+                      .value ==
+                      true ? [
+                ElevatedButton(
+                  onPressed: () {
+
+                  },
+                  child: Text(
+                    'Recover Memo'.tr,
+                    style: TextStyle(
+                      color: controller.isDarkModeOn == true ? shadowDark :Colors.grey[400],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 20,
+                ),
+                ElevatedButton(
+                  onPressed: () {
+
+                  },
+                  child: Text(
+                    'Hard Delete'.tr,
+                    style: TextStyle(
+                      color: controller.isDarkModeOn == true ? shadowDark :Colors.grey[400],
+                    ),
+                  ),
+                ),
+              ] :[
                 ElevatedButton(
                   onPressed: () async {
                     await controller.trashViewCheckedMemoRecover();
                     await controller.refreshDeletedMemo();
                   },
                   child: Text(
-                    'Recover Memo',
+                    'Recover Memo'.tr,
                   ),
                 ),
                 SizedBox(
@@ -106,7 +140,7 @@ class TrashView extends GetView<HomeController> {
                     await controller.refreshDeletedMemo();
                   },
                   child: Text(
-                    'Hard Delete',
+                    'Hard Delete'.tr,
                     style: TextStyle(
                       color: Colors.red,
                     ),
@@ -144,7 +178,7 @@ class TrashView extends GetView<HomeController> {
                                   ),
                                   Center(
                                     child: Text(
-                                      'Deleted Memo\nis Empty',
+                                      'Deleted Memo\nis Empty'.tr,
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 13,

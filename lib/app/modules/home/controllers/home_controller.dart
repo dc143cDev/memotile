@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -464,6 +462,9 @@ class HomeController extends GetxController
     themeBookMark = '6';
   }
 
+  //테마 데이터를 저장할 저장소.
+  final themeStorage = GetStorage();
+
   //현재 상태 감지에 쓰일 true, false는 dark모드를 기준으로 함.
   final isDeviceThemeDark =
       SchedulerBinding.instance.window.platformBrightness == Brightness.dark;
@@ -482,9 +483,30 @@ class HomeController extends GetxController
   var textColorValue = 0.obs;
   var shadowColorValue = 0.obs;
 
-  //앱 진입시 테마적용.
-  themeInit() {
+  //앱 진입시 저장소에 있는 데이터에 맞추어 테마적용.
+  themeInit() async {
     print('theme init');
+    //저장소에 아무것도 없다면(앱 최초 실행시) 디바이스 값을 기본으로 입력함.
+    await themeStorage.writeIfNull('theme', 'device');
+    if (themeStorage.read('theme') == 'dark') {
+      useDeviceTheme.value = false;
+      Get.changeThemeMode(ThemeMode.dark);
+      Get.changeTheme(ThemeData.dark(useMaterial3: true));
+      isDarkModeOn.value = true;
+    } else if (themeStorage.read('theme') == 'light') {
+      useDeviceTheme.value = false;
+      Get.changeThemeMode(ThemeMode.light);
+      Get.changeTheme(ThemeData.light(useMaterial3: true));
+      isDarkModeOn.value = false;
+    } else if (themeStorage.read('theme') == 'device') {
+      useDeviceTheme.value = true;
+      getDeviceTheme();
+    } else {
+      null;
+    }
+  }
+
+  getDeviceTheme() {
     if (isDeviceThemeDark == true) {
       //darkModeOn()을 사용하지 않는 이유: darkModeOn()은 디바이스 테마 해제 기능도 겸하기 때문.
       Get.changeThemeMode(ThemeMode.dark);
@@ -499,6 +521,7 @@ class HomeController extends GetxController
 
   deviceThemeOn() {
     //디바이스 사용 확인.
+    themeStorage.write('theme', 'device');
     useDeviceTheme.value = true;
     if (isDeviceThemeDark == true) {
       //darkModeOn()을 사용하지 않는 이유: darkModeOn()은 디바이스 테마 해제 기능도 겸하기 때문.
@@ -514,6 +537,7 @@ class HomeController extends GetxController
   }
 
   darkModeOn() {
+    themeStorage.write('theme', 'dark');
     Get.changeThemeMode(ThemeMode.dark);
     Get.changeTheme(ThemeData.dark(useMaterial3: true));
     isDarkModeOn.value = true;
@@ -522,6 +546,7 @@ class HomeController extends GetxController
   }
 
   lightModeOn() {
+    themeStorage.write('theme', 'light');
     Get.changeThemeMode(ThemeMode.light);
     Get.changeTheme(ThemeData.light(useMaterial3: true));
     isDarkModeOn.value = false;
@@ -1406,11 +1431,14 @@ class HomeController extends GetxController
   void onInit() async {
     super.onInit();
 
+    //테마 init시 혹여나 일부 위젯이 늦게 적용되지 않게 딜레이.
+    await Future.delayed(Duration(milliseconds: 1), () {
+      themeInit();
+    });
     await getScreenSize();
     await escapeFromControlViewAnimation();
     await MemoHelper.db();
     await getDefaultColor();
-    await themeInit();
     await getCurrentYear();
     await getCurrentMonthMM();
     await getCurrentDay();

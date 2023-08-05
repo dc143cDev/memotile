@@ -2,12 +2,10 @@ import 'package:get/get.dart';
 import 'package:memotile/app/modules/home/views/trash_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
+import '../modules/home/views/info_view.dart';
+import '../modules/home/views/locale_view.dart';
 import '../modules/home/views/memo_detail_view.dart';
 import '../modules/home/views/tags_customize_view.dart';
-import '../modules/notification/bindings/notification_binding.dart';
-import '../modules/notification/views/notification_view.dart';
-import '../modules/theme/bindings/theme_binding.dart';
-import '../modules/theme/views/theme_view.dart';
 
 part 'app_routes.dart';
 
@@ -41,14 +39,16 @@ class AppPages {
       binding: HomeBinding(),
     ),
     GetPage(
-      name: _Paths.THEME,
-      page: () => const ThemeView(),
-      binding: ThemeBinding(),
+      name: _Paths.LOCALE,
+      page: () => LocaleView(),
+      transition: Transition.downToUp,
+      binding: HomeBinding(),
     ),
     GetPage(
-      name: _Paths.NOTIFICATION,
-      page: () => const NotificationView(),
-      binding: NotificationBinding(),
+      name: _Paths.INFO,
+      page: () => InfoView(),
+      transition: Transition.downToUp,
+      binding: HomeBinding(),
     ),
   ];
 }

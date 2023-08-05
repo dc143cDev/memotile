@@ -114,9 +114,7 @@ class ControlView extends GetView<HomeController> {
                                     emptyCheck: isEmpty,
                                   );
                                 },
-                                outsideBuilder: (context, day, day2) {
-
-                                },
+                                outsideBuilder: (context, day, day2) {},
                                 //마커 타일 빌더.
                                 //context 와 날짜(년월일시분초까지 다 표시되는 버전), event(List)를 넘겨줄수 있음.
                                 markerBuilder: (context, day, events) {
@@ -291,29 +289,38 @@ class ControlView extends GetView<HomeController> {
                                         CrossAxisAlignment.center,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
+                                      SizedBox(
+                                        height: 7,
+                                      ),
                                       //디바이스 테마 활성화시에는 항상 노란불.
                                       controller.useDeviceTheme.value == true
-                                          ? Icon(
-                                              Icons.perm_device_info,
-                                              color: seletedThemeIcon,
+                                          ? Expanded(
+                                              child: Icon(
+                                                Icons.perm_device_info,
+                                                color: seletedThemeIcon,
+                                              ),
                                             )
-                                          : Icon(
-                                              //아니라면 테마에 맞는 비활성화 아이콘 색깔로.
-                                              Icons.perm_device_info,
-                                              color: controller
-                                                          .isDarkModeOn.value ==
-                                                      true
-                                                  ? iconDark
-                                                  : iconLight,
+                                          : Expanded(
+                                              child: Icon(
+                                                //아니라면 테마에 맞는 비활성화 아이콘 색깔로.
+                                                Icons.perm_device_info,
+                                                color: controller.isDarkModeOn
+                                                            .value ==
+                                                        true
+                                                    ? iconDark
+                                                    : iconLight,
+                                              ),
                                             ),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      Text(
-                                        'Device',
-                                        style: TextStyle(
-                                          fontSize: controller
-                                              .controllPageTextSize.value,
+                                      // SizedBox(
+                                      //   height: 5,
+                                      // ),
+                                      Expanded(
+                                        child: Text(
+                                          'Device'.tr,
+                                          // style: TextStyle(
+                                          //   fontSize: controller
+                                          //       .controllPageTextSize.value,
+                                          // ),
                                         ),
                                       ),
                                     ],
@@ -346,31 +353,33 @@ class ControlView extends GetView<HomeController> {
                                         CrossAxisAlignment.center,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      controller.useDeviceTheme.value == true
-                                          ? Icon(
-                                              Icons.light_mode,
-                                              color: controller
-                                                          .isDarkModeOn.value ==
-                                                      true
-                                                  ? iconDark
-                                                  : iconLight,
-                                            )
-                                          : Icon(
-                                              Icons.light_mode,
-                                              color: controller
-                                                          .isDarkModeOn.value ==
-                                                      true
-                                                  ? iconDark
-                                                  : seletedThemeIcon,
-                                            ),
                                       SizedBox(
-                                        height: 5,
+                                        height: 7,
                                       ),
-                                      Text(
-                                        'Light',
-                                        style: TextStyle(
-                                          fontSize: controller
-                                              .controllPageTextSize.value,
+                                      controller.useDeviceTheme.value == true
+                                          ? Expanded(
+                                              child: Icon(
+                                                Icons.light_mode,
+                                                color: controller.isDarkModeOn
+                                                            .value ==
+                                                        true
+                                                    ? iconDark
+                                                    : iconLight,
+                                              ),
+                                            )
+                                          : Expanded(
+                                              child: Icon(
+                                                Icons.light_mode,
+                                                color: controller.isDarkModeOn
+                                                            .value ==
+                                                        true
+                                                    ? iconDark
+                                                    : seletedThemeIcon,
+                                              ),
+                                            ),
+                                      Expanded(
+                                        child: Text(
+                                          'Light'.tr,
                                         ),
                                       ),
                                     ],
@@ -403,31 +412,33 @@ class ControlView extends GetView<HomeController> {
                                         CrossAxisAlignment.center,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      controller.useDeviceTheme.value == true
-                                          ? Icon(
-                                              Icons.dark_mode,
-                                              color: controller
-                                                          .isDarkModeOn.value ==
-                                                      true
-                                                  ? iconDark
-                                                  : iconLight,
-                                            )
-                                          : Icon(
-                                              Icons.dark_mode,
-                                              color: controller
-                                                          .isDarkModeOn.value ==
-                                                      false
-                                                  ? iconLight
-                                                  : seletedThemeIcon,
-                                            ),
                                       SizedBox(
-                                        height: 5,
+                                        height: 7,
                                       ),
-                                      Text(
-                                        'Dark',
-                                        style: TextStyle(
-                                          fontSize: controller
-                                              .controllPageTextSize.value,
+                                      controller.useDeviceTheme.value == true
+                                          ? Expanded(
+                                              child: Icon(
+                                                Icons.dark_mode,
+                                                color: controller.isDarkModeOn
+                                                            .value ==
+                                                        true
+                                                    ? iconDark
+                                                    : iconLight,
+                                              ),
+                                            )
+                                          : Expanded(
+                                              child: Icon(
+                                                Icons.dark_mode,
+                                                color: controller.isDarkModeOn
+                                                            .value ==
+                                                        false
+                                                    ? iconLight
+                                                    : seletedThemeIcon,
+                                              ),
+                                            ),
+                                      Expanded(
+                                        child: Text(
+                                          'Dark'.tr,
                                         ),
                                       ),
                                     ],
@@ -666,7 +677,7 @@ class ControlView extends GetView<HomeController> {
                                           curve: Curves.easeIn,
                                           duration: Duration(milliseconds: 200),
                                           child: Text(
-                                            'Tags',
+                                            'Tags'.tr,
                                             style: TextStyle(
                                               fontSize: controller
                                                   .controllPageTextSize.value,
@@ -757,7 +768,7 @@ class ControlView extends GetView<HomeController> {
                                           curve: Curves.easeIn,
                                           duration: Duration(milliseconds: 300),
                                           child: Text(
-                                            'Deleted Memo',
+                                            'Deleted Memo'.tr,
                                             style: TextStyle(
                                               fontSize: controller
                                                   .controllPageTextSize.value,
@@ -785,6 +796,235 @@ class ControlView extends GetView<HomeController> {
                                       blurRadius: 7,
                                       offset: Offset(
                                           0, 7), // changes position of shadow
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  //메뉴 4번째 라인.
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(0, 0, 0, 30),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        //locale
+                        InkWell(
+                          onTap: () {
+                            Get.toNamed('/locale');
+                          },
+                          child: Obx(
+                            () => Center(
+                              child: AnimatedContainer(
+                                curve: Curves.easeIn,
+                                duration: Duration(milliseconds: 100),
+                                width: controller
+                                    .controllPageShortContainerX.value,
+                                height: controller
+                                        .controllPageShortContainerY.value *
+                                    1.1,
+                                child: Center(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      AnimatedContainer(
+                                        curve: Curves.easeIn,
+                                        duration: Duration(milliseconds: 100),
+                                        width: controller
+                                                .controllPageShortContainerX
+                                                .value *
+                                            0.46,
+                                        height: controller
+                                                .controllPageShortContainerX
+                                                .value *
+                                            0.46,
+                                        decoration: BoxDecoration(
+                                          color:
+                                              controller.isDarkModeOn.value ==
+                                                      true
+                                                  ? subDark
+                                                  : subLight,
+                                          borderRadius:
+                                              BorderRadius.circular(25),
+                                        ),
+                                        child: Center(
+                                          child: Stack(
+                                            children: [
+                                              Positioned(
+                                                left: 16,
+                                                bottom: 16,
+                                                child: Text(
+                                                  '한',
+                                                  style: TextStyle(
+                                                    fontSize: controller
+                                                            .controllPageTextSize
+                                                            .value *
+                                                        1.5,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: controller
+                                                                .isDarkModeOn
+                                                                .value ==
+                                                            true
+                                                        ? backgroundDark
+                                                        : backgroundLight,
+                                                  ),
+                                                ),
+                                              ),
+                                              Positioned(
+                                                right: 16,
+                                                top: 16,
+                                                child: Text(
+                                                  'A',
+                                                  style: TextStyle(
+                                                    fontSize: controller
+                                                            .controllPageTextSize
+                                                            .value *
+                                                        1.5,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: controller
+                                                                .isDarkModeOn
+                                                                .value ==
+                                                            true
+                                                        ? iconDark
+                                                        : iconLight,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      Obx(
+                                        () => AnimatedContainer(
+                                          curve: Curves.easeIn,
+                                          duration: Duration(milliseconds: 200),
+                                          child: Text(
+                                            'Fonts & Locale'.tr,
+                                            style: TextStyle(
+                                              fontSize: controller
+                                                  .controllPageTextSize.value,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(25),
+                                  color: controller.isDarkModeOn.value == true
+                                      ? backgroundDark.withOpacity(controller
+                                          .controllPageContainerOpacity.value)
+                                      : backgroundLight.withOpacity(controller
+                                          .controllPageContainerOpacity.value),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color:
+                                          controller.isDarkModeOn.value == true
+                                              ? shadowDark
+                                              : shadowLight,
+                                      spreadRadius: 2,
+                                      blurRadius: 7,
+                                      offset: Offset(
+                                          0, 7), // changes position of shadow
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: controller.width.value * 0.05,
+                        ),
+                        InkWell(
+                          onTap: () async {
+                            Get.toNamed('/info');
+                          },
+                          child: Obx(
+                            () => Center(
+                              child: AnimatedContainer(
+                                curve: Curves.easeIn,
+                                duration: Duration(milliseconds: 200),
+                                width: controller
+                                    .controllPageShortContainerX.value,
+                                height: controller
+                                        .controllPageShortContainerY.value *
+                                    1.1,
+                                child: Center(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      AnimatedContainer(
+                                        curve: Curves.easeIn,
+                                        duration: Duration(milliseconds: 200),
+                                        width: controller
+                                                .controllPageShortContainerX
+                                                .value *
+                                            0.46,
+                                        height: controller
+                                                .controllPageShortContainerX
+                                                .value *
+                                            0.46,
+                                        decoration: BoxDecoration(
+                                          color:
+                                              controller.isDarkModeOn.value ==
+                                                      true
+                                                  ? subDark
+                                                  : subLight,
+                                          borderRadius:
+                                              BorderRadius.circular(25),
+                                        ),
+                                        child: Icon(
+                                          Icons.code,
+                                          size: controller
+                                              .controllPageIconSize.value,
+                                        ),
+                                      ),
+                                      Obx(
+                                        () => AnimatedContainer(
+                                          curve: Curves.easeIn,
+                                          duration: Duration(milliseconds: 300),
+                                          child: Text(
+                                            'Application info'.tr,
+                                            style: TextStyle(
+                                              fontSize: controller
+                                                  .controllPageTextSize.value,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(25),
+                                  color: controller.isDarkModeOn.value == true
+                                      ? backgroundDark.withOpacity(controller
+                                          .controllPageContainerOpacity.value)
+                                      : backgroundLight.withOpacity(controller
+                                          .controllPageContainerOpacity.value),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color:
+                                          controller.isDarkModeOn.value == true
+                                              ? shadowDark
+                                              : shadowLight,
+                                      spreadRadius: 2,
+                                      blurRadius: 7,
+                                      offset: Offset(
+                                        0,
+                                        7,
+                                      ), // changes position of shadow
                                     ),
                                   ],
                                 ),

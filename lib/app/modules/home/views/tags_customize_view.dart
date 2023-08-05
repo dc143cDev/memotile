@@ -23,8 +23,8 @@ class TagsCustomizeView extends GetView<HomeController> {
         ),
         backgroundColor:
             controller.isDarkModeOn.value == true ? subDark : subLight,
-        title: const Text(
-          'Tags Customize',
+        title: Text(
+          'Tags Customize'.tr,
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.w700,

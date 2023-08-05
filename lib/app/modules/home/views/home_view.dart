@@ -74,7 +74,7 @@ class HomeView extends GetView<HomeController> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Tags',
+                      'Tags'.tr,
                       style: TextStyle(),
                     ),
                     TextButton(
@@ -82,7 +82,7 @@ class HomeView extends GetView<HomeController> {
                         Get.toNamed('/tags');
                       },
                       child: Text(
-                        'Customizing',
+                        'Customizing'.tr,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: controller.isDarkModeOn.value == true
@@ -350,8 +350,7 @@ class HomeView extends GetView<HomeController> {
                     width: 16,
                   ),
                   Text(
-                    'Searching',
-                    style: TextStyle(),
+                    'Searching'.tr,
                   ),
                 ],
               ),
@@ -372,6 +371,7 @@ class HomeView extends GetView<HomeController> {
                           child: TextFormField(
                             focusNode: controller.searchTextFocus,
                             controller: controller.searchBarController,
+                            maxLength: 8,
                             decoration: InputDecoration(
                               suffixIcon: IconButton(
                                 onPressed: () async {
@@ -387,7 +387,8 @@ class HomeView extends GetView<HomeController> {
                                 },
                                 icon: Icon(Icons.search_rounded),
                               ),
-                              hintText: ' Search here',
+                              counterText: '',
+                              hintText: 'Search here'.tr,
                               hintStyle: TextStyle(
                                 fontWeight: FontWeight.w400,
                                 fontSize: 15,
@@ -453,7 +454,7 @@ class HomeView extends GetView<HomeController> {
                   ),
                   Expanded(
                     child: Text(
-                      'Memo is Empty',
+                      'Memo is Empty'.tr,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: controller.isDarkModeOn.value == true
@@ -510,7 +511,7 @@ class HomeView extends GetView<HomeController> {
             ),
             Container(
               width: controller.width.value * 0.5,
-              height: controller.height.value * 0.1,
+              height: controller.height.value * 0.13,
               decoration: BoxDecoration(
                 color:
                     controller.isDarkModeOn.value == true ? subDark : subLight,
@@ -525,7 +526,7 @@ class HomeView extends GetView<HomeController> {
                         children: [
                           Expanded(
                             child: Text(
-                              'Can not find Memo',
+                              'Can not found Memo'.tr,
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: controller.isDarkModeOn.value == true
@@ -535,26 +536,26 @@ class HomeView extends GetView<HomeController> {
                             ),
                           ),
                           Expanded(
-                            child: Row(
-                              children: [
-                                Text(
-                                  'Tagged in ',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: controller.isDarkModeOn.value == true
-                                        ? backgroundDark
-                                        : backgroundLight,
-                                  ),
+                              child: Row(
+                            children: [
+                              Text(
+                                'Tagged in '.tr,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: controller.isDarkModeOn.value == true
+                                      ? backgroundDark
+                                      : backgroundLight,
                                 ),
-                                Text(
-                                  controller.tag.read(controller.nowTag.value),
-                                  style: TextStyle(
-                                      color: Color(controller.colorValue.value),
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ],
-                            ),
-                          ),
+                              ),
+                            ],
+                          )),
+                          Expanded(
+                              child: Text(
+                            controller.tag.read(controller.nowTag.value),
+                            style: TextStyle(
+                                color: Color(controller.colorValue.value),
+                                fontWeight: FontWeight.bold),
+                          )),
                         ],
                       ),
                     )
@@ -567,7 +568,7 @@ class HomeView extends GetView<HomeController> {
                         ),
                         Expanded(
                           child: Text(
-                            'Please get send button\nTo add Memo',
+                            'Please get send button\nTo add Memo'.tr,
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: controller.isDarkModeOn.value == true
@@ -612,7 +613,7 @@ class HomeView extends GetView<HomeController> {
                   ),
                   Expanded(
                     child: Text(
-                      'Memo is Empty',
+                      'Memo is Empty'.tr,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: controller.isDarkModeOn.value == true
@@ -669,7 +670,7 @@ class HomeView extends GetView<HomeController> {
             ),
             Container(
               width: controller.width.value * 0.5,
-              height: controller.height.value * 0.1,
+              height: controller.height.value * 0.15,
               decoration: BoxDecoration(
                 color:
                     controller.isDarkModeOn.value == true ? subDark : subLight,
@@ -683,7 +684,7 @@ class HomeView extends GetView<HomeController> {
                   children: [
                     Expanded(
                       child: Text(
-                        'Can not found Memo',
+                        'Can not found Memo'.tr,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: controller.isDarkModeOn.value == true
@@ -692,15 +693,26 @@ class HomeView extends GetView<HomeController> {
                         ),
                       ),
                     ),
-                    Expanded(
-                      child: Text(
-                        'Searched in ${controller.searchBarController.text}',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: controller.isDarkModeOn.value == true
-                              ? backgroundDark
-                              : backgroundLight,
+                    Obx(
+                      () => Expanded(
+                        child: Text(
+                          'Searched in '.tr,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: controller.isDarkModeOn.value == true
+                                ? backgroundDark
+                                : backgroundLight,
+                          ),
                         ),
+                      ),
+                    ),
+                    Text(
+                      controller.searchBarController.text,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: controller.isDarkModeOn.value == true
+                            ? backgroundDark
+                            : backgroundLight,
                       ),
                     ),
                   ],
@@ -715,6 +727,7 @@ class HomeView extends GetView<HomeController> {
       ),
     );
 
+    //화면 전체를 제스처 디텍터로 감싸주어 제스쳐 감지.
     final home = GestureDetector(
       //화면 * 0.2 범위 내에서 드래그가 시작되면 드래그 인지.
       onHorizontalDragStart: (ds) {
@@ -1288,9 +1301,9 @@ class HomeView extends GetView<HomeController> {
                                     ? [
                                         ElevatedButton(
                                           onPressed: () {
-                                            controller
-                                                .editModeItemDelete();
-                                            controller.isOneEditMode.value = false;
+                                            controller.editModeItemDelete();
+                                            controller.isOneEditMode.value =
+                                                false;
                                             controller.refreshMemo();
                                           },
                                           child: Text(
@@ -1316,8 +1329,7 @@ class HomeView extends GetView<HomeController> {
                                         ),
                                         ElevatedButton(
                                           onPressed: () {
-                                            controller
-                                                .editModeItemDelete();
+                                            controller.editModeItemDelete();
                                             controller.refreshMemo();
                                           },
                                           child: Text(
@@ -1357,13 +1369,14 @@ class HomeView extends GetView<HomeController> {
                                                       true
                                                   ? subDark
                                                   : subLight,
-                                          hintText: ' Insert here',
+                                          hintText: 'Insert here'.tr,
                                           hintStyle: TextStyle(
+                                            fontWeight: FontWeight.bold,
                                             color:
                                                 controller.isDarkModeOn.value ==
                                                         true
                                                     ? iconDark
-                                                    : iconLight,
+                                                    : shadowLight,
                                           ),
                                         ),
                                       ),
@@ -1733,7 +1746,7 @@ class HomeView extends GetView<HomeController> {
           Future.delayed(Duration(milliseconds: 1), () {
             controller.refreshMemo();
           });
-          controller.goToDown();
+          // controller.goToDown();
         }
         controller.CurrentMonthForTile.value = controller.CurrentMonthMMM.value;
       },
