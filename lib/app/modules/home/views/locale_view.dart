@@ -93,6 +93,7 @@ class LocaleView extends GetView<HomeController> {
                       ),
                     ),
                   ),
+                  //수평 라인.
                   Container(
                     height: 1,
                     width: double.infinity,
