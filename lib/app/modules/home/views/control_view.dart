@@ -114,7 +114,6 @@ class ControlView extends GetView<HomeController> {
                                     emptyCheck: isEmpty,
                                   );
                                 },
-                                outsideBuilder: (context, day, day2) {},
                                 //마커 타일 빌더.
                                 //context 와 날짜(년월일시분초까지 다 표시되는 버전), event(List)를 넘겨줄수 있음.
                                 markerBuilder: (context, day, events) {
@@ -445,115 +444,6 @@ class ControlView extends GetView<HomeController> {
                                   ),
                                 ),
                               ),
-
-                              //구 알람센터. 추후 업데이트로 구현할수도 있으니 남겨두기.
-                              // Column(
-                              //   mainAxisAlignment: MainAxisAlignment.center,
-                              //   children: [
-                              //     AnimatedContainer(
-                              //       duration: Duration(milliseconds: 300),
-                              //       width: controller
-                              //           .controllPageLongContainerSubBox.value,
-                              //       height: controller
-                              //           .controllPageLongContainerSubBox.value,
-                              //       decoration: BoxDecoration(
-                              //         borderRadius: BorderRadius.circular(15),
-                              //         color: Colors.grey[300],
-                              //         boxShadow: [
-                              //           BoxShadow(
-                              //             color: Colors.grey.withOpacity(0.7),
-                              //             spreadRadius: 2,
-                              //             blurRadius: 4,
-                              //             offset: Offset(
-                              //                 0, 7), // changes position of shadow
-                              //           ),
-                              //         ],
-                              //       ),
-                              //     ),
-                              //     SizedBox(
-                              //       height: 5,
-                              //     ),
-                              //     Text(
-                              //       '최근 알림',
-                              //       style: TextStyle(
-                              //         fontWeight: FontWeight.w600,
-                              //         color: Colors.grey[900],
-                              //       ),
-                              //     ),
-                              //   ],
-                              // ),
-                              // verticalLine,
-                              // Column(
-                              //   mainAxisAlignment: MainAxisAlignment.center,
-                              //   children: [
-                              //     AnimatedContainer(
-                              //       duration: Duration(milliseconds: 300),
-                              //       width: controller
-                              //           .controllPageLongContainerSubBox.value,
-                              //       height: controller
-                              //           .controllPageLongContainerSubBox.value,
-                              //       decoration: BoxDecoration(
-                              //         borderRadius: BorderRadius.circular(15),
-                              //         color: Colors.grey[300],
-                              //         boxShadow: [
-                              //           BoxShadow(
-                              //             color: Colors.grey.withOpacity(0.7),
-                              //             spreadRadius: 2,
-                              //             blurRadius: 4,
-                              //             offset: Offset(
-                              //                 0, 7), // changes position of shadow
-                              //           ),
-                              //         ],
-                              //       ),
-                              //     ),
-                              //     SizedBox(
-                              //       height: 5,
-                              //     ),
-                              //     Text(
-                              //       '',
-                              //       style: TextStyle(
-                              //         fontWeight: FontWeight.w600,
-                              //         color: Colors.grey[900],
-                              //       ),
-                              //     ),
-                              //   ],
-                              // ),
-                              // verticalLine,
-                              // Column(
-                              //   mainAxisAlignment: MainAxisAlignment.center,
-                              //   children: [
-                              //     AnimatedContainer(
-                              //       duration: Duration(milliseconds: 300),
-                              //       width: controller
-                              //           .controllPageLongContainerSubBox.value,
-                              //       height: controller
-                              //           .controllPageLongContainerSubBox.value,
-                              //       decoration: BoxDecoration(
-                              //         borderRadius: BorderRadius.circular(15),
-                              //         color: Colors.grey[300],
-                              //         boxShadow: [
-                              //           BoxShadow(
-                              //             color: Colors.grey.withOpacity(0.7),
-                              //             spreadRadius: 2,
-                              //             blurRadius: 4,
-                              //             offset: Offset(
-                              //                 0, 7), // changes position of shadow
-                              //           ),
-                              //         ],
-                              //       ),
-                              //     ),
-                              //     SizedBox(
-                              //       height: 5,
-                              //     ),
-                              //     Text(
-                              //       '',
-                              //       style: TextStyle(
-                              //         fontWeight: FontWeight.w600,
-                              //         color: Colors.grey[900],
-                              //       ),
-                              //     ),
-                              //   ],
-                              // ),
                             ],
                           ),
                         ),
