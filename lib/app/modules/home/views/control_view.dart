@@ -885,7 +885,7 @@ class ControlView extends GetView<HomeController> {
                                           curve: Curves.easeIn,
                                           duration: Duration(milliseconds: 300),
                                           child: Text(
-                                            'Application info'.tr,
+                                            'Application Info'.tr,
                                             style: TextStyle(
                                               fontSize: controller
                                                   .controllPageTextSize.value,

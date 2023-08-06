@@ -17,8 +17,10 @@ class Languages extends Translations {
           //태그는 중복 패스
           //control view.
           'Deleted Memo': 'Deleted Memo',
-          'Fonts & Locale': 'Fonts & Locale',
-          'Application info': 'Application Info',
+          //추후 패치 대비.
+          // 'Fonts & Locale': 'Fonts & Locale',
+          'Fonts & Locale': 'Languages',
+          'Application Info': 'Application Info',
           'Tags Customize': 'Tags Customize',
           //trash view.
           'Recover Memo': 'Recover Memo',
@@ -28,6 +30,8 @@ class Languages extends Translations {
               'Are you sure you want to \npermanently delete all items?',
           'Cancel': 'Cancel',
           'Confirm': 'Confirm',
+          //language view.
+          'Languages' : 'Languages',
           //empty.
           'Deleted Memo\nis Empty': 'Deleted Memo\nis Empty',
           'Memo is Empty': 'Memo is Empty',
@@ -36,6 +40,8 @@ class Languages extends Translations {
           'Searched in ': 'Searched in ',
           'Please get send button\nTo add Memo':
               'Please get send button\nTo add Memo',
+          'The content is empty!' : 'The content is empty!',
+          'Please add some content' : 'Please add some text',
         },
         'en_UK': {
           'Insert here': ' Insert here',
@@ -50,8 +56,9 @@ class Languages extends Translations {
           'Light': '라이트',
           'Dark': '다크',
           'Deleted Memo': '삭제한 메모',
-          'Fonts & Locale': '폰트 및 언어',
-          'Application info': '애플리케이션 정보',
+          //추후 패치 대비.
+          'Fonts & Locale': '언어',
+          'Application Info': '애플리케이션 정보',
           'Tags Customize': '태그 설정',
           'Recover Memo': '메모 복구하기',
           'Hard Delete': '메모 엉구 삭제',
@@ -60,12 +67,17 @@ class Languages extends Translations {
               '삭제한 모든 메모를\n영구적으로 삭제하시겠습니까?',
           'Cancel': '취소',
           'Confirm': '확인',
+          //languages view
+          'Languages' : '언어 설정',
+          //empty
           'Deleted Memo\nis Empty': '삭제한 메모가\n없어요',
           'Memo is Empty': '메모가 비었어요',
           'Can not found Memo': '메모를 찾을수 없어요',
           'Tagged in ': '현재 설정된 태그: ',
           'Searched in ': '현재 설정된 검색어: ',
           'Please get send button\nTo add Memo': '전송 버튼을 눌러\n메모를 추가해주세요',
+          'The content is empty!' : '내용이 비어있어요!',
+          'Please add some content' : '메모를 입력하려면 내용을 추가해주세요',
         },
         'ja_JP': {
           'Insert here': ' Insert here',

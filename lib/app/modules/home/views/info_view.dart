@@ -17,7 +17,7 @@ class InfoView extends GetView<HomeController> {
         backgroundColor:
             controller.isDarkModeOn.value == true ? subDark : subLight,
         title: Text(
-          'InfoVi',
+          'Application Info'.tr,
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.w700,

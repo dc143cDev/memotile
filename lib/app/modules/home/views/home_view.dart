@@ -368,50 +368,56 @@ class HomeView extends GetView<HomeController> {
                     child: Row(
                       children: [
                         Flexible(
-                          child: TextFormField(
-                            focusNode: controller.searchTextFocus,
-                            controller: controller.searchBarController,
-                            maxLength: 8,
-                            decoration: InputDecoration(
-                              suffixIcon: IconButton(
-                                onPressed: () async {
-                                  await controller.searchButtonClicked();
-                                  await controller.refreshMemoByContent(
-                                    controller.searchBarController.text,
-                                  );
-                                  controller.memoController.clear();
-                                  // controller.searchBarController.clear();
-                                  //여기에 클리어를 두면 앱바 ui 수정에 반영되지 않음.
-                                  // controller.searchBarController.clear();
-                                  Get.back();
-                                },
-                                icon: Icon(Icons.search_rounded),
+                          child: Obx(
+                            () => TextFormField(
+                              focusNode: controller.searchTextFocus,
+                              controller: controller.searchBarController,
+                              maxLength: 8,
+                              decoration: InputDecoration(
+                                suffixIcon: IconButton(
+                                  onPressed: () async {
+                                    await controller.searchButtonClicked();
+                                    await controller.refreshMemoByContent(
+                                      controller.searchBarController.text,
+                                    );
+                                    controller.memoController.clear();
+                                    // controller.searchBarController.clear();
+                                    //여기에 클리어를 두면 앱바 ui 수정에 반영되지 않음.
+                                    // controller.searchBarController.clear();
+                                    Get.back();
+                                  },
+                                  icon: Icon(Icons.search_rounded),
+                                ),
+                                counterText: '',
+                                //힌트텍스트는 포커스 잡혀있을땐 보이지 않게끔.
+                                hintText:
+                                    controller.searchTextFocus.hasFocus == true
+                                        ? ''
+                                        : 'Search here'.tr,
+                                hintStyle: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 15,
+                                  color: controller.isDarkModeOn.value == true
+                                      ? iconDark
+                                      : iconLight,
+                                ),
+                                border: InputBorder.none,
                               ),
-                              counterText: '',
-                              hintText: 'Search here'.tr,
-                              hintStyle: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 15,
-                                color: controller.isDarkModeOn.value == true
-                                    ? iconDark
-                                    : iconLight,
-                              ),
-                              border: InputBorder.none,
+                              onChanged: (String text) async {
+                                //콘텐츠 검색기능 사용시 태그 검색모드 해제
+                                controller.tagModeOn.value = false;
+                                controller.searchModeOn.value = false;
+                                controller.refreshMemoByContent(text);
+                              },
+                              onTapOutside: (P) {
+                                // 태그 검색모드 활성화된 상태라면 바깥 쪽을 터치해도 태그 검색모드가 해제되지 않도록 함.
+                                if (controller.tagModeOn.value == false) {
+                                  controller.refreshMemo();
+                                }
+                                controller.memoController.clear();
+                                controller.searchBarController.clear();
+                              },
                             ),
-                            onChanged: (String text) async {
-                              //콘텐츠 검색기능 사용시 태그 검색모드 해제
-                              controller.tagModeOn.value = false;
-                              controller.searchModeOn.value = false;
-                              controller.refreshMemoByContent(text);
-                            },
-                            onTapOutside: (P) {
-                              // 태그 검색모드 활성화된 상태라면 바깥 쪽을 터치해도 태그 검색모드가 해제되지 않도록 함.
-                              if (controller.tagModeOn.value == false) {
-                                controller.refreshMemo();
-                              }
-                              controller.memoController.clear();
-                              controller.searchBarController.clear();
-                            },
                           ),
                         ),
                       ],
@@ -1369,7 +1375,12 @@ class HomeView extends GetView<HomeController> {
                                                       true
                                                   ? subDark
                                                   : subLight,
-                                          hintText: 'Insert here'.tr,
+                                          //힌트 텍스트는 포커스 잡혀있지 않을때만.
+                                          hintText:
+                                              controller.textFocus.hasFocus ==
+                                                      true
+                                                  ? ''
+                                                  : 'Insert here'.tr,
                                           hintStyle: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             color:
@@ -1419,9 +1430,9 @@ class HomeView extends GetView<HomeController> {
                                           .toString());
                                     } else {
                                       Get.snackbar(
-                                        'The content is empty!',
-                                        'Please add some text.',
-                                        duration: Duration(milliseconds: 800),
+                                        'The content is empty!'.tr,
+                                        'Please add some content'.tr,
+                                        duration: Duration(milliseconds: 1000),
                                       );
                                     }
                                   },
