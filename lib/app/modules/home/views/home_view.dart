@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -801,86 +803,82 @@ class HomeView extends GetView<HomeController> {
         children: [
           Scaffold(
             floatingActionButton: Obx(
-              () => Stack(
+              () => Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      FloatingActionButton(
-                        heroTag: true,
-                        backgroundColor: Get.isDarkMode ? subDark : subLight,
-                        child: controller.isEditMode.value == true ||
-                                controller.isOneEditMode.value == true ||
-                                controller.searchModeOn.value == true ||
-                                controller.tagModeOn.value == true
-                            ? Icon(
-                                Icons.close,
-                                color: controller.isDarkModeOn.value == true
-                                    ? iconDark
-                                    : iconLight,
-                              )
-                            : Icon(
-                                Icons.search_rounded,
-                                color: controller.isDarkModeOn.value == true
-                                    ? iconDark
-                                    : iconLight,
-                              ),
-                        onPressed: () async {
-                          if (controller.isEditMode.value == true ||
+                  Obx(
+                    () => FloatingActionButton(
+                      heroTag: true,
+                      backgroundColor: controller.isDarkModeOn.value == true ? subDark : subLight,
+                      child: controller.isEditMode.value == true ||
                               controller.isOneEditMode.value == true ||
                               controller.searchModeOn.value == true ||
-                              controller.tagModeOn.value == true) {
-                            //에딧모드 종료시 실행되는 메소드.
-                            await controller.editModeDone();
-                            await controller.editModeDoneOne();
+                              controller.tagModeOn.value == true
+                          ? Icon(
+                              Icons.close,
+                              color: controller.isDarkModeOn.value == true
+                                  ? iconDark
+                                  : iconLight,
+                            )
+                          : Icon(
+                              Icons.search_rounded,
+                              color: controller.isDarkModeOn.value == true
+                                  ? iconDark
+                                  : iconLight,
+                            ),
+                      onPressed: () async {
+                        if (controller.isEditMode.value == true ||
+                            controller.isOneEditMode.value == true ||
+                            controller.searchModeOn.value == true ||
+                            controller.tagModeOn.value == true) {
+                          //에딧모드 종료시 실행되는 메소드.
+                          await controller.editModeDone();
+                          await controller.editModeDoneOne();
 
-                            Future.delayed(Duration(milliseconds: 200), () {
-                              controller.defaultModeOn();
-                            });
-                          } else {
-                            // controller.isEditMode.value = true;
-                            openSearchSheet();
-                          }
-                        },
-                      ),
+                          Future.delayed(Duration(milliseconds: 200), () {
+                            controller.defaultModeOn();
+                          });
+                        } else {
+                          // controller.isEditMode.value = true;
+                          openSearchSheet();
+                        }
+                      },
+                    ),
+                  ),
 
-                      //스크롤 컨트롤러 offset이 맨 아래가 아니라면 아래로 내리기 버튼을 활성화함.
-                      controller.goToDownButtonDontShow.value == true
-                          ? Container()
-                          : Padding(
-                              padding: const EdgeInsets.only(top: 7),
-                              child: Align(
-                                alignment: Alignment(1, 1),
-                                child: Obx(
-                                  () => FloatingActionButton(
-                                    backgroundColor:
-                                        controller.isDarkModeOn.value == true
-                                            ? subDark
-                                            : subLight,
-                                    child: Icon(
-                                      Icons.arrow_downward_sharp,
-                                      color:
-                                          controller.isDarkModeOn.value == true
-                                              ? iconDark
-                                              : iconLight,
-                                    ),
-                                    onPressed: () {
-                                      controller.goToDown();
-                                    },
-                                  ),
+                  //스크롤 컨트롤러 offset이 맨 아래가 아니라면 아래로 내리기 버튼을 활성화함.
+                  controller.goToDownButtonDontShow.value == true
+                      ? Container()
+                      : Padding(
+                          padding: const EdgeInsets.only(top: 7),
+                          child: Align(
+                            alignment: Alignment(1, 1),
+                            child: Obx(
+                              () => FloatingActionButton(
+                                backgroundColor:
+                                    controller.isDarkModeOn.value == true
+                                        ? subDark
+                                        : subLight,
+                                child: Icon(
+                                  Icons.arrow_downward_sharp,
+                                  color: controller.isDarkModeOn.value == true
+                                      ? iconDark
+                                      : iconLight,
                                 ),
+                                onPressed: () {
+                                  controller.goToDown();
+                                },
                               ),
                             ),
-                      SizedBox(
-                        height: 0,
-                      ),
-                    ],
+                          ),
+                        ),
+                  SizedBox(
+                    height: 0,
                   ),
                 ],
               ),
             ),
-
             appBar: AppBar(
               elevation: 0,
               centerTitle: false,

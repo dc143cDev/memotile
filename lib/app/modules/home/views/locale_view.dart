@@ -49,7 +49,7 @@ class LocaleView extends GetView<HomeController> {
               ),
             ),
             Container(
-              height: controller.height * 0.15,
+              height: controller.height * 0.2,
               width: controller.width * 0.9,
               decoration: BoxDecoration(
                 color: controller.isDarkModeOn.value == true
