@@ -78,6 +78,116 @@ class HomeController extends GetxController
   FocusNode textFocus = FocusNode();
   FocusNode searchTextFocus = FocusNode();
 
+  //locale
+  final localeStroage = GetStorage();
+
+  localeInit() async {
+    //실행시, 사용하기로 저장되어있는 언어 설정 가져오가.
+    if (localeStroage.read('currentLocale') == 'ko') {
+      Get.updateLocale(Locale('ko', 'KR'));
+    }
+    if (localeStroage.read('currentLocale') == 'en') {
+      Get.updateLocale(Locale('en', 'US'));
+    }
+  }
+
+  //앱 최초 실행시 가이드 메모.
+  //최초 한번만 실행되므로 저장되어야함.
+  final guideMemoStorage = GetStorage();
+
+  guideMemoInit() async {
+    //최초 실행이라면,
+    if (guideMemoStorage.read('guideMemo') != 'already') {
+      //locale 코드에 한국어 사용중이면, 한국어 init 메모 출력.
+      if (Get.locale.toString().contains('ko') == true) {
+        await MemoHelper.createItem(
+          '설치해주셔서 감사합니다!',
+          '',
+          'yyyy',
+          'mm',
+          'dd',
+          0,
+          '',
+          4294967295,
+        );
+        await MemoHelper.createItem(
+          '메모를 꾹 누르면 해당한 메모를 편집해요',
+          '',
+          'yyyy',
+          'mm',
+          'dd',
+          0,
+          '',
+          4294967295,
+        );
+        await MemoHelper.createItem(
+          '화면을 왼쪽에서 오른쪽으로 스와이프하면 전체 편집 모드를 이용할수 있어요',
+          '',
+          'yyyy',
+          'mm',
+          'dd',
+          0,
+          '',
+          4294967295,
+        );
+        await MemoHelper.createItem(
+          '오른쪽 페이지로 이동해서 더 다양한 기능들을 사용해보세요!',
+          '',
+          'yyyy',
+          'mm',
+          'dd',
+          0,
+          '',
+          4294967295,
+        );
+      } else {
+        //아니라면 기본인 영어 init 메모 출력.
+        await MemoHelper.createItem(
+          'Thank you for installation!',
+          '',
+          'yyyy',
+          'mm',
+          'dd',
+          0,
+          '',
+          4294967295,
+        );
+        await MemoHelper.createItem(
+          'Press the note to edit it',
+          '',
+          'yyyy',
+          'mm',
+          'dd',
+          0,
+          '',
+          4294967295,
+        );
+        await MemoHelper.createItem(
+          'If you swipe the screen from left to right, you can use the edit mode',
+          '',
+          'yyyy',
+          'mm',
+          'dd',
+          0,
+          '',
+          4294967295,
+        );
+        await MemoHelper.createItem(
+          'Go to the right page and try out more options!',
+          '',
+          'yyyy',
+          'mm',
+          'dd',
+          0,
+          '',
+          4294967295,
+        );
+      }
+    }
+    //메모 출력 후 최초실행이 아니게 됨.
+    guideMemoStorage.writeIfNull('guideMemo', 'already');
+  }
+
   //insert here.
   TextEditingController memoController = TextEditingController();
 
@@ -774,15 +884,16 @@ class HomeController extends GetxController
   //initKeyList의 마지막 인덱스의 데이터를 가져와 넣어줌. //추가 업데이트로 문제점 발견.
   //1차 수정 기능을 아래 refreshMemoInit으로 바꾸고 해당 기능은 리뉴얼함.
   refreshMemo() async {
-    final data = await MemoHelper.getItems();
-    memo.value = data;
-    //empty check for home
-    homeEmptyCheck();
-    // memo.value = [];
-    // currentKeyList.forEach((element) async{
-    //   final data = await MemoHelper.getItemsByDate(element);
-    //   memo.addAll(data);
-    // });
+    if (tagModeOn.value == true) {
+      refreshMemoByColor(colorValue.value);
+    } else if (dateModeOn.value == true) {
+      refreshMemoByDateTile(selectedDay);
+    } else {
+      final data = await MemoHelper.getItems();
+      memo.value = data;
+      homeEmptyCheck();
+    }
+    ;
   }
 
   //삭제된 아이템 가져오기.
@@ -1447,6 +1558,8 @@ class HomeController extends GetxController
     await getCurrentMonthMMM();
     await getTiles();
     await tagInit();
+    await localeInit();
+    await guideMemoInit();
     await firstInitGetDataKey();
     await refreshMemo();
     await editModeDone();
@@ -1506,7 +1619,8 @@ class HomeController extends GetxController
     //시작시 화면 내리기.
     await goToDown();
     //혹여나 버그로 화면이 다 내려가지 않는다면 1 microsecond 뒤에 한번 더 내림.
-    Future.delayed(Duration(microseconds: 1), () {
+    Future.delayed(Duration(microseconds: 5), () {
+      themeInit();
       goToDown();
     });
   }

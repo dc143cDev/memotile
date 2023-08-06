@@ -32,6 +32,11 @@ class Languages extends Translations {
           'Confirm': 'Confirm',
           //language view.
           'Languages' : 'Languages',
+          //Application Info
+          'Application Version': 'Application Version',
+          'Database Version': 'Database Version',
+          'Current Locale': 'Current Locale',
+          'Dev Email': 'Dev Email',
           //empty.
           'Deleted Memo\nis Empty': 'Deleted Memo\nis Empty',
           'Memo is Empty': 'Memo is Empty',
@@ -42,6 +47,10 @@ class Languages extends Translations {
               'Please get send button\nTo add Memo',
           'The content is empty!' : 'The content is empty!',
           'Please add some content' : 'Please add some text',
+          //elevated button
+          'Delete Memo': 'Delete Memo',
+          'Check Clear': 'Check Clear',
+          'Delete Checked Memo': 'Delete Checked Memo',
         },
         'en_UK': {
           'Insert here': ' Insert here',
@@ -67,8 +76,13 @@ class Languages extends Translations {
               '삭제한 모든 메모를\n영구적으로 삭제하시겠습니까?',
           'Cancel': '취소',
           'Confirm': '확인',
-          //languages view
+          //languages view.
           'Languages' : '언어 설정',
+          //Application Info.
+          'Application Version': '애플리케이션 버전',
+          'Database Version': '저장소 버전',
+          'Current Locale': '현재 적용된 언어',
+          'Dev Email': '개발자 연락처',
           //empty
           'Deleted Memo\nis Empty': '삭제한 메모가\n없어요',
           'Memo is Empty': '메모가 비었어요',
@@ -78,6 +92,10 @@ class Languages extends Translations {
           'Please get send button\nTo add Memo': '전송 버튼을 눌러\n메모를 추가해주세요',
           'The content is empty!' : '내용이 비어있어요!',
           'Please add some content' : '메모를 입력하려면 내용을 추가해주세요',
+          //elevated button
+          'Delete Memo': '메모 삭제',
+          'Check Clear': '선택 해제',
+          'Delete Checked Memo': '선택된 메모 삭제',
         },
         'ja_JP': {
           'Insert here': ' Insert here',

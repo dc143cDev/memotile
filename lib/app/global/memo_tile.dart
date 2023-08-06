@@ -152,8 +152,6 @@ class MemoTile extends GetView<HomeController> {
                     child: InkWell(
                       onLongPress: () async {
                         if(controller.isOneEditMode.value == true){
-
-                          // controller.isOneEditMode.value = false;
                           controller.editModeDoneOne();
                           controller.refreshMemo();
                           Future.delayed(Duration(milliseconds: 1), (){

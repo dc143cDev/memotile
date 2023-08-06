@@ -6,15 +6,14 @@ import 'package:memotile/app/global/palette.dart';
 
 import 'package:memotile/app/modules/home/controllers/home_controller.dart';
 
-//캘린더에서 데이트모드로 조회시 빌드될 메모타일.
-//차이점은 위에 날짜표시줄이 없다는 것.
+//캘린더에서 테크모드로 조회시 빌드될 메모타일.
+//차이점은 위에 날짜표시줄과 옆에 시간표시가 없다는 것.
 
-class MemoTileDate extends GetView<HomeController> {
-  const MemoTileDate(
+class MemoTileTag extends GetView<HomeController> {
+  const MemoTileTag(
       {Key? key,
       this.id,
       this.text,
-      this.createdAt,
       this.date,
       this.isEditChecked,
       this.isDeleted,
@@ -23,7 +22,6 @@ class MemoTileDate extends GetView<HomeController> {
 
   final int? id;
   final String? text;
-  final String? createdAt;
   final String? date;
   final int? isEditChecked;
   final int? isDeleted;
@@ -134,14 +132,6 @@ class MemoTileDate extends GetView<HomeController> {
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        left: 15, top: 20, right: 7, bottom: 12),
-                    child: Text(
-                      date!,
-                      style: TextStyle(color: Colors.grey),
                     ),
                   ),
                 ],

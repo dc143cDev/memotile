@@ -64,6 +64,7 @@ class LocaleView extends GetView<HomeController> {
                     child: InkWell(
                       onTap: () {
                         Get.updateLocale(Locale('ko', 'KR'));
+                        controller.localeStroage.write('currentLocale', 'ko');
                       },
                       child: Container(
                         child: Padding(
@@ -106,6 +107,7 @@ class LocaleView extends GetView<HomeController> {
                     child: InkWell(
                       onTap: () {
                         Get.updateLocale(Locale('en', 'US'));
+                        controller.localeStroage.write('currentLocale', 'en');
                       },
                       child: Container(
                         child: Padding(
