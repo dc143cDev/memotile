@@ -121,7 +121,7 @@ class HomeController extends GetxController
           4294967295,
         );
         await MemoHelper.createItem(
-          '화면을 왼쪽에서 오른쪽으로 스와이프하면 전체 편집 모드를 이용할수 있어요',
+          '화면을 왼쪽에서 오른쪽으로 스와이프하면 전체 편집 모드를 사용할수 있어요',
           '',
           'yyyy',
           'mm',

@@ -70,7 +70,7 @@ class Languages extends Translations {
           'Application Info': '애플리케이션 정보',
           'Tags Customize': '태그 설정',
           'Recover Memo': '메모 복구하기',
-          'Hard Delete': '메모 엉구 삭제',
+          'Hard Delete': '메모 영구 삭제',
           'Delete All Items': '모든 메모 영구 삭제',
           'Are you sure you want to \npermanently delete all items?':
               '삭제한 모든 메모를\n영구적으로 삭제하시겠습니까?',
