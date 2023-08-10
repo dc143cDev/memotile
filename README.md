@@ -1,6 +1,6 @@
-# memotile
+# motomee 
 
-A new Flutter project.
+모투미는 간단한 메모를 작성하는데 최적화된 채팅형 메모 앱입니다.
 
 ## Getting Started
 
