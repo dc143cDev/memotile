@@ -972,7 +972,7 @@ class HomeView extends GetView<HomeController> {
                   child: BottomAppBar(
                     height: controller.isEditMode.value == true ||
                             controller.isOneEditMode.value == true
-                        ? controller.height.value * 0.2
+                        ? controller.height.value * 0.23
                         : controller.height.value * 0.12,
                     elevation: 0,
                     shadowColor: controller.isDarkModeOn.value == true
@@ -1003,8 +1003,8 @@ class HomeView extends GetView<HomeController> {
                                                   Column(
                                                     children: [
                                                       SizedBox(
-                                                        height: 38,
-                                                        width: 38,
+                                                        height: controller.width * 0.1,
+                                                        width: controller.width * 0.1,
                                                         child: MaterialButton(
                                                           onPressed: () async {
                                                             await controller
@@ -1040,8 +1040,8 @@ class HomeView extends GetView<HomeController> {
                                                   Column(
                                                     children: [
                                                       SizedBox(
-                                                        height: 38,
-                                                        width: 38,
+                                                        height: controller.width * 0.1,
+                                                        width: controller.width * 0.1,
                                                         child: MaterialButton(
                                                           onPressed: () async {
                                                             await controller
@@ -1077,8 +1077,8 @@ class HomeView extends GetView<HomeController> {
                                                   Column(
                                                     children: [
                                                       SizedBox(
-                                                        height: 38,
-                                                        width: 38,
+                                                        height: controller.width * 0.1,
+                                                        width: controller.width * 0.1,
                                                         child: MaterialButton(
                                                           onPressed: () async {
                                                             await controller
@@ -1114,8 +1114,8 @@ class HomeView extends GetView<HomeController> {
                                                   Column(
                                                     children: [
                                                       SizedBox(
-                                                        height: 38,
-                                                        width: 38,
+                                                        height: controller.width * 0.1,
+                                                        width: controller.width * 0.1,
                                                         child: MaterialButton(
                                                           onPressed: () async {
                                                             await controller
@@ -1151,8 +1151,8 @@ class HomeView extends GetView<HomeController> {
                                                   Column(
                                                     children: [
                                                       SizedBox(
-                                                        height: 38,
-                                                        width: 38,
+                                                        height: controller.width * 0.1,
+                                                        width: controller.width * 0.1,
                                                         child: MaterialButton(
                                                           onPressed: () async {
                                                             await controller
@@ -1188,8 +1188,8 @@ class HomeView extends GetView<HomeController> {
                                                   Column(
                                                     children: [
                                                       SizedBox(
-                                                        height: 38,
-                                                        width: 38,
+                                                        height: controller.width * 0.1,
+                                                        width: controller.width * 0.1,
                                                         child: MaterialButton(
                                                           onPressed: () async {
                                                             await controller
@@ -1225,8 +1225,8 @@ class HomeView extends GetView<HomeController> {
                                                   Column(
                                                     children: [
                                                       SizedBox(
-                                                        height: 38,
-                                                        width: 38,
+                                                        height: controller.width * 0.1,
+                                                        width: controller.width * 0.1,
                                                         child: MaterialButton(
                                                           onPressed: () async {
                                                             await controller
@@ -1262,8 +1262,8 @@ class HomeView extends GetView<HomeController> {
                                                   Column(
                                                     children: [
                                                       SizedBox(
-                                                        height: 38,
-                                                        width: 38,
+                                                        height: controller.width * 0.1,
+                                                        width: controller.width * 0.1,
                                                         child: MaterialButton(
                                                           onPressed: () async {
                                                             await controller

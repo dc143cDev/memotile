@@ -134,6 +134,10 @@ class MemoTileTag extends GetView<HomeController> {
                       ),
                     ),
                   ),
+                  //ui에 안닿게.
+                  SizedBox(
+                    width: controller.width * 0.12,
+                  ),
                 ],
               ),
             ),
