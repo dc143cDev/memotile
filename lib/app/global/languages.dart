@@ -51,6 +51,9 @@ class Languages extends Translations {
           'Delete Memo': 'Delete Memo',
           'Check Clear': 'Check Clear',
           'Delete Checked Memo': 'Delete Checked Memo',
+          //tag snackBar
+          'Tag Name Save Complete' : 'Tag Name Save Complete',
+          'Tag name saved successfully': 'Tag name saved successfully',
         },
         'en_UK': {
           'Insert here': ' Insert here',
@@ -96,6 +99,9 @@ class Languages extends Translations {
           'Delete Memo': '메모 삭제',
           'Check Clear': '선택 해제',
           'Delete Checked Memo': '선택된 메모 삭제',
+          //tag snackBar
+          'Tag Name Save Complete' : '태그 이름 저장 완료',
+          'Tag name saved successfully': '태그 이름이 성공적으로 저장되었어요',
         },
         'ja_JP': {
           'Insert here': ' Insert here',

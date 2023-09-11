@@ -524,6 +524,14 @@ class HomeController extends GetxController
   RxString nowTag = ''.obs;
   final tag = GetStorage();
 
+  void tagSaveSnackbar() {
+    Get.snackbar(
+      'Tag Name Save Complete'.tr,
+      'Tag name saved successfully'.tr,
+      duration: Duration(seconds: 1),
+    );
+  }
+
   //구 테마.
   // TextEditingController redTagController = TextEditingController();
   // TextEditingController tealTagController = TextEditingController();
@@ -555,14 +563,14 @@ class HomeController extends GetxController
   FocusNode purpleTagFocusNode = FocusNode();
   FocusNode mustardTagFocusNode = FocusNode();
 
-  RxBool redTegFocused = false.obs;
-  RxBool blueTegFocused = false.obs;
-  RxBool aquaTegFocused = false.obs;
-  RxBool greenTegFocused = false.obs;
-  RxBool pinkTegFocused = false.obs;
-  RxBool orangeTegFocused = false.obs;
-  RxBool purpleTegFocused = false.obs;
-  RxBool mustardTegFocused = false.obs;
+  RxBool redTagFocused = false.obs;
+  RxBool blueTagFocused = false.obs;
+  RxBool aquaTagFocused = false.obs;
+  RxBool greenTagFocused = false.obs;
+  RxBool pinkTagFocused = false.obs;
+  RxBool orangeTagFocused = false.obs;
+  RxBool purpleTagFocused = false.obs;
+  RxBool mustardTagFocused = false.obs;
 
   //최초 실행시 태그 밸류 null 방지를 위한(동시에 색상 이름 표시) 메소드.
   tagInit() {
@@ -575,7 +583,6 @@ class HomeController extends GetxController
     tag.writeIfNull('purple', 'purple');
     tag.writeIfNull('mustard', 'mustard');
   }
-
 
   //theme part.
   themePartHere() {
@@ -1585,17 +1592,68 @@ class HomeController extends GetxController
 
     //태그 포커스 노드 리스너
     redTagFocusNode.addListener(() {
-      if(redTagFocusNode.hasFocus){
-        redTegFocused.value = true;
+      if (redTagFocusNode.hasFocus) {
+        redTagFocused.value = true;
+      } else {
+        redTagFocused.value = false;
       }
     });
 
     blueTagFocusNode.addListener(() {
-      if(blueTagFocusNode.hasFocus){
-        blueTegFocused.value = true;
+      if (blueTagFocusNode.hasFocus) {
+        blueTagFocused.value = true;
+      } else {
+        blueTagFocused.value = false;
       }
     });
 
+    aquaTagFocusNode.addListener(() {
+      if (aquaTagFocusNode.hasFocus) {
+        aquaTagFocused.value = true;
+      } else {
+        aquaTagFocused.value = false;
+      }
+    });
+
+    greenTagFocusNode.addListener(() {
+      if (greenTagFocusNode.hasFocus) {
+        greenTagFocused.value = true;
+      } else {
+        greenTagFocused.value = false;
+      }
+    });
+
+    pinkTagFocusNode.addListener(() {
+      if (pinkTagFocusNode.hasFocus) {
+        pinkTagFocused.value = true;
+      } else {
+        pinkTagFocused.value = false;
+      }
+    });
+
+    orangeTagFocusNode.addListener(() {
+      if (orangeTagFocusNode.hasFocus) {
+        orangeTagFocused.value = true;
+      } else {
+        orangeTagFocused.value = false;
+      }
+    });
+
+    purpleTagFocusNode.addListener(() {
+      if (purpleTagFocusNode.hasFocus) {
+        purpleTagFocused.value = true;
+      } else {
+        purpleTagFocused.value = false;
+      }
+    });
+
+    mustardTagFocusNode.addListener(() {
+      if (mustardTagFocusNode.hasFocus) {
+        mustardTagFocused.value = true;
+      } else {
+        mustardTagFocused.value = false;
+      }
+    });
 
     //디바이스 테마 확인 디버그.
     print('is device theme dark: ${isDeviceThemeDark}');
