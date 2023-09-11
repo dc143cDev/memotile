@@ -555,6 +555,15 @@ class HomeController extends GetxController
   FocusNode purpleTagFocusNode = FocusNode();
   FocusNode mustardTagFocusNode = FocusNode();
 
+  RxBool redTegFocused = false.obs;
+  RxBool blueTegFocused = false.obs;
+  RxBool aquaTegFocused = false.obs;
+  RxBool greenTegFocused = false.obs;
+  RxBool pinkTegFocused = false.obs;
+  RxBool orangeTegFocused = false.obs;
+  RxBool purpleTegFocused = false.obs;
+  RxBool mustardTegFocused = false.obs;
+
   //최초 실행시 태그 밸류 null 방지를 위한(동시에 색상 이름 표시) 메소드.
   tagInit() {
     tag.writeIfNull('red', 'red');
@@ -566,6 +575,7 @@ class HomeController extends GetxController
     tag.writeIfNull('purple', 'purple');
     tag.writeIfNull('mustard', 'mustard');
   }
+
 
   //theme part.
   themePartHere() {
@@ -1573,10 +1583,22 @@ class HomeController extends GetxController
     //처음 한번 새로고침으로 메모 가져오기.
     // refreshMemoInit();
 
+    //태그 포커스 노드 리스너
+    redTagFocusNode.addListener(() {
+      if(redTagFocusNode.hasFocus){
+        redTegFocused.value = true;
+      }
+    });
+
+    blueTagFocusNode.addListener(() {
+      if(blueTagFocusNode.hasFocus){
+        blueTegFocused.value = true;
+      }
+    });
+
+
     //디바이스 테마 확인 디버그.
     print('is device theme dark: ${isDeviceThemeDark}');
-
-    //테마 리스너
 
     //스크롤 리스너
     try {

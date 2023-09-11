@@ -84,22 +84,28 @@ class TagsCustomizeView extends GetView<HomeController> {
                                 counterText: '',
                                 border: InputBorder.none,
                                 hintText: controller.tag.read('red'),
-                                suffixIcon: IconButton(
-                                  onPressed: () {
-                                    //값이 비어있을때 저장 버튼 누르면 기본값으로.
-                                    if(controller.redTagController.text.isEmpty){
-                                      controller.tag.write(
-                                        'red',
-                                        'red',
-                                      );
-                                    }else controller.tag.write(
-                                      'red',
-                                      controller.redTagController.text,
-                                    );
-                                    controller.redTagFocusNode.unfocus();
-                                  },
-                                  icon: Icon(Icons.edit),
-                                ),
+                                suffixIcon: controller
+                                            .redTagFocusNode.hasFocus ==
+                                        true
+                                    ? IconButton(
+                                        onPressed: () {
+                                          //값이 비어있을때 저장 버튼 누르면 기본값으로.
+                                          if (controller
+                                              .redTagController.text.isEmpty) {
+                                            controller.tag.write(
+                                              'red',
+                                              'red',
+                                            );
+                                          } else
+                                            controller.tag.write(
+                                              'red',
+                                              controller.redTagController.text,
+                                            );
+                                          controller.redTagFocusNode.unfocus();
+                                        },
+                                        icon: Icon(Icons.edit),
+                                      )
+                                    : Container(height: 1, width: 1,),
                               ),
                             ),
                           ),
@@ -158,15 +164,17 @@ class TagsCustomizeView extends GetView<HomeController> {
                                         : controller.tag.read('blue'),
                                 suffixIcon: IconButton(
                                   onPressed: () {
-                                    if(controller.blueTagController.text.isEmpty){
+                                    if (controller
+                                        .blueTagController.text.isEmpty) {
                                       controller.tag.write(
                                         'blue',
                                         'blue',
                                       );
-                                    }else controller.tag.write(
-                                      'blue',
-                                      controller.blueTagController.text,
-                                    );
+                                    } else
+                                      controller.tag.write(
+                                        'blue',
+                                        controller.blueTagController.text,
+                                      );
                                     controller.blueTagFocusNode.unfocus();
                                   },
                                   icon: Icon(Icons.edit),
@@ -228,15 +236,17 @@ class TagsCustomizeView extends GetView<HomeController> {
                                 hintText: controller.tag.read('aqua'),
                                 suffixIcon: IconButton(
                                   onPressed: () {
-                                    if(controller.aquaTagController.text.isEmpty){
+                                    if (controller
+                                        .aquaTagController.text.isEmpty) {
                                       controller.tag.write(
                                         'aqua',
                                         'aqua',
                                       );
-                                    }else controller.tag.write(
-                                      'aqua',
-                                      controller.aquaTagController.text,
-                                    );
+                                    } else
+                                      controller.tag.write(
+                                        'aqua',
+                                        controller.aquaTagController.text,
+                                      );
                                     controller.aquaTagFocusNode.unfocus();
                                   },
                                   icon: Icon(Icons.edit),
@@ -296,15 +306,17 @@ class TagsCustomizeView extends GetView<HomeController> {
                                 hintText: controller.tag.read('green'),
                                 suffixIcon: IconButton(
                                   onPressed: () {
-                                    if(controller.greenTagController.text.isEmpty){
+                                    if (controller
+                                        .greenTagController.text.isEmpty) {
                                       controller.tag.write(
                                         'green',
                                         'green',
                                       );
-                                    }else controller.tag.write(
-                                      'green',
-                                      controller.greenTagController.text,
-                                    );
+                                    } else
+                                      controller.tag.write(
+                                        'green',
+                                        controller.greenTagController.text,
+                                      );
                                     controller.greenTagFocusNode.unfocus();
                                   },
                                   icon: Icon(Icons.edit),
@@ -364,15 +376,17 @@ class TagsCustomizeView extends GetView<HomeController> {
                                 hintText: controller.tag.read('pink'),
                                 suffixIcon: IconButton(
                                   onPressed: () {
-                                    if(controller.pinkTagController.text.isEmpty){
+                                    if (controller
+                                        .pinkTagController.text.isEmpty) {
                                       controller.tag.write(
                                         'pink',
                                         'pink',
                                       );
-                                    }else controller.tag.write(
-                                      'pink',
-                                      controller.pinkTagController.text,
-                                    );
+                                    } else
+                                      controller.tag.write(
+                                        'pink',
+                                        controller.pinkTagController.text,
+                                      );
                                     controller.pinkTagFocusNode.unfocus();
                                   },
                                   icon: Icon(Icons.edit),
@@ -432,15 +446,17 @@ class TagsCustomizeView extends GetView<HomeController> {
                                 hintText: controller.tag.read('orange'),
                                 suffixIcon: IconButton(
                                   onPressed: () {
-                                    if(controller.orangeTagController.text.isEmpty){
+                                    if (controller
+                                        .orangeTagController.text.isEmpty) {
                                       controller.tag.write(
                                         'orange',
                                         'orange',
                                       );
-                                    }else controller.tag.write(
-                                      'orange',
-                                      controller.orangeTagController.text,
-                                    );
+                                    } else
+                                      controller.tag.write(
+                                        'orange',
+                                        controller.orangeTagController.text,
+                                      );
                                     controller.orangeTagFocusNode.unfocus();
                                   },
                                   icon: Icon(Icons.edit),
@@ -500,13 +516,15 @@ class TagsCustomizeView extends GetView<HomeController> {
                                 hintText: controller.tag.read('purple'),
                                 suffixIcon: IconButton(
                                   onPressed: () {
-                                    if(controller.purpleTagController.text.isEmpty){
+                                    if (controller
+                                        .purpleTagController.text.isEmpty) {
                                       controller.tag.write(
                                         'purple',
                                         'purple',
                                       );
-                                    }else  controller.tag.write('purple',
-                                        controller.purpleTagController.text);
+                                    } else
+                                      controller.tag.write('purple',
+                                          controller.purpleTagController.text);
                                     controller.purpleTagFocusNode.unfocus();
                                   },
                                   icon: Icon(Icons.edit),
@@ -566,15 +584,17 @@ class TagsCustomizeView extends GetView<HomeController> {
                                 hintText: controller.tag.read('mustard'),
                                 suffixIcon: IconButton(
                                   onPressed: () {
-                                    if(controller.mustardTagController.text.isEmpty){
+                                    if (controller
+                                        .mustardTagController.text.isEmpty) {
                                       controller.tag.write(
                                         'mustard',
                                         'mustard',
                                       );
-                                    }else controller.tag.write(
-                                      'mustard',
-                                      controller.mustardTagController.text,
-                                    );
+                                    } else
+                                      controller.tag.write(
+                                        'mustard',
+                                        controller.mustardTagController.text,
+                                      );
                                     controller.mustardTagFocusNode.unfocus();
                                   },
                                   icon: Icon(Icons.edit),
